@@ -54,9 +54,16 @@ export default function () {
         ></i>
         <i
           className={
-            (isDark ? 'i-ri-sun-line' : 'i-ri-moon-line') + ' cursor-pointer'
+            (isDark ? 'i-ri-sun-line' : 'i-ri-moon-line') +
+            ' cursor-pointer mr-4'
           }
           onClick={() => setDarkMode(!isDark)}
+        ></i>
+        <i
+          className="i-ri-github-fill cursor-pointer"
+          onClick={() =>
+            window.open('https://github.com/KwokKwok/SiloChat', '_blank')
+          }
         ></i>
       </div>
       {showPopup && (
