@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zhCN">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+  <title>Silo - 基于 SiliconCloud API 的 AI 新玩具</title>
+</head>
+
+<body>
+  <script>
+    // 提前检测主题
+    var isDark = localStorage.getItem('theme-mode') ? localStorage.getItem('theme-mode') == 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute(
+      'theme-mode',
+      isDark ? 'dark' : 'light'
+    );
+    if (isDark) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  </script>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>

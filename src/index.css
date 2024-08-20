@@ -1,0 +1,115 @@
+@import url('./assets/styles/theme.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Custom';
+  src: url('./assets/fonts/NotoSans.ttf');
+}
+
+@font-face {
+  font-family: 'CustomCode';
+  src: url('./assets/fonts/NotoSansMono.ttf');
+}
+
+.font-code {
+  font-family: CustomCode, 'Fira Code', 'Fira Mono', Menlo, Consolas,
+    'DejaVu Sans Mono', monospace;
+}
+
+#root {
+  width: 100%;
+}
+
+a:hover {
+  color: #0f54ff;
+}
+
+:root {
+  --td-font-family: Custom, Inter, system-ui, 'PingFang SC', 'Microsoft YaHei',
+    Avenir, Helvetica, Arial, sans-serif;
+  font-family: Custom, Inter, system-ui, 'PingFang SC', 'Microsoft YaHei',
+    Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: #213547;
+  background-color: #f7f7f7;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+
+.dark {
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+}
+
+.dark a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.08);
+}
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  transition: background-color 1000ms ease-in-out;
+  background-color: rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 700px) {
+  /* 滚动槽 */
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+  ::-webkit-scrollbar-track {
+    border-radius: 1.5px;
+    background: rgba(0, 0, 0, 0.06);
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.08);
+  }
+  /* 滚动条滑块 */
+  ::-webkit-scrollbar-thumb {
+    border-radius: 1.5px;
+    background: rgba(#6daac9, 0.5);
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+  }
+}
