@@ -8,6 +8,7 @@ import { useActiveModels } from '../store/app';
 import { useChatMessages } from '../utils/chat';
 import ChatOptionAdjust from './ChatOptionAdjust';
 import { useAutoScrollToBottomRef } from '../utils/use';
+import { useRef } from 'react';
 
 function SinglePanel({ model }) {
   const messages = useChatMessages(model);
@@ -28,15 +29,25 @@ function SinglePanel({ model }) {
     setActiveModels(newModels);
   };
 
+  const isMouseOver = useRef(false);
+  const toggleMouseOver = value => {
+    isMouseOver.current = value;
+  };
+
   const { scrollRef, scrollToBottom } = useAutoScrollToBottomRef();
   useEffect(() => {
+    if (isMouseOver.current) return;
     if (messages.length > 0);
     {
       scrollToBottom();
     }
-  }, [messages]);
+  }, [messages, isMouseOver]);
   return (
-    <div className="flex-1 w-0 flex-shrink-0 relative mr-2 first:ml-2 rounded-md border-2 border-gray-200 dark:border-gray-950 h-full">
+    <div
+      className="flex-1 w-0 flex-shrink-0 relative mr-2 first:ml-2 rounded-md border-2 border-gray-200 dark:border-gray-950 h-full"
+      onMouseOver={() => toggleMouseOver(true)}
+      onMouseOut={() => toggleMouseOver(false)}
+    >
       <div className="h-10 z-20 rounded filter bg-[#fff8] dark:bg-[#0008] backdrop-blur overflow-hidden items-center px-2 shadow-sm flex absolute top-0 left-0 right-0">
         <Select
           className="flex-1 w-0"

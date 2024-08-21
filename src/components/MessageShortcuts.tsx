@@ -1,9 +1,16 @@
 import React from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { message, PopupPlacement } from 'tdesign-react';
+import { message } from 'tdesign-react';
 import { Popup } from 'tdesign-react';
+import { useSiloChat } from '../utils/chat';
 
 export default function ({ copyText, placement, children }: { placement: 'bottom-left' | 'bottom-right', children: React.ReactNode, copyText: string }) {
+  // 聊天中如果鼠标悬浮，会造成布局抖动
+  const { loading } = useSiloChat();
+  if (loading) {
+    return children;
+  }
+
   return (
     <Popup
       trigger="hover"
