@@ -1,4 +1,4 @@
-import EmptyImg from '@/assets/img/empty.svg';
+import EmptyImg from '../assets/img/empty.svg';
 import { CHAT_PLACEHOLDER_TEXT } from '../utils/types';
 const getRandomChatPlaceHolderText = () =>
   CHAT_PLACEHOLDER_TEXT[

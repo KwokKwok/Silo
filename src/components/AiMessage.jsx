@@ -8,7 +8,7 @@ import { ERROR_PREFIX } from '../utils/types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { message } from 'tdesign-react';
 import remarkGfm from 'remark-gfm';
-import '@/assets/styles/markdown.scss';
+import '../assets/styles/markdown.scss';
 import MessageShortcuts from './MessageShortcuts';
 import { useDarkMode } from '../utils/use';
 
@@ -23,7 +23,7 @@ export default function AiMessage({ model, content }) {
     );
   }
   return (
-    <MessageShortcuts placement="top-left" copyText={content}>
+    <MessageShortcuts placement="bottom-left" copyText={content}>
       <div className="flex-shrink-0 max-w-full mb-2 px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md">
         {!!model && (
           <span className="text-xs mb-1 text-gray-500 dark:text-gray-400">
