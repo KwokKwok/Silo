@@ -5,11 +5,14 @@ import ChatHolder from './ChatHolder';
 import { Select, Tag, Popup } from 'tdesign-react';
 import TEXT_MODEL_LIST from '../utils/models';
 import { useActiveModels } from '../store/app';
-import { useChatMessages } from '../utils/chat';
+import { useChatMessages, useSingleChat } from '../utils/chat';
 import ChatOptionAdjust from './ChatOptionAdjust';
-import { useAutoScrollToBottomRef } from '../utils/use';
+import { useAutoScrollToBottomRef, useRefresh } from '../utils/use';
 import { useRef } from 'react';
 
+/**
+ * 越来越重，后续可能需要拆分
+ */
 function SinglePanel({ model }) {
   const messages = useChatMessages(model);
   const { activeModels, setActiveModels, removeActiveModel } =
@@ -18,8 +21,19 @@ function SinglePanel({ model }) {
     item => model === item.id || !activeModels.includes(item.id)
   );
 
+  const chat = useSingleChat(model);
+
   const onClose = () => {
     removeActiveModel(model);
+  };
+
+  const refreshControl = useRefresh();
+
+  const onStop = () => {
+    // 根据状态判断是停止还是清理
+    chat.stop(!chat.loading);
+    // 用的引用，需要手动刷新
+    refreshControl.refresh();
   };
 
   const onModelChange = newModel => {
@@ -33,6 +47,7 @@ function SinglePanel({ model }) {
   const toggleMouseOver = value => {
     isMouseOver.current = value;
   };
+  const iconClassName = 'cursor-pointer text-lg opacity-70 ml-2 flex-shrink-0 ';
 
   const { scrollRef, scrollToBottom } = useAutoScrollToBottomRef();
   useEffect(() => {
@@ -109,17 +124,27 @@ function SinglePanel({ model }) {
             </Select.Option>
           ))}
         </Select>
-
+        <i
+          className={
+            iconClassName +
+            (chat.loading
+              ? 'i-mingcute-pause-circle-line'
+              : 'i-mingcute-broom-line')
+          }
+          onClick={onStop}
+        >
+          {chat.loading ? '停止' : '清除'}
+        </i>
         <Popup
           content={<ChatOptionAdjust model={model} />}
           placement="bottom-right"
           showArrow
           trigger="click"
         >
-          <i className="i-mingcute-settings-2-line cursor-pointer ml-2 flex-shrink-0" />
+          <i className={iconClassName + 'i-mingcute-settings-2-line '} />
         </Popup>
         <i
-          className="i-mingcute-close-line cursor-pointer ml-2 flex-shrink-0"
+          className={iconClassName + 'i-mingcute-close-line'}
           onClick={onClose}
         ></i>
       </div>
@@ -131,10 +156,14 @@ function SinglePanel({ model }) {
           className="w-full pt-12 text-sm flex flex-col h-full overflow-auto px-2"
           ref={scrollRef}
         >
-          {messages.map(message => (
+          {messages.map((message, index) => (
             <Fragment key={`${message.chatId}-ai-${model}`}>
               <UserMessage content={message.user} />
-              <AiMessage content={message.ai} />
+              <AiMessage
+                model={model}
+                isLast={index === messages.length - 1}
+                content={message.ai}
+              />
             </Fragment>
           ))}
         </div>

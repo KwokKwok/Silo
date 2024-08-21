@@ -31,7 +31,6 @@ function _streamChat (chat, newMessage) {
   chat.loading = true;
   const { model, controller } = chat
   const _onChunk = (content) => {
-    if (!chat.messages[chatId]) chat.messages[chatId] = '';
     chat.messages[chatId] += content;
   }
   const _onEnd = () => {
@@ -44,12 +43,16 @@ function _streamChat (chat, newMessage) {
     _onEnd();
   }
 
+  // 构建对话历史
   const chatMessage = Object.keys(chat.messages).reduce((arr, curTime) => {
     const userMessage = userMessages[curTime];
     const aiMessage = chat.messages[curTime];
     return [...arr, { role: 'user', content: userMessage }, { role: 'assistant', content: aiMessage }].filter(item => item.role != 'assistant' || !item.content.startsWith(ERROR_PREFIX))
   }, [])
   chatMessage.push({ role: 'user', content })
+
+  // 可以先展示用户消息
+  chat.messages[chatId] = ''
   streamChat(model, chatMessage, controller, _onChunk, _onEnd, _onError)
 }
 
@@ -84,6 +87,13 @@ export function useChatMessages (model) {
   }))
 }
 
+/**
+ * 获取单个模型的数据（TODO 类型）
+ */
+export function useSingleChat (model) {
+  return allChats[model] || {};
+}
+
 export function useSiloChat () {
   const { activeModels } = useActiveModels();
   const refresh = useRefresh(48);
@@ -93,7 +103,18 @@ export function useSiloChat () {
         loading: false,
         messages: [],
         controller: {},
-        model: item
+        model: item,
+        stop (clear) {
+          try {
+            this.controller.current?.abort()
+          } catch (error) {
+
+          }
+          this.loading = false;
+          if (clear) {
+            this.messages = {};
+          }
+        }
       }
     }
     return allChats[item];
@@ -111,13 +132,11 @@ export function useSiloChat () {
   }
   const onStop = (clear) => {
     activeChats.forEach(chat => {
-      chat.controller.current?.abort()
-      chat.loading = false;
-      if (clear) {
-        chat.messages = {};
-      }
+      chat.stop(clear);
     })
-    userMessages = {}
+    if (clear) {
+      userMessages = {}
+    }
     refresh.refresh();
   }
   return { loading, onSubmit, onStop }

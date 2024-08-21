@@ -11,9 +11,6 @@ import InputControl from './components/InputControl';
 function App() {
   const { loading, onSubmit, onStop } = useSiloChat();
   const isMobile = useIsMobile();
-  const onClear = () => {
-    onStop(true);
-  };
   return (
     <div className="h-dvh w-full flex flex-col selection:bg-primary selection:text-white pb-2 text-sm">
       <HeaderAndPopup />
@@ -21,11 +18,7 @@ function App() {
         {isMobile ? <GroupMessages /> : <MultiPanelMessages />}
       </div>
       <div className="flex-shrink-0 w-full relative">
-        <InputControl
-          onClear={onClear}
-          onSubmit={onSubmit}
-          disabled={loading}
-        />
+        <InputControl onStop={onStop} onSubmit={onSubmit} loading={loading} />
       </div>
     </div>
   );

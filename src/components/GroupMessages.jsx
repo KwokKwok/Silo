@@ -19,13 +19,15 @@ export default function () {
       className="h-full max-w-full flex flex-col items-start px-1 overflow-auto"
       ref={scrollRef}
     >
-      {messages.map(item => (
+      {messages.map((item, index) => (
         <React.Fragment key={item.chatId}>
           <UserMessage content={item.user} />
           {Object.keys(item.ai).map(key => (
             <AiMessage
               key={`${item.chatId}-${key}`}
               model={key}
+              showModelName
+              isLast={index === messages.length - 1}
               content={item.ai[key]}
             />
           ))}

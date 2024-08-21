@@ -3,18 +3,18 @@ import { useEffect } from 'react';
 import { useRef } from 'react';
 import { useIsMobile } from '../utils/use';
 
-export default function ({ onClear, onSubmit, disabled }) {
+export default function ({ onStop, onSubmit, loading }) {
   const [input, setInput] = useState('');
   const inputRef = useRef();
   const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (!disabled) {
+    if (!loading) {
       setTimeout(() => {
         inputRef.current.focus();
       }, 100);
     }
-  }, [disabled]);
+  }, [loading]);
 
   // 自动调整输入框高度
   useEffect(() => {
@@ -24,7 +24,7 @@ export default function ({ onClear, onSubmit, disabled }) {
         el.style.height = '1.5rem';
       } else {
         el.style.height = 'auto';
-        el.style.height = el.scrollHeight + 'px';
+        el.style.height = Math.min(el.scrollHeight, 300) + 'px';
       }
     }
   }, [input]);
@@ -36,7 +36,7 @@ export default function ({ onClear, onSubmit, disabled }) {
   const onSend = () => {
     if (input) {
       if (input == '/clear') {
-        onClear();
+        onStop(true);
       } else {
         onSubmit(input.trim());
       }
@@ -60,13 +60,18 @@ export default function ({ onClear, onSubmit, disabled }) {
       <div className="h-12"></div>
       <div
         className={
-          'min-h-12 z-10 absolute left-2 right-2 bottom-0 bg-white dark:bg-black flex px-4 py-3 shadow-md overflow-hidden transition-[border-radius] duration-400 ' +
+          'min-h-12 z-50 absolute left-2 right-2 bottom-0 bg-white dark:bg-black flex px-4 py-3 shadow-md overflow-hidden transition-[border-radius] duration-400 ' +
           (input.includes('\n') ? 'rounded-2xl' : 'rounded-3xl')
         }
       >
         <i
-          className="i-mingcute-broom-line absolute top-3 left-4 w-6 h-6 opacity-75 z-20 cursor-pointer"
-          onClick={onClear}
+          className={
+            (loading
+              ? 'i-mingcute-pause-circle-line'
+              : 'i-mingcute-broom-line') +
+            ' absolute top-3 left-4 w-6 h-6 opacity-75 z-20 cursor-pointer'
+          }
+          onClick={() => onStop(!loading)}
         ></i>
         <textarea
           type="text"
@@ -76,8 +81,8 @@ export default function ({ onClear, onSubmit, disabled }) {
           onInput={onInput}
           onKeyDown={onKeyDown}
           ref={inputRef}
-          disabled={disabled}
-          className=" outline-none flex-1 bg-transparent resize-none px-10 leading-6"
+          disabled={loading}
+          className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none px-10 leading-6"
         />
         <i
           className={
