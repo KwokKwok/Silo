@@ -18,6 +18,11 @@
     'DejaVu Sans Mono', monospace;
 }
 
+body {
+  font-family: Custom, Inter, system-ui, 'PingFang SC', 'Microsoft YaHei',
+    Avenir, Helvetica, Arial, sans-serif;
+}
+
 #root {
   width: 100%;
 }
@@ -28,9 +33,8 @@ a:hover {
 
 :root {
   --td-font-family: Custom, Inter, system-ui, 'PingFang SC', 'Microsoft YaHei',
-    Avenir, Helvetica, Arial, sans-serif;
-  font-family: Custom, Inter, system-ui, 'PingFang SC', 'Microsoft YaHei',
-    Avenir, Helvetica, Arial, sans-serif;
+    Avenir, Helvetica, Arial, sans-serif !important;
+
   line-height: 1.5;
   font-weight: 400;
 
