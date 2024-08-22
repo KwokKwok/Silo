@@ -50,13 +50,24 @@ export const useActiveModels = () => {
 
   const addMore = () => {
     const nonActiveModels = TEXT_MODEL_LIST.filter(item => !value.includes(item.id)).map(item => item.id);
-    if (value.length === 6) {
-      message.info('6个还不够吗')
-      return;
-    }
-    setActiveModels(value.concat(nonActiveModels.splice(0, value.length === 4 ? 2 : 1)))
+    console.log(nonActiveModels);
+
+    // if (value.length === 6) {
+    //   message.info('6个还不够吗')
+    //   return;
+    // }
+    setActiveModels(value.concat(nonActiveModels.splice(0, 1)))
   }
   return { activeModels: value, setActiveModels, addMoreModel: addMore, removeActiveModel }
 }
 
+const isRowMode = atom(getLocalStorage(LOCAL_STORAGE_KEY.ROW_MODE, 'true') === 'true')
 
+export function useIsRowMode () {
+  const [value, setValue] = useAtom(isRowMode);
+  const setIsRows = (isRows) => {
+    setLocalStorage(LOCAL_STORAGE_KEY.ROW_MODE, isRows);
+    setValue(isRows);
+  }
+  return [value, setIsRows]
+}

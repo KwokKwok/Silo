@@ -40,4 +40,8 @@ export enum LOCAL_STORAGE_KEY {
    * 模型请求选项
    */
   CHAT_MODEL_OPTIONS = 'chat_model_options',
+  /**
+   * 多行模式
+   */
+  ROW_MODE = 'multi_rows',
 }

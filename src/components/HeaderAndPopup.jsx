@@ -1,10 +1,12 @@
 import { useRequest } from 'ahooks';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useActiveModels, useSecretKey } from '../store/app';
+import { useActiveModels, useIsRowMode, useSecretKey } from '../store/app';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/user';
 import { useDarkMode, useIsMobile } from '../utils/use';
+import { message } from 'tdesign-react';
+import { notification } from 'tdesign-react';
 
 export default function () {
   const [showPopup, setShowPopup] = useState();
@@ -16,9 +18,21 @@ export default function () {
     manual: true,
   });
   useEffect(() => {
+    if (secretKey == import.meta.env.VITE_DEFAULT_SK) {
+      notification.info({
+        title: '您正在使用体验密钥',
+        content:
+          '体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥',
+        closeBtn: true,
+        placement: 'bottom-right',
+        offset: [-20, -20],
+      });
+    }
     runAsync();
   }, [secretKey]);
   const isMobile = useIsMobile();
+
+  const [isRowMode, setIsRowMode] = useIsRowMode();
 
   useEffect(() => {
     setShowPopup(error);
@@ -43,10 +57,22 @@ export default function () {
           </>
         )}
         {!isMobile && (
-          <i
-            className="i-ri-apps-2-add-line cursor-pointer mr-4"
-            onClick={addMoreModel}
-          ></i>
+          <>
+            <i
+              title="切换行模式"
+              onClick={() => setIsRowMode(!isRowMode)}
+              className={
+                'cursor-pointer mr-4 ' +
+                (isRowMode
+                  ? 'i-mingcute-columns-3-line'
+                  : 'i-mingcute-rows-3-line')
+              }
+            ></i>
+            <i
+              className="i-ri-apps-2-add-line cursor-pointer mr-4"
+              onClick={addMoreModel}
+            ></i>
+          </>
         )}
         <i
           className="i-ri-key-line cursor-pointer mr-4"
@@ -137,7 +163,7 @@ export default function () {
               </span>
               <span
                 className="text-blue-400 cursor-pointer mt-4 text-sm"
-                onClick={() => setSecretKey('用用你的')}
+                onClick={() => setSecretKey(import.meta.env.VITE_DEFAULT_SK)}
               >
                 🤖 先不注册，用用你的 🤖
               </span>

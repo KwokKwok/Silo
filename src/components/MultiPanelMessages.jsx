@@ -4,7 +4,7 @@ import UserMessage from './UserMessage';
 import ChatHolder from './ChatHolder';
 import { Select, Tag, Popup } from 'tdesign-react';
 import TEXT_MODEL_LIST from '../utils/models';
-import { useActiveModels } from '../store/app';
+import { useActiveModels, useIsRowMode } from '../store/app';
 import { useChatMessages, useSingleChat } from '../utils/chat';
 import ChatOptionAdjust from './ChatOptionAdjust';
 import { useAutoScrollToBottomRef, useRefresh } from '../utils/use';
@@ -48,7 +48,6 @@ function SinglePanel({ model }) {
     isMouseOver.current = value;
   };
   const iconClassName = 'cursor-pointer text-lg opacity-70 ml-2 flex-shrink-0 ';
-
   const { scrollRef, scrollToBottom } = useAutoScrollToBottomRef();
   useEffect(() => {
     if (isMouseOver.current) return;
@@ -59,7 +58,7 @@ function SinglePanel({ model }) {
   }, [messages, isMouseOver]);
   return (
     <div
-      className="flex-1 w-0 flex-shrink-0 relative mr-2 first:ml-2 rounded-md border-2 border-gray-200 dark:border-gray-950 h-full"
+      className="flex-1 min-w-96 w-0 flex-shrink-0 relative mr-2 first:ml-2 rounded-md border-2 border-gray-200 dark:border-gray-950 h-full"
       onMouseOver={() => toggleMouseOver(true)}
       onMouseOut={() => toggleMouseOver(false)}
     >
@@ -174,18 +173,28 @@ function SinglePanel({ model }) {
 
 export default function () {
   const { activeModels: models } = useActiveModels();
+  const [isRowMode] = useIsRowMode();
   let modelArr = [models];
-  // 将 chats 处理成多行。4个及以上偶数分两行。其他情况均为单行
-  if (models.length >= 4 && models.length % 2 === 0) {
+  if (isRowMode) {
+    modelArr = [[], []];
     const _models = [...models];
-    const count = models.length / 2;
-    modelArr = [_models.slice(0, count), _models.slice(count)];
+    while (_models.length > 0) {
+      modelArr[0].push(_models.shift());
+      if (_models.length === 0) break;
+      modelArr[1].push(_models.shift());
+    }
   }
+  // // 将 chats 处理成多行。4个及以上偶数分两行。其他情况均为单行
+  // if (models.length >= 4 && models.length % 2 === 0) {
+  // }
 
   return (
     <div className="flex flex-col h-full">
       {modelArr.map(line => (
-        <div key={line.join(',')} className="flex-1 h-0 flex last:mt-2">
+        <div
+          key={line.join(',')}
+          className="overflow-x-auto flex-1 h-0 flex last:mt-2"
+        >
           {line.map(model => (
             <SinglePanel key={model} model={model} />
           ))}

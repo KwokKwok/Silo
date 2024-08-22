@@ -79,7 +79,7 @@ h1 {
 /* 滚动槽 */
 ::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
+  height: 10px;
 }
 ::-webkit-scrollbar-track {
   border-radius: 3px;
