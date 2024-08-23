@@ -19,7 +19,8 @@ export default function () {
         // invertSwap: true,
         ghostClass: 'sortable-ghost',
         chosenClass: 'opacity-60',
-        dragClass: 'sortable-drag',
+        // dragClass: 'sortable-drag',
+        handle: '.sortable-drag',
         group: 'multi-chat',
         onEnd: () => {
           setRows(
