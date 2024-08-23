@@ -44,4 +44,8 @@ export enum LOCAL_STORAGE_KEY {
    * 多行模式
    */
   ROW_MODE = 'multi_rows',
+  /**
+   * 用户重新拖拽
+   */
+  USER_SORT_SETTINGS = 'user_sort_settings',
 }
