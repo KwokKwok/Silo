@@ -61,7 +61,7 @@ export const useActiveModels = () => {
   return { activeModels: value, setActiveModels, addMoreModel: addMore, removeActiveModel }
 }
 
-const isRowMode = atom(getLocalStorage(LOCAL_STORAGE_KEY.ROW_MODE, 'true') === 'true')
+const isRowMode = atom(getLocalStorage(LOCAL_STORAGE_KEY.ROW_MODE, 'false') === 'true')
 
 export function useIsRowMode () {
   const [value, setValue] = useAtom(isRowMode);
