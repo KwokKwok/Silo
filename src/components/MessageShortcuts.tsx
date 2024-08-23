@@ -1,18 +1,17 @@
 import React from 'react';
 import CopyToClipboard from 'react-copy-to-clipboard';
-import { message } from 'tdesign-react';
-import { Popup } from 'tdesign-react';
+import { message, PopupPlacement, Popup } from 'tdesign-react';
 
-export default function ({ copyText, placement, children }: { placement: 'bottom-left' | 'bottom-right', children: React.ReactNode, copyText: string }) {
+export default function ({ copyText, placement, children }: { placement: PopupPlacement, children: React.ReactNode, copyText: string }) {
   return (
     <Popup
       trigger="hover"
       placement={placement}
-      overlayStyle={(target, popup) => {
-        return {
-          top: '-4px'
-        };
-      }}
+      // overlayStyle={(target, popup) => {
+      //   return {
+      //     top: '-4px'
+      //   };
+      // }}
       content={
         <div className="flex h-6 items-center justify-end">
           <CopyToClipboard

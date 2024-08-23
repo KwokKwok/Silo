@@ -2,7 +2,7 @@ import { useEffect, Fragment } from 'react';
 import AiMessage from '../AiMessage';
 import UserMessage from '../UserMessage';
 import ChatHolder from '../ChatHolder';
-import { Select, Tag, Popup } from 'tdesign-react';
+import { Select, Tag, Popup, Button } from 'tdesign-react';
 import TEXT_MODEL_LIST from '../../utils/models';
 import { useActiveModels } from '../../store/app';
 import { useChatMessages, useSingleChat } from '../../utils/chat';
@@ -17,6 +17,7 @@ export default function ({ model }) {
   const modelOptions = TEXT_MODEL_LIST.filter(
     item => model === item.id || !activeModels.includes(item.id)
   );
+  const modelDetail = TEXT_MODEL_LIST.find(item => item.id === model);
 
   const chat = useSingleChat(model);
 
@@ -64,11 +65,14 @@ export default function ({ model }) {
         <Select
           className="flex-1 w-0"
           borderless
+          prefixIcon={<img src={modelDetail.icon} className="w-4 h-4" />}
           filterable
           filter={(value, option) =>
             option.value.toLowerCase().includes(value.toLowerCase())
           }
           value={model}
+          placeholder=" "
+          // valueDisplay={modelDetail.name}
           onChange={onModelChange}
         >
           {modelOptions.map((option, idx) => (
@@ -80,6 +84,11 @@ export default function ({ model }) {
             >
               <div className="flex flex-col">
                 <div className="flex items-center">
+                  <img
+                    src={option.icon}
+                    className="w-[14px] h-[14px] rounded-sm mr-1"
+                    alt={option.name}
+                  />
                   <span>{option.name}</span>
                   {!option.price ? (
                     // <span className="text-[10px] leading-[12px] ml-2 px-1 rounded-sm bg-blue-950 text-white dark:bg-white dark:text-black">
@@ -126,16 +135,6 @@ export default function ({ model }) {
 
         <i
           className={iconClassName + ' sortable-drag i-mingcute-move-line'}
-          onClick={onStop}
-        ></i>
-        <i
-          className={
-            iconClassName +
-            (chat.loading
-              ? 'i-mingcute-pause-circle-line'
-              : 'i-mingcute-broom-line')
-          }
-          onClick={onStop}
         ></i>
         <Popup
           content={<ChatOptionAdjust model={model} />}
@@ -145,10 +144,51 @@ export default function ({ model }) {
         >
           <i className={iconClassName + 'i-mingcute-settings-2-line '} />
         </Popup>
-        <i
+        <Popup
+          content={
+            <div className="flex flex-col">
+              {[
+                {
+                  icon: 'i-logos-hugging-face-icon',
+                  onClick: () => {
+                    window.open('https://huggingface.co/' + model, '_blank');
+                  },
+                  text: '详情',
+                },
+                {
+                  icon: 'i-mingcute-broom-line',
+                  onClick: () => onStop(true),
+                  text: '清空',
+                },
+                {
+                  icon: 'i-mingcute-close-line',
+                  danger: true,
+                  onClick: onClose,
+                  text: '关闭',
+                },
+              ].map(item => (
+                <Button
+                  key={item.text}
+                  onClick={item.onClick}
+                  theme={item.danger ? 'danger' : 'default'}
+                  variant="text"
+                  icon={<i className={item.icon + ' mr-2'} />}
+                >
+                  {item.text}
+                </Button>
+              ))}
+            </div>
+          }
+          placement="bottom-right"
+          showArrow
+          trigger="click"
+        >
+          <i className={iconClassName + 'i-mingcute-more-2-fill'}></i>
+        </Popup>
+        {/* <i
           className={iconClassName + 'i-mingcute-close-line'}
           onClick={onClose}
-        ></i>
+        ></i> */}
       </div>
 
       {messages.length == 0 ? (

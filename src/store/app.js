@@ -50,7 +50,6 @@ export const useActiveModels = () => {
 
   const addMore = () => {
     const nonActiveModels = TEXT_MODEL_LIST.filter(item => !value.includes(item.id)).map(item => item.id);
-    console.log(nonActiveModels);
 
     // if (value.length === 6) {
     //   message.info('6个还不够吗')

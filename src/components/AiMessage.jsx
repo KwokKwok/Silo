@@ -95,11 +95,14 @@ export default function AiMessage({
   );
 
   // 聊天中如果鼠标悬浮，会造成布局抖动
-  return loading ? (
-    inner
-  ) : (
-    <MessageShortcuts placement="bottom-left" copyText={content}>
-      {inner}
-    </MessageShortcuts>
-  );
+  // return loading ? (
+  //   inner
+  // ) : (
+  //   <MessageShortcuts placement="bottom-left" copyText={content}>
+  //     {inner}
+  //   </MessageShortcuts>
+  // );
+
+  // 暂时移除响应全部复制功能，代码复制保留
+  return inner;
 }

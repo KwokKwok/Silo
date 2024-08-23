@@ -1,4 +1,10 @@
-const textModelOf = (id, price, length) => ({ id, name: id.split('/')[1], series: id.split('/')[0], price, length })
+const modules = import.meta.glob('../assets/img/models/*.*', { eager: true })
+
+const textModelOf = (id, price, length) => {
+  const [series, name] = id.split('/');
+  const icon = modules[Object.keys(modules).find(i => i.includes(series))].default
+  return { id, name, series, price, length, icon }
+}
 
 const TEXT_MODEL_LIST = [
   textModelOf("Qwen/Qwen2-7B-Instruct", 0, 32),

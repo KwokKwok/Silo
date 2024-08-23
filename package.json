@@ -32,6 +32,7 @@
   "devDependencies": {
     "@egoist/tailwindcss-icons": "^1.8.1",
     "@eslint/js": "^9.9.0",
+    "@iconify-json/logos": "^1.1.44",
     "@iconify-json/mingcute": "^1.1.19",
     "@iconify-json/ri": "^1.1.22",
     "@types/react": "^18.3.3",
