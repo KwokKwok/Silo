@@ -54,7 +54,8 @@ jobs:
         run: pnpm install
       - name: Zip extensions
         run: |
-          pnpm run zip:chrome
+          pnpm run zip:chrome && 
+          pnpm run zip:edge
       - name: Submit to stores
         run: |
           pnpm wxt submit \
