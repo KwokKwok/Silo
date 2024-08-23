@@ -4,7 +4,6 @@ import SingleChatPanel from './SingleChatPanel';
 import { useEffect } from 'react';
 import { useMultiRows } from '../utils/use';
 import { useRef } from 'react';
-import { useMemo } from 'react';
 
 export default function () {
   const [multiRows, setRows] = useMultiRows();
@@ -12,13 +11,14 @@ export default function () {
   useEffect(() => {
     const sorts = multiRows.map((line, index) => {
       return new Sortable(document.getElementById(`chat-line-${index}`), {
-        animation: 150,
-        delay: 100,
+        delay: 0,
         scrollSensitivity: 200,
-        delayOnTouchOnly: false,
-        swapThreshold: 0.5,
+        delayOnTouchOnly: true,
+        swapThreshold: 0.2,
+        animation: 300,
+        // invertSwap: true,
         ghostClass: 'sortable-ghost',
-        chosenClass: 'sortable-chosen',
+        chosenClass: 'opacity-60',
         dragClass: 'sortable-drag',
         group: 'multi-chat',
         onEnd: () => {

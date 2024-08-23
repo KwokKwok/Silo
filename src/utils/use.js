@@ -90,64 +90,69 @@ const setRows = (rows) => {
 export function useMultiRows () {
   const { activeModels } = useActiveModels();
   const [isRowMode] = useIsRowMode();
+  const refreshController = useRefresh();
 
-  let newRows = JSON.parse(JSON.stringify(_sortedRows))
-  const oldModels = newRows.reduce((acc, row) => [...acc, ...row], []); // 打平
-  const newModels = [...activeModels]
-  if (!oldModels.length) {
-    // 没有用户排序数据
-    newRows = [newModels];
-  } else {
-    if (oldModels.length !== newModels.length) {
-      // 数量不相等，先处理
-      if (oldModels.length < newModels.length) {
-        // 新增模型，先找出要新增的，然后在比较少的行里添加一个
-        let newModel = newModels.filter(model => !oldModels.includes(model))
-        const smallerRow = newRows[0].length > newRows[1].length ? newRows[1] : newRows[0];
-        smallerRow.push(newModel[0]);
-      } else {
-        // 删除模型
-        const needDelete = oldModels.filter(model => !newModels.includes(model))
-        newRows = newRows.map(row => row.filter(model => !needDelete.includes(model)))
-      }
+  useEffect(() => {
+    let newRows = JSON.parse(JSON.stringify(_sortedRows))
+    const oldModels = newRows.reduce((acc, row) => [...acc, ...row], []); // 打平
+    const newModels = [...activeModels]
+    if (!oldModels.length) {
+      // 没有用户排序数据
+      newRows = [newModels];
     } else {
-      // 检查是不是有改变
-      const removedItemIndex = oldModels.findIndex(model => !newModels.includes(model))
-      if (removedItemIndex >= 0) {
-        const addedItem = newModels.find(item => !oldModels.includes(item))
-        const row = newRows[0].includes(oldModels[removedItemIndex]) ? newRows[0] : newRows[1];
-        const rowIndex = row.indexOf(oldModels[removedItemIndex]);
-        row.splice(rowIndex, 1, addedItem);
+      if (oldModels.length !== newModels.length) {
+        // 数量不相等，先处理
+        if (oldModels.length < newModels.length) {
+          // 新增模型，先找出要新增的，然后在比较少的行里添加一个
+          let newModel = newModels.filter(model => !oldModels.includes(model))
+          const smallerRow = newRows[0].length > newRows[1].length ? newRows[1] : newRows[0];
+          smallerRow.push(newModel[0]);
+        } else {
+          // 删除模型
+          const needDelete = oldModels.filter(model => !newModels.includes(model))
+          newRows = newRows.map(row => row.filter(model => !needDelete.includes(model)))
+        }
+      } else {
+        // 检查是不是有改变
+        const removedItemIndex = oldModels.findIndex(model => !newModels.includes(model))
+        if (removedItemIndex >= 0) {
+          const addedItem = newModels.find(item => !oldModels.includes(item))
+          const row = newRows[0].includes(oldModels[removedItemIndex]) ? newRows[0] : newRows[1];
+          const rowIndex = row.indexOf(oldModels[removedItemIndex]);
+          row.splice(rowIndex, 1, addedItem);
+        }
       }
     }
-  }
 
-  newRows = newRows.filter(row => row.length);
+    newRows = newRows.filter(row => row.length);
 
-  if (isRowMode && newRows.length === 1) {
-    // 多行模式，但现在只有一行，将一行分成两行
-    const row = newRows[0];
-    const result = [[], []];
-    for (let i = 0; i < row.length; i += 2) {
-      result[0].push(row[i]);
-      i < row.length && result[1].push(row[i + 1]);
-    }
-    newRows = result;
-  } else if (!isRowMode && _sortedRows.length === 2) {
-    // 单行模式，但现在有两行，将两行合并为一行
-    const [smallerRow, largerRow] = [...newRows].sort((a, b) => a.length - b.length);
-    const ratio = Math.ceil(largerRow.length / smallerRow.length);
-    const result = []
-    for (let i = 0; i < smallerRow.length; i++) {
-      result.push(smallerRow[i]);
-      for (let j = 0; j < ratio; j++) {
-        const jIndex = i * ratio + j;
-        jIndex < largerRow.length && result.push(largerRow[jIndex]);
+    if (isRowMode && newRows.length === 1) {
+      // 多行模式，但现在只有一行，将一行分成两行
+      const row = newRows[0];
+      const result = [[], []];
+      for (let i = 0; i < row.length; i += 2) {
+        result[0].push(row[i]);
+        i < row.length && result[1].push(row[i + 1]);
       }
+      newRows = result;
+    } else if (!isRowMode && _sortedRows.length === 2) {
+      // 单行模式，但现在有两行，将两行合并为一行
+      const [smallerRow, largerRow] = [...newRows].sort((a, b) => a.length - b.length);
+      const ratio = Math.ceil(largerRow.length / smallerRow.length);
+      const result = []
+      for (let i = 0; i < smallerRow.length; i++) {
+        result.push(smallerRow[i]);
+        for (let j = 0; j < ratio; j++) {
+          const jIndex = i * ratio + j;
+          jIndex < largerRow.length && result.push(largerRow[jIndex]);
+        }
+      }
+      newRows = [result];
     }
-    newRows = [result];
-  }
 
-  setRows(newRows);
+    setRows(newRows);
+    refreshController.refresh();
+  }, [activeModels, isRowMode])
+
   return [_sortedRows, setRows];
 }
