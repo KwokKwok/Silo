@@ -31,6 +31,7 @@ export const useSecretKey = () => {
 const activeModels = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, [
   'Qwen/Qwen2-7B-Instruct',
   '01-ai/Yi-1.5-9B-Chat-16K',
+  'THUDM/glm-4-9b-chat'
 ]))
 
 export const useActiveModels = () => {

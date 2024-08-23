@@ -1,8 +1,18 @@
 const modules = import.meta.glob('../assets/img/models/*.*', { eager: true })
 
+const _iconCache = {};
+
+export function getModelIcon (model) {
+  if (!_iconCache[model]) {
+    const [series] = model.split('/');
+    _iconCache[model] = modules[Object.keys(modules).find(i => i.includes(series))].default
+  }
+  return _iconCache[model];
+}
+
 const textModelOf = (id, price, length) => {
   const [series, name] = id.split('/');
-  const icon = modules[Object.keys(modules).find(i => i.includes(series))].default
+  const icon = getModelIcon(id);
   return { id, name, series, price, length, icon }
 }
 

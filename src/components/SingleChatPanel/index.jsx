@@ -3,7 +3,7 @@ import AiMessage from '../AiMessage';
 import UserMessage from '../UserMessage';
 import ChatHolder from '../ChatHolder';
 import { Select, Tag, Popup, Button } from 'tdesign-react';
-import TEXT_MODEL_LIST from '../../utils/models';
+import TEXT_MODEL_LIST, { getModelIcon } from '../../utils/models';
 import { useActiveModels } from '../../store/app';
 import { useChatMessages, useSingleChat } from '../../utils/chat';
 import ChatOptionAdjust from '../ChatOptionAdjust';
@@ -65,14 +65,13 @@ export default function ({ model }) {
         <Select
           className="flex-1 w-0"
           borderless
-          prefixIcon={<img src={modelDetail.icon} className="w-4 h-4" />}
+          prefixIcon={<img src={getModelIcon(model)} className="w-4 h-4" />}
           filterable
           filter={(value, option) =>
             option.value.toLowerCase().includes(value.toLowerCase())
           }
           value={model}
           placeholder=" "
-          // valueDisplay={modelDetail.name}
           onChange={onModelChange}
         >
           {modelOptions.map((option, idx) => (
