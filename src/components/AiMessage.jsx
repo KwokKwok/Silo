@@ -34,10 +34,14 @@ export default function AiMessage({
   }
 
   const inner = (
-    <div className="flex-shrink-0 max-w-full mb-2 px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md">
+    <div className="flex-shrink-0 max-w-full mb-2 leading-6 px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md">
       {showModelName && (
         <span className="text-xs mb-1 flex items-center text-gray-500 dark:text-gray-400">
-          <img src={getModelIcon(model)} alt="" className="w-3 h-3 mr-1" />{' '}
+          <img
+            src={getModelIcon(model)}
+            alt=""
+            className="w-3 h-3 mr-1 rounded-sm"
+          />{' '}
           {model}
         </span>
       )}

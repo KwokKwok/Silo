@@ -82,7 +82,7 @@ export default function ({ onStop, onSubmit, loading }) {
           onKeyDown={onKeyDown}
           ref={inputRef}
           disabled={loading}
-          className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none px-10 leading-6"
+          className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none px-10 text-base leading-6"
         />
         <i
           className={
