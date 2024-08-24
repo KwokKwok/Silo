@@ -89,10 +89,15 @@ const setRows = (rows) => {
 }
 export function useMultiRows () {
   const { activeModels } = useActiveModels();
-  const [isRowMode] = useIsRowMode();
+  const [isRowMode, setIsRowMode] = useIsRowMode();
   const refreshController = useRefresh();
 
   useEffect(() => {
+    if (activeModels.length === 1 && isRowMode) {
+      setIsRowMode(false);
+      _sortedRows = [[activeModels[0]]]
+      return;
+    }
     let newRows = JSON.parse(JSON.stringify(_sortedRows))
     const oldModels = newRows.reduce((acc, row) => [...acc, ...row], []); // 打平
     const newModels = [...activeModels]
