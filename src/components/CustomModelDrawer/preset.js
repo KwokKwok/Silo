@@ -2,6 +2,7 @@ export const CUSTOM_MODEL_PRESET = [
   {
     name: '[Preset] 爱笑的小孩',
     icon: 'https://chat.kwok.ink/logo.svg',
+    id: 'preset-ai-laughing-baby',
     ids: 'Silo/Laughing-Baby-16K,Silo/Laughing-Baby-32K',
     length: '2048',
     price: 0,
@@ -11,6 +12,7 @@ export const CUSTOM_MODEL_PRESET = [
   },
   {
     name: '[Preset] Google Gemini',
+    id: 'preset-gemini',
     icon: '',
     ids: 'google/gemini-1.5-flash,google/gemini-1.5-pro',
     length: '',

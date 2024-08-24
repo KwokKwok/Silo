@@ -18,7 +18,13 @@ export default function ({ model }) {
   const modelOptions = allTextModels.filter(
     item => model === item.id || !activeModels.includes(item.id)
   );
-  const modelDetail = allTextModels.find(item => item.id === model);
+  const modelDetail = allTextModels.find(item => item.id === model) || {};
+  useEffect(() => {
+    if (!modelDetail.id) {
+      // 模型有可能不再提供了，或者自定义模型被删除了
+      removeActiveModel(model);
+    }
+  }, [model]);
   const chat = useSingleChat(model);
 
   const onClose = () => {
@@ -193,6 +199,7 @@ export default function ({ model }) {
                 {
                   icon: 'i-mingcute-close-line',
                   danger: true,
+                  disabled: activeModels.length === 1,
                   onClick: onClose,
                   text: '关闭',
                 },
@@ -200,6 +207,7 @@ export default function ({ model }) {
                 <Button
                   key={item.text}
                   onClick={item.onClick}
+                  disabled={item.disabled}
                   theme={item.danger ? 'danger' : 'default'}
                   variant="text"
                   icon={<i className={item.icon + ' mr-2'} />}

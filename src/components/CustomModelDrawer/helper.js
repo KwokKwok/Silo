@@ -1,20 +1,26 @@
+import { generateId } from "../../utils/helpers";
 import { getCustomModels, setCustomModels } from "../../utils/models";
 
-export function saveCustomModel (model) {
-  const models = model.ids.split(',').map(id => ({ ...model, ids: void 0, id }))
-  const oldModels = getCustomModels().raw;
+export function removeCustomModel (id) {
+  const oldModels = [...getCustomModels().raw];
+  const index = oldModels.findIndex(item => item.id === id);
+  oldModels.splice(index, 1);
+  // 保存后直接刷新页面
+  setCustomModels(oldModels)
+  location.reload()
+}
 
-  const result = [];
-  oldModels.forEach(item => {
-    const updatedModel = models.find(m => m.id === item.id);
-    if (updatedModel) {
-      result.push(updatedModel);
-      models.splice(models.indexOf(updatedModel), 1);
-    } else {
-      result.push(item);
-    }
-  })
-  models.forEach(item => result.push(item))
-  setCustomModels(result)
+export function saveCustomModel (model) {
+  const oldModels = [...getCustomModels().raw];
+  if (model.id && !model.id.startsWith('preset')) {
+    const index = oldModels.findIndex(item => item.id === model.id);
+    oldModels.splice(index, 1, model);
+  } else {
+    model.id = generateId();
+    oldModels.push(model);
+  }
+
+  // 保存后直接刷新页面
+  setCustomModels(oldModels)
   location.reload()
 }

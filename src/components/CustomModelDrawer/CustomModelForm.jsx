@@ -4,8 +4,15 @@ import { CUSTOM_MODEL_PRESET } from './preset';
 import { InputNumber } from 'tdesign-react';
 import { forwardRef } from 'react';
 import { useImperativeHandle } from 'react';
-import { saveCustomModel } from './helper';
+import { removeCustomModel, saveCustomModel } from './helper';
+import { getCustomModels } from '../../utils/models';
+import { useState } from 'react';
+import { Button } from 'tdesign-react';
+import { Alert } from 'tdesign-react';
 const { FormItem } = Form;
+
+const ID_REGEX = /^[a-zA-Z0-9_\-@\.]+\/[a-zA-Z0-9_\-@\.]+$/;
+
 export default forwardRef((props, ref) => {
   const [form] = Form.useForm();
   useImperativeHandle(ref, () => ({
@@ -13,28 +20,49 @@ export default forwardRef((props, ref) => {
       const success = await form.validate();
       if (success !== true) return Promise.reject();
       const { select, ...data } = await form.getFieldsValue(true);
-      console.log(data);
-      saveCustomModel(data);
+      const id = selectedData.id.startsWith('preset') ? '' : selectedData.id;
+      saveCustomModel({ ...selectedData, ...data, id });
       form.clearValidate();
       form.reset();
     },
   }));
-  const options = CUSTOM_MODEL_PRESET;
+  const options = [...getCustomModels().raw, ...CUSTOM_MODEL_PRESET];
+  const [selectedData, setSelected] = useState(null);
+
   const onSelectModel = value => {
     if (!value) {
       form.reset();
       return;
     }
-    const selected = { ...options.find(item => item.ids === value) };
+    const selected = { ...options.find(item => item.id === value) };
     if (selected.isPreset) {
       selected.name = selected.name.replace('[Preset] ', '');
     }
+    setSelected(selected);
     form.setFieldsValue(selected);
   };
 
   const rules = {
     // name: [{ required: true, message: '必填', type: 'error' }],
-    ids: [{ required: true, message: '必填', type: 'warning' }],
+    ids: [
+      { required: true, message: '必填', type: 'warning' },
+      {
+        validator: value => {
+          const ids = value.split(',');
+          const isValid = ids.every(item => ID_REGEX.test(item));
+          return isValid
+            ? Promise.resolve({
+                result: true,
+              })
+            : Promise.resolve({
+                result: false,
+                message:
+                  'ID格式错误，请检查是否符合: {manufacturer}/{model-name}，多个需用英文逗号隔开',
+                type: 'warning',
+              });
+        },
+      },
+    ],
     resolveFn: [{ required: true, message: '必填', type: 'error' }],
   };
   return (
@@ -48,14 +76,32 @@ export default forwardRef((props, ref) => {
         resetType="empty"
         showErrorMessage
       >
-        <FormItem label="选择已有" name="select">
+        {/* <Alert
+          theme="info"
+          close
+          className="mb-4"
+          message=""
+        /> */}
+        <div className="mb-4 opacity-60 flex items-center">
+          <span>自定义模型调整后，会自动重载页面，请确保页面数据无需处理</span>
+        </div>
+        <FormItem label="选择" name="select">
           <Select
             clearable
             placeholder="选择已添加的模型，或是选择预设导入"
-            keys={{ label: 'name', value: 'ids' }}
+            keys={{ label: 'name', value: 'id' }}
             options={options}
             onChange={onSelectModel}
           ></Select>
+          <Button
+            className="ml-2"
+            disabled={!selectedData || selectedData?.id.startsWith('preset')}
+            variant="outline"
+            theme="danger"
+            onClick={() => removeCustomModel(selectedData.id)}
+          >
+            移除选中
+          </Button>
         </FormItem>
         <FormItem label="模型名字" name="name">
           <Input placeholder="方便查看用" />

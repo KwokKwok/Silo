@@ -11,22 +11,21 @@ export function getCustomModels () {
   if (!customModels) {
     customModels = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, [])
     normalizedCustomModel = customModels.map(item => {
-      const icon = item.icon || getModelIcon(item.id);
-      return {
-        ...item,
-        resolveFn: new Function(`return ${item.resolveFn}`)(),
-        series: item.id.split('/')?.[0] || '',
-        icon,
-        isCustom: true
-      }
-    })
+      const resolveFn = new Function(`return ${item.resolveFn}`)();
+      // 存的是系列模型，需要拆分
+      return item.ids.split(',').map(id => {
+        const icon = item.icon || getModelIcon(id);
+        const [series, name] = id.split('/');
+        return ({ ...item, ids: void 0, id, series, name, resolveFn, icon, isCustom: true })
+      })
+    }).reduce((acc, cur) => [...acc, ...cur], []);
   }
   return { raw: customModels, normalized: normalizedCustomModel };
 }
 
 export function setCustomModels (models) {
   setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, models);
-  customModels = getCustomModels();
+  getCustomModels();
 }
 
 export function getModelIcon (model) {

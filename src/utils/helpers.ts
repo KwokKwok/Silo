@@ -18,3 +18,10 @@ export function setLocalStorage(key: LOCAL_STORAGE_KEY, value: string) {
 export function getLocalStorage(key: LOCAL_STORAGE_KEY, defaultValue = '') {
   return localStorage.getItem(key) || defaultValue;
 }
+
+/**
+ * 生成唯一id
+ */
+export function generateId() {
+  return `${Date.now()}-${Math.random().toString(36).substring(2)}`;
+}
