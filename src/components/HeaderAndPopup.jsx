@@ -7,11 +7,14 @@ import { fetchUserInfo } from '../services/user';
 import { useDarkMode, useIsMobile } from '../utils/use';
 import { message } from 'tdesign-react';
 import { notification } from 'tdesign-react';
+import CustomModelDrawer from './CustomModelDrawer';
+import { useRef } from 'react';
 
 export default function () {
   const [showPopup, setShowPopup] = useState();
   const [secretKey, setSecretKey] = useSecretKey();
   const [isDark, setDarkMode] = useDarkMode();
+  const customModelRef = useRef();
   const { data, error, runAsync } = useRequest(fetchUserInfo, {
     pollingErrorRetryCount: 60 * 1000,
     debounceWait: 300,
@@ -37,7 +40,7 @@ export default function () {
   useEffect(() => {
     setShowPopup(error);
   }, [error]);
-  const { addMoreModel } = useActiveModels();
+  const { addMoreModel, activeModels } = useActiveModels();
   return (
     <>
       <div className="h-12 w-full filter backdrop-blur text-xl flex items-center px-4">
@@ -56,7 +59,7 @@ export default function () {
             </span>
           </>
         )}
-        {!isMobile && (
+        {!isMobile && activeModels.length > 1 && (
           <>
             <i
               title="切换行模式"
@@ -68,16 +71,22 @@ export default function () {
                   : 'i-mingcute-rows-3-line')
               }
             ></i>
-            <i
-              className="i-ri-apps-2-add-line cursor-pointer mr-4"
-              onClick={addMoreModel}
-            ></i>
           </>
         )}
+        <i
+          className="i-ri-apps-2-add-line cursor-pointer mr-4"
+          onClick={addMoreModel}
+        ></i>
         <i
           className="i-ri-key-line cursor-pointer mr-4"
           onClick={() => setShowPopup(true)}
         ></i>
+        {!isMobile && location.href.endsWith('dev') && (
+          <i
+            className="i-mingcute-plugin-2-fill cursor-pointer mr-4"
+            onClick={() => customModelRef.current.open()}
+          ></i>
+        )}
         <i
           className={
             (isDark ? 'i-ri-sun-line' : 'i-ri-moon-line') +
@@ -171,6 +180,7 @@ export default function () {
           </div>
         </div>
       )}
+      <CustomModelDrawer ref={customModelRef} />
     </>
   );
 }

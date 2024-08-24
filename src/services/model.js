@@ -1,4 +1,5 @@
 import { getSecretKey } from '../store/app';
+import { getAllTextModels } from '../utils/models';
 import { getChatRequestOptions } from '../utils/options';
 
 function createRequestOptions (model, messages, options = {}) {
@@ -24,9 +25,18 @@ function createRequestOptions (model, messages, options = {}) {
     })
   }
 }
+
+const customResolveFns = getAllTextModels().filter(item => item.resolveFn).reduce((acc, item) => {
+  acc[item.id] = item.resolveFn
+  return acc
+}, {})
+
 export function streamChat (model, messages, controller, onChunk, onEnd, onError) {
   const modelChatOptions = getChatRequestOptions(model)
-
+  // 如果有自定义解析，则使用
+  if (customResolveFns[model]) {
+    return customResolveFns[model](model, messages, modelChatOptions, controller, onChunk, onEnd, onError)
+  }
   fetch('https://api.siliconflow.cn/v1/chat/completions', { ...createRequestOptions(model, messages, modelChatOptions), signal: controller.current.signal })
     .then(async response => {
       if (!response.body) {

@@ -1,5 +1,5 @@
 import { atom, useAtom } from 'jotai'
-import TEXT_MODEL_LIST from '../utils/models';
+import { getAllTextModels } from '../utils/models';
 import { message } from 'tdesign-react';
 import { getJsonDataFromLocalStorage, getLocalStorage, setJsonDataToLocalStorage, setLocalStorage } from '../utils/helpers';
 import { LOCAL_STORAGE_KEY } from '../utils/types';
@@ -27,7 +27,6 @@ export const useSecretKey = () => {
   return [value, setSecretKey]
 }
 
-
 const activeModels = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, [
   'Qwen/Qwen2-7B-Instruct',
   '01-ai/Yi-1.5-9B-Chat-16K',
@@ -50,7 +49,7 @@ export const useActiveModels = () => {
   }
 
   const addMore = () => {
-    const nonActiveModels = TEXT_MODEL_LIST.filter(item => !value.includes(item.id)).map(item => item.id);
+    const nonActiveModels = getAllTextModels().filter(item => !value.includes(item.id)).map(item => item.id);
 
     // if (value.length === 6) {
     //   message.info('6个还不够吗')

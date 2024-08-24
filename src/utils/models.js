@@ -1,11 +1,41 @@
+import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "./helpers";
+import { LOCAL_STORAGE_KEY } from "./types";
+
 const modules = import.meta.glob('../assets/img/models/*.*', { eager: true })
 
 const _iconCache = {};
 
+let customModels = null;
+let normalizedCustomModel = null;
+export function getCustomModels () {
+  if (!customModels) {
+    customModels = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, [])
+    normalizedCustomModel = customModels.map(item => {
+      const icon = item.icon || getModelIcon(item.id);
+      return {
+        ...item,
+        resolveFn: new Function(`return ${item.resolveFn}`)(),
+        series: item.id.split('/')?.[0] || '',
+        icon,
+        isCustom: true
+      }
+    })
+  }
+  return { raw: customModels, normalized: normalizedCustomModel };
+}
+
+export function setCustomModels (models) {
+  setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, models);
+  customModels = getCustomModels();
+}
+
 export function getModelIcon (model) {
   if (!_iconCache[model]) {
     const [series] = model.split('/');
-    _iconCache[model] = modules[Object.keys(modules).find(i => i.includes(series))].default
+    _iconCache[model] = modules[Object.keys(modules).find(i => i.includes(series))]?.default
+    if (!_iconCache[model]) {
+      _iconCache[model] = 'https://chat.kwok.ink/logo.svg'
+    }
   }
   return _iconCache[model];
 }
@@ -16,7 +46,7 @@ const textModelOf = (id, price, length) => {
   return { id, name, series, price, length, icon }
 }
 
-const TEXT_MODEL_LIST = [
+export const SILICON_MODELS = [
   textModelOf("Qwen/Qwen2-7B-Instruct", 0, 32),
   textModelOf("Qwen/Qwen2-1.5B-Instruct", 0, 32),
   textModelOf("Qwen/Qwen1.5-7B-Chat", 0, 32),
@@ -47,4 +77,9 @@ const TEXT_MODEL_LIST = [
   textModelOf("google/gemma-2-27b-it", 1.26, 8),
 ]
 
-export default TEXT_MODEL_LIST
+export function getAllTextModels () {
+  return [
+    ...getCustomModels().normalized,
+    ...SILICON_MODELS
+  ]
+}

@@ -3,7 +3,7 @@ import AiMessage from '../AiMessage';
 import UserMessage from '../UserMessage';
 import ChatHolder from '../ChatHolder';
 import { Select, Tag, Popup, Button } from 'tdesign-react';
-import TEXT_MODEL_LIST, { getModelIcon } from '../../utils/models';
+import { getAllTextModels, getModelIcon } from '../../utils/models';
 import { useActiveModels } from '../../store/app';
 import { useChatMessages, useSingleChat } from '../../utils/chat';
 import ChatOptionAdjust from '../ChatOptionAdjust';
@@ -14,11 +14,11 @@ export default function ({ model }) {
   const messages = useChatMessages(model);
   const { activeModels, setActiveModels, removeActiveModel } =
     useActiveModels();
-  const modelOptions = TEXT_MODEL_LIST.filter(
+  const allTextModels = getAllTextModels();
+  const modelOptions = allTextModels.filter(
     item => model === item.id || !activeModels.includes(item.id)
   );
-  const modelDetail = TEXT_MODEL_LIST.find(item => item.id === model);
-
+  const modelDetail = allTextModels.find(item => item.id === model);
   const chat = useSingleChat(model);
 
   const onClose = () => {
@@ -105,19 +105,33 @@ export default function ({ model }) {
                   ) : (
                     <></>
                   )}
+                  {!!option.isCustom && (
+                    <Tag
+                      className="scale-[0.8]"
+                      size="small"
+                      theme="primary"
+                      variant="light-outline"
+                    >
+                      Custom
+                    </Tag>
+                  )}
                 </div>
                 <div className="flex items-center">
-                  <Tag variant="outline" size="small" theme="primary">
-                    {option.series}
-                  </Tag>
-                  <Tag
-                    variant="outline"
-                    size="small"
-                    theme="primary"
-                    className="ml-2"
-                  >
-                    {option.length}K
-                  </Tag>
+                  {!!option.series && (
+                    <Tag variant="outline" size="small" theme="primary">
+                      {option.series}
+                    </Tag>
+                  )}
+                  {!!option.length && (
+                    <Tag
+                      variant="outline"
+                      size="small"
+                      theme="primary"
+                      className="ml-2"
+                    >
+                      {option.length}K
+                    </Tag>
+                  )}
                   {!!option.price && (
                     <Tag
                       className="ml-2"
@@ -149,13 +163,28 @@ export default function ({ model }) {
           content={
             <div className="flex flex-col">
               {[
-                {
-                  icon: 'i-logos-hugging-face-icon',
-                  onClick: () => {
-                    window.open('https://huggingface.co/' + model, '_blank');
-                  },
-                  text: '详情',
-                },
+                ...(!modelDetail?.isCustom || modelDetail?.link
+                  ? [
+                      {
+                        icon:
+                          modelDetail.link &&
+                          modelDetail.link.startsWith('https://huggingface.co/')
+                            ? 'i-logos-hugging-face-icon'
+                            : 'i-mingcute-external-link-fill',
+                        onClick: () => {
+                          if (modelDetail.link) {
+                            window.open(modelDetail.link, '_blank');
+                            return;
+                          }
+                          window.open(
+                            'https://huggingface.co/' + model,
+                            '_blank'
+                          );
+                        },
+                        text: '详情',
+                      },
+                    ]
+                  : []),
                 {
                   icon: 'i-mingcute-broom-line',
                   onClick: () => onStop(true),

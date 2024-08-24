@@ -48,4 +48,8 @@ export enum LOCAL_STORAGE_KEY {
    * 用户重新拖拽
    */
   USER_SORT_SETTINGS = 'user_sort_settings',
+  /**
+   * 用户自定义模型
+   */
+  USER_CUSTOM_MODELS = 'user_custom_models',
 }
