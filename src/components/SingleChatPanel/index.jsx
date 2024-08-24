@@ -65,7 +65,9 @@ export default function ({ model }) {
         <Select
           className="flex-1 w-0"
           borderless
-          prefixIcon={<img src={getModelIcon(model)} className="w-4 h-4" />}
+          prefixIcon={
+            <img src={getModelIcon(model)} className="w-4 h-4 rounded-sm" />
+          }
           filterable
           filter={(value, option) =>
             option.value.toLowerCase().includes(value.toLowerCase())
