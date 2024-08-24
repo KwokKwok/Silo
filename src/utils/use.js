@@ -105,7 +105,7 @@ export function useMultiRows () {
         if (oldModels.length < newModels.length) {
           // 新增模型，先找出要新增的，然后在比较少的行里添加一个
           let newModel = newModels.filter(model => !oldModels.includes(model))
-          const smallerRow = newRows[0].length > newRows[1].length ? newRows[1] : newRows[0];
+          const smallerRow = newRows.length == 1 ? newRows[0] : (newRows[0].length > newRows[1].length ? newRows[1] : newRows[0]);
           smallerRow.push(newModel[0]);
         } else {
           // 删除模型
@@ -132,7 +132,8 @@ export function useMultiRows () {
       const result = [[], []];
       for (let i = 0; i < row.length; i += 2) {
         result[0].push(row[i]);
-        i < row.length && result[1].push(row[i + 1]);
+        const index2 = i + 1;
+        index2 < row.length && result[1].push(row[index2]);
       }
       newRows = result;
     } else if (!isRowMode && _sortedRows.length === 2) {

@@ -135,7 +135,7 @@ export default function () {
                   target="_blank"
                   href="https://cloud.siliconflow.cn?referrer=clzs72zzb02jqmp5vn9s5tj15"
                 >
-                  注册 SiliconCloud（带 aff）
+                  注册 SiliconCloud（aff）
                 </a>
                 即送 14 元额度可用于体验付费模型
                 {/* <br />
