@@ -1,6 +1,6 @@
 [English Version](https://github.com/KwokKwok/Silo/blob/main/README_EN.md)
 
-<p align="center"><a href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width: 10vw" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
+<p align="center"><a href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width: 20vw;max-width: 200px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
 <h1 align="center">Silo - SiliconCloud API Playground</h1>
 
 <p align="center"><a rel="noreferrer noopener" target="_blank" href="https://chromewebstore.google.com/detail/nakohnjaacfmjiodegibhnepfmioejln"><img alt="Chrome Web Store" src="https://img.shields.io/badge/安装 Chrome 扩展-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a> 
@@ -8,7 +8,7 @@
 <a target="_blank" rel="noreferrer noopener" href="https://vercel.com/new/clone?repository-url=https://github.com/KwokKwok/SiloChat.git&project-name=silo-chat&repository-name=SiloChat"><img alt="Deploy" src="https://img.shields.io/badge/部署到 Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a></p>
 
 <br/>
-<p align="center">Silo 是一个基于  <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a>  API 的应用，目前已支持多个大模型同时对话（比如 Vercel AI Playground、ChatHub、ChatALL等），响应极快。支持模型参数调整、余额自动刷新等功能。</p>
+<p align="center">Silo 是一个基于  <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a>  API 的应用，目前已支持多个大模型同时对话（类似 Vercel AI Playground、ChatHub、ChatALL等），响应极快。支持模型参数调整、余额自动刷新等功能。</p>
 <br/>
 
 ## 特点

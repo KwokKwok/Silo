@@ -1,6 +1,6 @@
 [Chinese Version](https://github.com/KwokKwok/Silo)
 
-<p align="center"><a target="_blank" href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width: 10vw" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
+<p align="center"><a target="_blank" href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width: 20vw;max-width: 200px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
 <h1 align="center">Silo - SiliconCloud API Playground</h1>
 
 <p align="center"><a target="_blank" rel="noreferrer noopener" href="https://chromewebstore.google.com/detail/nakohnjaacfmjiodegibhnepfmioejln"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Chrome Web STORE-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a> 
@@ -8,7 +8,7 @@
 <a target="_blank" rel="noreferrer noopener" href="https://vercel.com/new/clone?repository-url=https://github.com/KwokKwok/SiloChat.git&project-name=silo-chat&repository-name=SiloChat"><img alt="Deploy" src="https://img.shields.io/badge/Deploy To Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a></p>
 
 <br/>
-<p align="center">Silo is an application based on the <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a> API, which currently supports multiple large models for simultaneous dialogue(Such as Vercel AI Playground, ChatHub, ChatALL, etc.), with extremely fast response times. It supports model parameter adjustments and automatic balance refresh functions. </p>
+<p align="center">Silo is an application based on the <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a> API, which currently supports multiple large models for simultaneous dialogue(Just like Vercel AI Playground, ChatHub, ChatALL, etc.), with extremely fast response times. It supports model parameter adjustments and automatic balance refresh functions. </p>
 <br/>
 
 ## Features
