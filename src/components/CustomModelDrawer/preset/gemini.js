@@ -1,28 +1,3 @@
-export const CUSTOM_MODEL_PRESET = [
-  {
-    name: '[Preset] 爱笑的小孩',
-    icon: 'https://chat.kwok.ink/logo.svg',
-    id: 'preset-ai-laughing-baby',
-    ids: 'Silo/Laughing-Baby-16K,Silo/Laughing-Baby-32K',
-    length: '2048',
-    price: 0,
-    resolveFn: laughingBabyChat.toString(),
-    isPreset: true,
-    link: 'https://chat.kwok.ink/'
-  },
-  {
-    name: '[Preset] Google Gemini',
-    id: 'preset-gemini',
-    icon: '',
-    ids: 'google/gemini-1.5-flash,google/gemini-1.5-pro',
-    length: '',
-    price: 0,
-    resolveFn: geminiChat.toString(),
-    isPreset: true,
-    link: 'https://chat.kwok.ink/'
-  }
-];
-
 async function geminiChat (modelId, messages, options, controller, onChunk, onEnd, onError) {
   // 请填写 API_KEY ！！！
   const API_KEY = ''
@@ -97,20 +72,4 @@ async function geminiChat (modelId, messages, options, controller, onChunk, onEn
       console.log(err);
       onError(err);
     })
-}
-
-
-async function laughingBabyChat (modelId, messages, options, controller, onChunk, onEnd, onError) {
-  const laughingTimes = parseInt(modelId.replace('Silo/Laughing-Baby-', ''));
-  if (Math.random() > 0.8) {
-    onError(new Error('宝宝去别的地方玩了'))
-    return;
-  }
-  const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-  let count = 0;
-  while (count++ < laughingTimes) {
-    await wait(Math.random() * 32);
-    onChunk('😁😁😁');
-  }
-  onEnd();
 }

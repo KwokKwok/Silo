@@ -1,14 +1,19 @@
 import { useRequest } from 'ahooks';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useActiveModels, useIsRowMode, useSecretKey } from '../store/app';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/user';
 import { useDarkMode, useIsMobile } from '../utils/use';
-import { message } from 'tdesign-react';
-import { notification } from 'tdesign-react';
 import CustomModelDrawer from './CustomModelDrawer';
-import { useRef } from 'react';
+import {
+  TooltipLite,
+  Popup,
+  message,
+  notification,
+  Button,
+} from 'tdesign-react';
+import { Dropdown } from 'tdesign-react';
+import CopyToClipboard from 'react-copy-to-clipboard';
 
 export default function () {
   const [showPopup, setShowPopup] = useState();
@@ -27,6 +32,7 @@ export default function () {
         content:
           '体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥',
         closeBtn: true,
+        duration: 1000 * 6,
         placement: 'bottom-right',
         offset: [-20, -20],
       });
@@ -41,6 +47,7 @@ export default function () {
     setShowPopup(error);
   }, [error]);
   const { addMoreModel, activeModels } = useActiveModels();
+
   return (
     <>
       <div className="h-12 w-full filter backdrop-blur text-xl flex items-center px-4">
@@ -48,7 +55,7 @@ export default function () {
         {!!data && (
           <>
             <i
-              className="i-ri-money-dollar-circle-line ml-4 cursor-pointer"
+              className="i-ri-money-dollar-circle-line cursor-pointer"
               onClick={() => runAsync()}
             ></i>
             <span
@@ -59,34 +66,13 @@ export default function () {
             </span>
           </>
         )}
-        {!isMobile && activeModels.length > 1 && (
-          <>
-            <i
-              title="切换行模式"
-              onClick={() => setIsRowMode(!isRowMode)}
-              className={
-                'cursor-pointer mr-4 ' +
-                (isRowMode
-                  ? 'i-mingcute-columns-3-line'
-                  : 'i-mingcute-rows-3-line')
-              }
-            ></i>
-          </>
-        )}
-        <i
-          className="i-ri-apps-2-add-line cursor-pointer mr-4"
-          onClick={addMoreModel}
-        ></i>
-        <i
-          className="i-ri-key-line cursor-pointer mr-4"
-          onClick={() => setShowPopup(true)}
-        ></i>
-        {!isMobile && location.href.endsWith('dev') && (
+
+        <TooltipLite placement="bottom" content="新增模型">
           <i
-            className="i-mingcute-plugin-2-fill cursor-pointer mr-4"
-            onClick={() => customModelRef.current.open()}
+            className="block i-ri-apps-2-add-line cursor-pointer mr-4"
+            onClick={addMoreModel}
           ></i>
-        )}
+        </TooltipLite>
         <i
           className={
             (isDark ? 'i-ri-sun-line' : 'i-ri-moon-line') +
@@ -94,12 +80,104 @@ export default function () {
           }
           onClick={() => setDarkMode(!isDark)}
         ></i>
-        <i
-          className="i-ri-github-fill cursor-pointer"
-          onClick={() =>
-            window.open('https://github.com/KwokKwok/SiloChat', '_blank')
-          }
-        ></i>
+        <Dropdown
+          maxColumnWidth="160"
+          trigger="click"
+          options={[
+            {
+              icon: isRowMode
+                ? 'i-mingcute-columns-3-line'
+                : 'i-mingcute-rows-3-line',
+              onClick: () => setIsRowMode(!isRowMode),
+              hidden: isMobile,
+              disabled: activeModels.length <= 1,
+              title: isRowMode ? '多列模式' : '双行模式',
+            },
+            {
+              icon: 'i-ri-key-line',
+              title: '修改密钥',
+              onClick: () => setShowPopup(true),
+            },
+            {
+              icon: 'i-mingcute-plugin-2-fill',
+              onClick: () => customModelRef.current.open(),
+              hidden: isMobile,
+              title: '自定义模型',
+            },
+            {
+              icon: 'i-ri-github-fill',
+              onClick: () => {
+                window.open('https://github.com/KwokKwok/Silo', '_blank');
+              },
+              title: 'GitHub',
+            },
+            {
+              icon: 'i-mingcute-wechat-fill',
+              onClick: () => {
+                notification.info({
+                  placement: 'bottom-right',
+                  offset: [-20, -20],
+                  title: '联系开发者',
+                  content: '您可以通过邮箱或是微信来联系到开发者',
+                  closeBtn: true,
+                  duration: 0,
+                  footer: (
+                    <>
+                      <a href="mailto:kwokglory@outlook.com?subject=Silo反馈&body=请说明问题，以便开发者及时处理">
+                        <Button className="ml-2" theme="default" variant="text">
+                          发邮件
+                        </Button>
+                      </a>
+                      <CopyToClipboard
+                        text="17681890733"
+                        onCopy={() => {
+                          message.success('已复制，添加请注明来意');
+                        }}
+                      >
+                        <Button className="ml-2" theme="primary" variant="text">
+                          使用微信
+                        </Button>
+                      </CopyToClipboard>
+                    </>
+                  ),
+                });
+              },
+              title: '联系开发者',
+            },
+            {
+              icon: 'i-logos-microsoft-edge',
+              group: 'ext',
+              onClick: () => {
+                window.open(
+                  'https://chromewebstore.google.com/detail/silo-siliconcloud-api-pla/nakohnjaacfmjiodegibhnepfmioejln',
+                  '_blank'
+                );
+              },
+              title: 'Edge Addons',
+            },
+            {
+              icon: 'i-logos-chrome',
+              group: 'ext',
+              onClick: () => {
+                window.open(
+                  'https://chromewebstore.google.com/detail/silo-siliconcloud-api-pla/nakohnjaacfmjiodegibhnepfmioejln',
+                  '_blank'
+                );
+              },
+              title: 'Chrome 扩展',
+            },
+          ]
+            .filter(item => !item.hidden)
+            .map(item => ({
+              prefixIcon: <i className={item.icon + ' mr-0'} />,
+              content: item.title,
+              onClick: item.onClick,
+              disabled: item.disabled,
+              value: item.title,
+            }))}
+        >
+          <i className={'i-ri-more-fill cursor-pointer'}></i>
+        </Dropdown>
       </div>
       {showPopup && (
         <div

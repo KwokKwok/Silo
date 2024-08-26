@@ -25,3 +25,15 @@ export function getLocalStorage(key: LOCAL_STORAGE_KEY, defaultValue = '') {
 export function generateId() {
   return `${Date.now()}-${Math.random().toString(36).substring(2)}`;
 }
+
+/**
+ * 清除用户数据，重启用
+ */
+export function clearUserData(clearToken = false) {
+  let token = '';
+  if (!clearToken) {
+    token = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY);
+  }
+  localStorage.clear();
+  setLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, token);
+}

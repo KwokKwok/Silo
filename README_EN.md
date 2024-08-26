@@ -1,6 +1,6 @@
 [Chinese Version](https://github.com/KwokKwok/Silo)
 
-<p align="center"><a target="_blank" href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width: 20vw;max-width: 200px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
+<p align="center"><a target="_blank" href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
 <h1 align="center">Silo - SiliconCloud API Playground</h1>
 
 <p align="center"><a target="_blank" rel="noreferrer noopener" href="https://chromewebstore.google.com/detail/nakohnjaacfmjiodegibhnepfmioejln"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Chrome Web STORE-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a> 
@@ -17,6 +17,7 @@
 🚀 Based on SiliconCloud API, rich models and fast response<br>
 🔑 Simple configuration, you only need to configure the key once<br>
 💰 Support SiliconCloud balance automatic refresh<br>
+🧩 Provides the ability to add custom models to use models outside of the API<br>
 🔄 Support adjusting model order<br>
 🌙 Night Mode<br>
 📱 Mobile phone support (limited by screen size, a simpler version is provided)<br>

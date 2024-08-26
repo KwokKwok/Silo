@@ -1,6 +1,6 @@
 [English Version](https://github.com/KwokKwok/Silo/blob/main/README_EN.md)
 
-<p align="center"><a href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width: 20vw;max-width: 200px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
+<p align="center"><a href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
 <h1 align="center">Silo - SiliconCloud API Playground</h1>
 
 <p align="center"><a rel="noreferrer noopener" target="_blank" href="https://chromewebstore.google.com/detail/nakohnjaacfmjiodegibhnepfmioejln"><img alt="Chrome Web Store" src="https://img.shields.io/badge/安装 Chrome 扩展-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a> 
@@ -17,6 +17,7 @@
 🚀 基于 SiliconCloud API，模型丰富，响应快<br>
 🔑 配置简单，只需配置一次密钥<br>
 💰 支持 SiliconCloud 余额自动刷新<br>
+🧩 可以通过自定义模型的功能来扩展插件<br>
 🔄 支持调整模型顺序<br>
 🌙 夜间模式<br>
 📱 手机端支持（受限于屏幕尺寸，提供较简单的版本）<br>

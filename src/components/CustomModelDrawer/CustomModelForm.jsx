@@ -1,6 +1,6 @@
 import { Textarea } from 'tdesign-react';
 import { Form, Input, Select } from 'tdesign-react';
-import { CUSTOM_MODEL_PRESET } from './preset';
+import CUSTOM_MODEL_PRESET from './preset';
 import { InputNumber } from 'tdesign-react';
 import { forwardRef } from 'react';
 import { useImperativeHandle } from 'react';
@@ -8,7 +8,7 @@ import { removeCustomModel, saveCustomModel } from './helper';
 import { getCustomModels } from '../../utils/models';
 import { useState } from 'react';
 import { Button } from 'tdesign-react';
-import { Alert } from 'tdesign-react';
+import { CUSTOM_PRESET_PREFIX } from '../../utils/types';
 const { FormItem } = Form;
 
 const ID_REGEX = /^[a-zA-Z0-9_\-@\.]+\/[a-zA-Z0-9_\-@\.]+$/;
@@ -36,7 +36,7 @@ export default forwardRef((props, ref) => {
     }
     const selected = { ...options.find(item => item.id === value) };
     if (selected.isPreset) {
-      selected.name = selected.name.replace('[Preset] ', '');
+      selected.name = selected.name.replace(CUSTOM_PRESET_PREFIX, '');
     }
     setSelected(selected);
     form.setFieldsValue(selected);
@@ -93,15 +93,16 @@ export default forwardRef((props, ref) => {
             options={options}
             onChange={onSelectModel}
           ></Select>
-          <Button
-            className="ml-2"
-            disabled={!selectedData || selectedData?.id.startsWith('preset')}
-            variant="outline"
-            theme="danger"
-            onClick={() => removeCustomModel(selectedData.id)}
-          >
-            移除选中
-          </Button>
+          {!!selectedData && !selectedData?.id.startsWith('preset') && (
+            <Button
+              className="ml-2"
+              variant="outline"
+              theme="danger"
+              onClick={() => removeCustomModel(selectedData.id)}
+            >
+              移除
+            </Button>
+          )}
         </FormItem>
         <FormItem label="模型名字" name="name">
           <Input placeholder="方便查看用" />
