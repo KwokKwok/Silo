@@ -97,7 +97,7 @@ export default function ({ model }) {
                     alt={option.name}
                   />
                   <span>{option.name}</span>
-                  {!option.price ? (
+                  {option.price === 0 ? (
                     // <span className="text-[10px] leading-[12px] ml-2 px-1 rounded-sm bg-blue-950 text-white dark:bg-white dark:text-black">
                     //   Free
                     // </span>
@@ -173,7 +173,7 @@ export default function ({ model }) {
                   ? [
                       {
                         icon:
-                          modelDetail.link &&
+                          !modelDetail.link ||
                           modelDetail.link.startsWith('https://huggingface.co/')
                             ? 'i-logos-hugging-face-icon'
                             : 'i-mingcute-external-link-fill',
@@ -223,10 +223,6 @@ export default function ({ model }) {
         >
           <i className={iconClassName + 'i-mingcute-more-2-fill'}></i>
         </Popup>
-        {/* <i
-          className={iconClassName + 'i-mingcute-close-line'}
-          onClick={onClose}
-        ></i> */}
       </div>
 
       {messages.length == 0 ? (

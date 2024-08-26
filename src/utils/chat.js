@@ -39,7 +39,7 @@ function _streamChat (chat, newMessage) {
   }
 
   const _onError = (err) => {
-    _onChunk(ERROR_PREFIX + err.message);
+    chat.messages[chatId] = ERROR_PREFIX + err.message;
     _onEnd();
   }
 

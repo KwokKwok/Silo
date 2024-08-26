@@ -27,6 +27,16 @@ export const CHAT_PLACEHOLDER_TEXT = [
  */
 export const ERROR_PREFIX = '@<E1RaRvO0R>w>F.fz!J6R.zot#G,E>@';
 
+/**
+ * 用于标识聊天 Loading
+ */
+export const LOADING_MATCH_TOKEN = '      ';
+
+/**
+ * 用于标识内置自定义模型的标识
+ */
+export const CUSTOM_PRESET_PREFIX = '[Preset] ';
+
 export enum LOCAL_STORAGE_KEY {
   /**
    * 密钥

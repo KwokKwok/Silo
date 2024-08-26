@@ -1,6 +1,4 @@
 import 'tdesign-react/es/style/index.css'; // 少量公共样式
-import { useEffect } from 'react';
-import { useRef } from 'react';
 import GroupMessages from './components/GroupMessages';
 import MultiPanelMessages from './components/MultiPanelMessages';
 import HeaderAndPopup from './components/HeaderAndPopup';
