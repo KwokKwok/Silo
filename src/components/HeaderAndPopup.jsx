@@ -113,8 +113,8 @@ export default function () {
             },
             {
               icon: 'i-mingcute-wechat-fill',
-              onClick: () => {
-                notification.info({
+              onClick: async () => {
+                const notify = await notification.info({
                   placement: 'bottom-right',
                   offset: [-20, -20],
                   title: '联系开发者',
@@ -123,7 +123,16 @@ export default function () {
                   duration: 0,
                   footer: (
                     <>
-                      <a href="mailto:kwokglory@outlook.com?subject=Silo反馈&body=请说明问题，以便开发者及时处理">
+                      <a
+                        href={`mailto:kwokglory@outlook.com?subject=${encodeURIComponent(
+                          'Silo反馈'
+                        )}&body=${encodeURIComponent(
+                          '请说明问题，以便开发者及时处理'
+                        )}`}
+                        onClick={() => {
+                          notify.close();
+                        }}
+                      >
                         <Button className="ml-2" theme="default" variant="text">
                           发邮件
                         </Button>
@@ -131,7 +140,8 @@ export default function () {
                       <CopyToClipboard
                         text="17681890733"
                         onCopy={() => {
-                          message.success('已复制，添加请注明来意');
+                          message.success('已复制到剪贴板');
+                          notify.close();
                         }}
                       >
                         <Button className="ml-2" theme="primary" variant="text">
