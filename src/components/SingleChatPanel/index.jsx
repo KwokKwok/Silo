@@ -25,8 +25,11 @@ export default function ({ model }) {
   );
   const modelDetail = allTextModels.find(item => item.id === model) || {};
   const hasActiveCustomModel = activeModels.some(
-    item => !SILICON_MODELS_IDS.includes(item)
+    item =>
+      !SILICON_MODELS_IDS.includes(item) &&
+      modelDetail.series?.startsWith(item.split('/')[0])
   );
+
   useEffect(() => {
     if (!modelDetail.id) {
       // 模型有可能不再提供了，或者自定义模型被删除了
@@ -116,10 +119,7 @@ export default function ({ model }) {
                     alt={option.name}
                   />
                   <span>{option.name}</span>
-                  {option.price === 0 ? (
-                    // <span className="text-[10px] leading-[12px] ml-2 px-1 rounded-sm bg-blue-950 text-white dark:bg-white dark:text-black">
-                    //   Free
-                    // </span>
+                  {option.price === 0 && (
                     <Tag
                       className="ml-2 scale-[0.8]"
                       size="small"
@@ -127,15 +127,13 @@ export default function ({ model }) {
                     >
                       Free
                     </Tag>
-                  ) : (
-                    <></>
                   )}
                   {!!option.isCustom && (
                     <Tag
                       className="scale-[0.8]"
                       size="small"
-                      theme="primary"
-                      // variant="light-outline"
+                      theme="warning"
+                      variant="light-outline"
                     >
                       Custom
                     </Tag>

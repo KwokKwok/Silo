@@ -1,17 +1,12 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
-import { useActiveModels, useIsRowMode, useSecretKey } from '../store/app';
+import { useActiveModels, useIsRowMode } from '../store/app';
+import { useSecretKey } from '../store/secret';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/user';
 import { useDarkMode, useIsMobile } from '../utils/use';
 import CustomModelDrawer from './CustomModelDrawer';
-import {
-  TooltipLite,
-  Popup,
-  message,
-  notification,
-  Button,
-} from 'tdesign-react';
+import { TooltipLite, message, notification, Button } from 'tdesign-react';
 import { Dropdown } from 'tdesign-react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 
@@ -155,17 +150,6 @@ export default function () {
               title: '联系开发者',
             },
             {
-              icon: 'i-logos-microsoft-edge',
-              group: 'ext',
-              onClick: () => {
-                window.open(
-                  'https://chromewebstore.google.com/detail/silo-siliconcloud-api-pla/nakohnjaacfmjiodegibhnepfmioejln',
-                  '_blank'
-                );
-              },
-              title: 'Edge Addons',
-            },
-            {
               icon: 'i-logos-chrome',
               group: 'ext',
               onClick: () => {
@@ -175,6 +159,17 @@ export default function () {
                 );
               },
               title: 'Chrome 扩展',
+            },
+            {
+              icon: 'i-logos-microsoft-edge',
+              group: 'ext',
+              onClick: () => {
+                window.open(
+                  'https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod',
+                  '_blank'
+                );
+              },
+              title: 'Edge Addons',
             },
           ]
             .filter(item => !item.hidden)

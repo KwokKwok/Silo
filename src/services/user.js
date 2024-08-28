@@ -1,4 +1,4 @@
-import { getSecretKey } from "../store/app";
+import { getSecretKey } from "../store/secret";
 
 export const fetchUserInfo = async () => {
   const sk = getSecretKey();

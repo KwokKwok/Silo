@@ -1,7 +1,7 @@
 import { useActiveModels } from "../store/app";
-import { streamChat } from "../services/model";
 import { ERROR_PREFIX } from "./types";
 import { useRefresh } from "./use";
+import { streamChat } from "./utils";
 
 /**
  * 用于存放用户信息，key 为时间戳

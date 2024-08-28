@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { useEffect } from 'react';
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../utils/use';
+import { Popconfirm } from 'tdesign-react';
 
 export default function ({ onStop, onSubmit, loading }) {
   const [input, setInput] = useState('');
@@ -55,6 +54,10 @@ export default function ({ onStop, onSubmit, loading }) {
       }
     }
   };
+
+  const actionBaseClassName =
+    'absolute top-3 left-4  transition-transform transform duration-500 w-6 h-6 opacity-75 z-20 cursor-pointer';
+
   return (
     <>
       <div className="h-12"></div>
@@ -64,15 +67,31 @@ export default function ({ onStop, onSubmit, loading }) {
           (input.includes('\n') ? 'rounded-2xl' : 'rounded-3xl')
         }
       >
+        {/* <Popconfirm content={'确认删除订单吗'} cancelBtn={null}>
+          <Button theme="primary">删除订单</Button>
+        </Popconfirm> */}
         <i
           className={
-            (loading
-              ? 'i-mingcute-pause-circle-line'
-              : 'i-mingcute-broom-line') +
-            ' absolute top-3 left-4 w-6 h-6 opacity-75 z-20 cursor-pointer'
+            (loading ? 'translate-x-0' : '-translate-x-10') +
+            ' i-mingcute-pause-circle-line ' +
+            actionBaseClassName
           }
-          onClick={() => onStop(!loading)}
+          onClick={() => onStop(false)}
         ></i>
+        <Popconfirm
+          content={'确定清空所有对话吗？'}
+          cancelBtn={null}
+          placement="right-bottom"
+          onConfirm={() => onStop(true)}
+        >
+          <i
+            className={
+              (!loading ? 'translate-x-0' : '-translate-x-10') +
+              ' i-mingcute-broom-line ' +
+              actionBaseClassName
+            }
+          ></i>
+        </Popconfirm>
         <textarea
           type="text"
           rows={1}

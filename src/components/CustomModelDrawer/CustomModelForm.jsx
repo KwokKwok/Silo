@@ -12,7 +12,7 @@ import { CUSTOM_PRESET_PREFIX } from '../../utils/types';
 import { useMemo } from 'react';
 const { FormItem } = Form;
 
-const ID_REGEX = /^[a-zA-Z0-9_\-@\.]+\/[a-zA-Z0-9_\-@\.]+$/;
+const ID_REGEX = /^[a-zA-Z0-9_\-@\.]+\/[a-zA-Z0-9_\-@\.\/]+$/;
 
 export default forwardRef((props, ref) => {
   const [form] = Form.useForm();
@@ -21,12 +21,16 @@ export default forwardRef((props, ref) => {
       const success = await form.validate();
       if (success !== true) return Promise.reject();
       const { select, ...data } = await form.getFieldsValue(true);
-      // 需要自定义逻辑的，需要清除 ID
-      const id =
-        selected.id.startsWith('preset') && !selected.paramsMode
-          ? ''
-          : selected.id;
-      saveCustomModel({ ...selected, ...data, id });
+      // 需要清除 ID。以 preset 开头，但不是 paramsMode
+      const needRemoveId =
+        selected?.id.startsWith('preset') && !selected.paramsMode;
+      console.log(needRemoveId);
+
+      saveCustomModel({
+        ...selected,
+        ...data,
+        id: needRemoveId ? '' : selected.id,
+      });
       form.clearValidate();
       form.reset();
     },
@@ -39,8 +43,6 @@ export default forwardRef((props, ref) => {
       item => !rawIds.includes(item.id)
     );
     raw.forEach(item => (item.canRemove = true));
-    console.log(raw, CUSTOM_MODEL_PRESET);
-
     return [...raw, ...filteredPresets];
   }, [props]);
 
@@ -80,6 +82,8 @@ export default forwardRef((props, ref) => {
         },
       },
     ],
+    baseUrl: [{ required: true, message: '必填', type: 'warning' }],
+    sk: [{ required: true, message: '必填', type: 'warning' }],
     ids: [
       { required: true, message: '必填', type: 'warning' },
       {
@@ -103,7 +107,7 @@ export default forwardRef((props, ref) => {
   };
 
   if (selected && selected.paramsMode) {
-    (selected.params || []).map(item => {
+    selected.params.map(item => {
       rules[item.prop] = item.rules || [];
     });
   }
@@ -130,7 +134,7 @@ export default forwardRef((props, ref) => {
         <FormItem label="选择" name="select">
           <Select
             clearable
-            placeholder="选择已添加的模型，或是选择预设导入"
+            placeholder="修改已添加的模型，或是选择预设导入"
             keys={{ label: 'name', value: 'id' }}
             options={options}
             onChange={onSelectModel}
@@ -146,7 +150,7 @@ export default forwardRef((props, ref) => {
             </Button>
           )}
         </FormItem>
-        {!!selected && selected.paramsMode ? (
+        {!selected ? null : selected.paramsMode ? (
           <>
             <FormItem key="ids" label="模型ID" name="ids">
               <Input placeholder="{manufacturer}/{model-name}，多个可用英文逗号隔开" />
@@ -169,12 +173,29 @@ export default forwardRef((props, ref) => {
             <FormItem label="模型ID" name="ids">
               <Input placeholder="{manufacturer}/{model-name}，多个可用英文逗号隔开" />
             </FormItem>
-            <FormItem label="解析函数" name="resolveFn">
-              <Textarea
-                rows={10}
-                placeholder="建议调试好后复制过来，这里就不再做编辑器了"
-              />
-            </FormItem>
+            {selected?.isOpenAiCompatible ? (
+              <>
+                <FormItem key="baseUrl" label="请求地址" name="baseUrl">
+                  <Input placeholder="不需要带 /chat/completions" />
+                </FormItem>
+                <FormItem key="sk" label="密钥" name="sk">
+                  <Input placeholder="请输入密钥" />
+                </FormItem>
+                <FormItem key="idResolver" label="ID解析函数" name="idResolver">
+                  <Textarea
+                    rows={3}
+                    placeholder="默认会将模型ID去除 manufacturer 部分，然后传给调用函数。比如 deepseek-ai/deepseek-coder 会解析为 deepseek-coder。您也可以自定义 ID 解析函数。比如，如需原样传递给接口，这里可以填：modelId => modelId"
+                  />
+                </FormItem>
+              </>
+            ) : (
+              <FormItem label="解析函数" name="resolveFn">
+                <Textarea
+                  rows={10}
+                  placeholder="建议调试好后复制过来，这里就不再做编辑器了"
+                />
+              </FormItem>
+            )}
             <FormItem label="模型图标" name="icon">
               <Input placeholder="厂商 Icon，可不填。建议从 HuggingFace 获取" />
             </FormItem>
@@ -196,7 +217,7 @@ export default forwardRef((props, ref) => {
               />
             </FormItem>
             <FormItem label="详情地址" name="link">
-              <Textarea placeholder="比如 HuggingFace 的模型地址" />
+              <Input placeholder="比如 HuggingFace 的模型地址" />
             </FormItem>
           </>
         )}

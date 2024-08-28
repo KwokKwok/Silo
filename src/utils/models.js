@@ -1,6 +1,8 @@
 import { getBuildInResolveFn } from "../components/CustomModelDrawer/preset";
+import { getSecretKey } from "../store/secret";
 import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "./helpers";
 import { LOCAL_STORAGE_KEY } from "./types";
+import { openAiCompatibleChat } from "./utils";
 
 const modules = import.meta.glob('../assets/img/models/*.*', { eager: true })
 
@@ -12,18 +14,20 @@ export function getCustomModels () {
   if (!customModels) {
     customModels = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, [])
     normalizedCustomModel = customModels.map(item => {
-      const resolveFn = item.paramsMode ? getBuildInResolveFn(item) : new Function(`return ${item.resolveFn}`)();
+      const resolveFn = (item.paramsMode || item.isOpenAiCompatible) ? getBuildInResolveFn(item) : new Function(`return ${item.resolveFn}`)();
 
       // 存的是系列模型，需要拆分
       return item.ids.split(',').map(id => {
         const icon = item.icon || getModelIcon(id);
-        const [series, name] = id.split('/');
-        return ({ ...item, ids: void 0, id, series, name, resolveFn, icon, isCustom: true })
+        const [series, ...rest] = id.split('/');
+        return ({ ...item, ids: void 0, id, series, name: rest.join('/'), resolveFn, icon, isCustom: true })
       })
     }).reduce((acc, cur) => [...acc, ...cur], []);
   }
   return { raw: customModels, normalized: normalizedCustomModel };
 }
+
+
 
 export function setCustomModels (models) {
   setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, models);
@@ -85,4 +89,17 @@ export function getAllTextModels () {
     ...getCustomModels().normalized,
     ...SILICON_MODELS
   ]
+}
+
+const customResolveFns = getAllTextModels().filter(item => item.resolveFn).reduce((acc, item) => {
+  acc[item.id] = item.resolveFn
+  return acc
+}, {})
+
+/**
+ * 
+ */
+export function getChatResolver (modelId) {
+  if (customResolveFns[modelId]) return customResolveFns[modelId]
+  return (...args) => openAiCompatibleChat('https://api.siliconflow.cn/v1', getSecretKey(), modelId => modelId, ...args)
 }
