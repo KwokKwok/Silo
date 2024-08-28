@@ -1,12 +1,12 @@
-async function geminiChat (modelId, messages, options, controller, onChunk, onEnd, onError) {
+export default async function geminiChat (modelId, messages, options, controller, onChunk, onEnd, onError, modelConfig) {
   // 请填写 API_KEY ！！！
-  const API_KEY = ''
-  if (!API_KEY) {
-    onError(new Error('请在自定义处理函数中填写 API_KEY'));
+  const { apiKey = '' } = modelConfig;
+  if (!apiKey) {
+    onError(new Error('请填写 API_KEY'))
     return;
   }
   const model = modelId.split('/')[1];
-  fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?key=${API_KEY}`, {
+  fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?key=${apiKey}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'

@@ -3,11 +3,16 @@ import AiMessage from '../AiMessage';
 import UserMessage from '../UserMessage';
 import ChatHolder from '../ChatHolder';
 import { Select, Tag, Popup, Button } from 'tdesign-react';
-import { getAllTextModels, getModelIcon } from '../../utils/models';
+import {
+  getAllTextModels,
+  getModelIcon,
+  SILICON_MODELS_IDS,
+} from '../../utils/models';
 import { useActiveModels } from '../../store/app';
 import { useChatMessages, useSingleChat } from '../../utils/chat';
 import ChatOptionAdjust from '../ChatOptionAdjust';
 import { useAutoScrollToBottomRef, useRefresh } from '../../utils/use';
+import ScLogo from '../../assets/img/sc-logo.png';
 import { useRef } from 'react';
 
 export default function ({ model }) {
@@ -19,6 +24,9 @@ export default function ({ model }) {
     item => model === item.id || !activeModels.includes(item.id)
   );
   const modelDetail = allTextModels.find(item => item.id === model) || {};
+  const hasActiveCustomModel = activeModels.some(
+    item => !SILICON_MODELS_IDS.includes(item)
+  );
   useEffect(() => {
     if (!modelDetail.id) {
       // 模型有可能不再提供了，或者自定义模型被删除了
@@ -72,7 +80,18 @@ export default function ({ model }) {
           className="flex-1 w-0"
           borderless
           prefixIcon={
-            <img src={getModelIcon(model)} className="w-4 h-4 rounded-sm" />
+            <div className="relative">
+              <img
+                src={getModelIcon(model)}
+                className="relative w-4 h-4 rounded-sm"
+              />
+              {hasActiveCustomModel && !modelDetail?.isCustom && (
+                <img
+                  className="absolute -bottom-[2px] -right-[2px] w-[8px] h-[8px]"
+                  src={ScLogo}
+                />
+              )}
+            </div>
           }
           filterable
           filter={(value, option) =>
@@ -116,7 +135,7 @@ export default function ({ model }) {
                       className="scale-[0.8]"
                       size="small"
                       theme="primary"
-                      variant="light-outline"
+                      // variant="light-outline"
                     >
                       Custom
                     </Tag>

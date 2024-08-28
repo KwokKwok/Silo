@@ -12,9 +12,14 @@ export function removeCustomModel (id) {
 
 export function saveCustomModel (model) {
   const oldModels = [...getCustomModels().raw];
-  if (model.id && !model.id.startsWith('preset')) {
+  if (model.id) {
     const index = oldModels.findIndex(item => item.id === model.id);
-    oldModels.splice(index, 1, model);
+    if (index < 0) {
+      // 可能是参数模式的预设
+      oldModels.push(model)
+    } else {
+      oldModels.splice(index, 1, model);
+    }
   } else {
     model.id = generateId();
     oldModels.push(model);

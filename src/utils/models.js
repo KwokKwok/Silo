@@ -1,3 +1,4 @@
+import { getBuildInResolveFn } from "../components/CustomModelDrawer/preset";
 import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "./helpers";
 import { LOCAL_STORAGE_KEY } from "./types";
 
@@ -11,7 +12,8 @@ export function getCustomModels () {
   if (!customModels) {
     customModels = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, [])
     normalizedCustomModel = customModels.map(item => {
-      const resolveFn = new Function(`return ${item.resolveFn}`)();
+      const resolveFn = item.paramsMode ? getBuildInResolveFn(item) : new Function(`return ${item.resolveFn}`)();
+
       // 存的是系列模型，需要拆分
       return item.ids.split(',').map(id => {
         const icon = item.icon || getModelIcon(id);
@@ -75,6 +77,8 @@ export const SILICON_MODELS = [
   textModelOf("mistralai/Mixtral-8x7B-Instruct-v0.1", 1.26, 32),
   textModelOf("google/gemma-2-27b-it", 1.26, 8),
 ]
+
+export const SILICON_MODELS_IDS = SILICON_MODELS.map(i => i.id)
 
 export function getAllTextModels () {
   return [
