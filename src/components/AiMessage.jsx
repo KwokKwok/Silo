@@ -16,12 +16,13 @@ export default function AiMessage({
   isLast,
   showModelName = false,
 }) {
-  // 最新消息，如果没有的话先展示个空格
   const [isDark] = useDarkMode();
   const { loading } = useSingleChat(model);
+  // 用于渲染一个行内的 loading
+  const APPEND_MARK = ` \`${LOADING_MATCH_TOKEN}\``;
 
   if (isLast && loading) {
-    content += ` \`${LOADING_MATCH_TOKEN}\``;
+    content += APPEND_MARK;
   }
 
   // 复制功能仅保留代码复制
@@ -59,7 +60,7 @@ export default function AiMessage({
                     </span>
                   );
                 }
-                children = children.replace(LOADING_MATCH_TOKEN, '');
+                children = children.replace(APPEND_MARK, '');
                 const match = /language-(\w+)/.exec(className || '');
                 return (
                   <>
