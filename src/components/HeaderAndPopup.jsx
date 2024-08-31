@@ -1,19 +1,23 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import { useActiveModels, useIsRowMode } from '../store/app';
-import { useSecretKey } from '../store/secret';
+import { useSecretKey } from '../store/storage';
 import ScLogo from '../assets/img/sc-logo.png';
-import { fetchUserInfo } from '../services/user';
+import { fetchUserInfo } from '../services/api';
 import { useDarkMode, useIsMobile } from '../utils/use';
 import CustomModelDrawer from './CustomModelDrawer';
 import { TooltipLite, message, notification, Button } from 'tdesign-react';
 import { Dropdown } from 'tdesign-react';
 import CopyToClipboard from 'react-copy-to-clipboard';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function () {
   const [showPopup, setShowPopup] = useState();
   const [secretKey, setSecretKey] = useSecretKey();
   const [isDark, setDarkMode] = useDarkMode();
+
+  const location = useLocation();
+  const isImageMode = location.pathname === '/image';
   const customModelRef = useRef();
   const { data, error, runAsync } = useRequest(fetchUserInfo, {
     pollingErrorRetryCount: 60 * 1000,
@@ -35,7 +39,7 @@ export default function () {
     runAsync();
   }, [secretKey]);
   const isMobile = useIsMobile();
-
+  const navigate = useNavigate();
   const [isRowMode, setIsRowMode] = useIsRowMode();
 
   useEffect(() => {
@@ -46,7 +50,9 @@ export default function () {
   return (
     <>
       <div className="h-12 w-full filter backdrop-blur text-xl flex items-center px-4">
-        <img src="/logo.svg" alt="logo" className="w-6 mr-auto" />
+        <img src="/logo.svg" alt="logo" className="w-6 mr-6" />
+
+        <span className="mr-auto"></span>
         {!!data && (
           <>
             <i
@@ -62,10 +68,26 @@ export default function () {
           </>
         )}
 
-        <TooltipLite placement="bottom" content="新增模型">
+        {!isImageMode && (
+          <TooltipLite placement="bottom" content="新增模型">
+            <i
+              className="block i-ri-apps-2-add-line cursor-pointer mr-4"
+              onClick={addMoreModel}
+            ></i>
+          </TooltipLite>
+        )}
+        <TooltipLite
+          placement="bottom"
+          content={isImageMode ? '切换对话模式' : '切换生图模式'}
+        >
           <i
-            className="block i-ri-apps-2-add-line cursor-pointer mr-4"
-            onClick={addMoreModel}
+            onClick={() => navigate(isImageMode ? '/chat' : '/image')}
+            className={
+              (isImageMode
+                ? 'iconify mingcute--chat-1-line'
+                : 'iconify mingcute--pic-ai-line') +
+              ' block color-current mr-4 cursor-pointer'
+            }
           ></i>
         </TooltipLite>
         <i
@@ -84,7 +106,7 @@ export default function () {
                 ? 'i-mingcute-columns-3-line'
                 : 'i-mingcute-rows-3-line',
               onClick: () => setIsRowMode(!isRowMode),
-              hidden: isMobile,
+              hidden: isMobile || isImageMode,
               disabled: activeModels.length <= 1,
               title: isRowMode ? '多列模式' : '双行模式',
             },
@@ -96,7 +118,7 @@ export default function () {
             {
               icon: 'i-mingcute-plugin-2-fill',
               onClick: () => customModelRef.current.open(),
-              hidden: isMobile,
+              hidden: isMobile || isImageMode,
               title: '自定义模型',
             },
             {
@@ -183,6 +205,10 @@ export default function () {
         >
           <i className={'i-ri-more-fill cursor-pointer'}></i>
         </Dropdown>
+        <CustomModelDrawer
+          ref={customModelRef}
+          onClose={() => customModelRef.current.close()}
+        />
       </div>
       {showPopup && (
         <div

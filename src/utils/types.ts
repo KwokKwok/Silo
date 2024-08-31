@@ -62,4 +62,16 @@ export enum LOCAL_STORAGE_KEY {
    * 用户自定义模型
    */
   USER_CUSTOM_MODELS = 'user_custom_models',
+  /**
+   * 图像生成选项
+   */
+  IMAGE_MODEL_OPTIONS = 'image_model_options',
+  /**
+   * 使用的图像生成模型
+   */
+  ACTIVE_IMAGE_MODELS = 'active_image_models',
+  /**
+   * 图像生成记录
+   */
+  IMAGE_GENERATE_RECORDS = 'image_generate_records',
 }

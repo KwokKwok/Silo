@@ -7,6 +7,7 @@ function init () {
     clearUserData();
     return;
   }
+  if (location.host.startsWith('localhost')) return
 
   setTimeout(() => {
     const app = document.querySelector('#root');

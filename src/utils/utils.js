@@ -1,4 +1,4 @@
-import { getChatRequestOptions } from "./options"
+import { getChatRequestOptions } from "./options/chat-options"
 import { getChatResolver } from './models';
 export function createOpenAICompatibleRequestOptions (sk, model, messages, options = {}) {
   return {

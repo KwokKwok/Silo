@@ -3,7 +3,7 @@ import geminiResolveFn from "./gemini.js"
 import deepseekResolveFn from "./deepseek.js"
 import { CUSTOM_PRESET_PREFIX } from "../../../utils/types";
 import { openAiCompatibleChat } from "../../../utils/utils.js";
-import { getSecretKey } from "../../../store/secret.js";
+import { getSecretKey } from "../../../store/storage.js";
 
 const CUSTOM_MODEL_PRESET = [
   {

@@ -1,7 +1,7 @@
 import { debounce } from "lodash-es";
-import { LOCAL_STORAGE_KEY } from "./types";
+import { LOCAL_STORAGE_KEY } from "../types";
 import { useState } from "react";
-import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "./helpers";
+import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "../helpers";
 
 //#region 工具类
 const optionOf = (name, prop, tooltip, min, max, defaultValue) => ({

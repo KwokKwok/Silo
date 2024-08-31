@@ -1,3 +1,4 @@
+import { addIconSelectors } from "@iconify/tailwind"
 const { iconsPlugin, getIconCollections } = require("@egoist/tailwindcss-icons")
 
 /** @type {import('tailwindcss').Config} */
@@ -15,6 +16,7 @@ export default {
     },
   },
   plugins: [
+    addIconSelectors(["ri", "mingcute", "logos"]),
     iconsPlugin({
       // Select the icon collections you want to use
       // You can also ignore this option to automatically discover all individual icon packages you have installed

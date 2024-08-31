@@ -23,6 +23,20 @@ body {
     Avenir, Helvetica, Arial, sans-serif;
 }
 
+.my-masonry-grid {
+  display: flex;
+  margin-left: -16px; /* 调整间距 */
+  width: auto;
+}
+.my-masonry-grid_column {
+  padding-left: 16px; /* 调整间距 */
+  background-clip: padding-box;
+}
+
+.t-image-viewer__modal-mask {
+  backdrop-filter: blur(4px);
+}
+
 #root {
   width: 100%;
 }

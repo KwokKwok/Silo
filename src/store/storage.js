@@ -1,5 +1,5 @@
 import { atom, useAtom } from 'jotai'
-import { getLocalStorage, setLocalStorage } from '../utils/helpers';
+import { getJsonDataFromLocalStorage, getLocalStorage, setJsonDataToLocalStorage, setLocalStorage } from '../utils/helpers';
 import { LOCAL_STORAGE_KEY } from '../utils/types';
 
 let _cacheKey = ''
@@ -23,4 +23,17 @@ export const useSecretKey = () => {
     _cacheKey = key;
   }
   return [value, setSecretKey]
+}
+
+
+const activeImageModels = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS, ['black-forest-labs/FLUX.1-schnell', 'stabilityai/stable-diffusion-3-medium']))
+
+export const useActiveImageModels = () => {
+  const [models, setModels] = useAtom(activeImageModels);
+  const updateActiveImageModels = (newModels) => {
+    setModels(newModels);
+    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS, newModels)
+  };
+
+  return [models, updateActiveImageModels];
 }

@@ -1,5 +1,5 @@
 import { getBuildInResolveFn } from "../components/CustomModelDrawer/preset";
-import { getSecretKey } from "../store/secret";
+import { getSecretKey } from "../store/storage";
 import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "./helpers";
 import { LOCAL_STORAGE_KEY } from "./types";
 import { openAiCompatibleChat } from "./utils";
@@ -102,4 +102,25 @@ const customResolveFns = getAllTextModels().filter(item => item.resolveFn).reduc
 export function getChatResolver (modelId) {
   if (customResolveFns[modelId]) return customResolveFns[modelId]
   return (...args) => openAiCompatibleChat('https://api.siliconflow.cn/v1', getSecretKey(), modelId => modelId, ...args)
+}
+
+const imageModelOf = (id, price) => {
+  const [series, name] = id.split('/');
+  const icon = getModelIcon(id);
+  return { id, name, series, price, icon }
+}
+
+const IMAGE_MODELS = [
+  // imageModelOf("black-forest-labs/FLUX.1-dev", 0),
+  imageModelOf("black-forest-labs/FLUX.1-schnell", 0),
+  imageModelOf("stabilityai/stable-diffusion-3-medium", 0),
+  imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", 0),
+  imageModelOf("stabilityai/stable-diffusion-2-1", 0),
+  imageModelOf("stabilityai/sd-turbo", 0),
+  imageModelOf("stabilityai/sdxl-turbo", 0),
+  imageModelOf("ByteDance/SDXL-Lightning", 0),
+]
+
+export function getImageModels () {
+  return [...IMAGE_MODELS]
 }

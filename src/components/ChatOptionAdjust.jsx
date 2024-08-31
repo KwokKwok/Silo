@@ -1,7 +1,7 @@
 import { Slider } from 'tdesign-react';
 import { TooltipLite } from 'tdesign-react';
 import { InputNumber } from 'tdesign-react';
-import { useChatOptions } from '../utils/options';
+import { useChatOptions } from '../utils/options/chat-options';
 
 export default function ({ model }) {
   const [options, onPropChange] = useChatOptions(model);
