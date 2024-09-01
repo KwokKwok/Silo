@@ -6,6 +6,7 @@ import { useRequest } from 'ahooks';
 import { getOptimizedPrompts } from '../../services/api';
 import { message } from 'tdesign-react';
 import { notification } from 'tdesign-react';
+import Tooltip from '../MobileCompatible/Tooltip';
 
 const SingleInput = ({
   main,
@@ -90,7 +91,7 @@ const SingleInput = ({
         className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none pl-2 pr-16 text-base leading-6"
       />
       {main && (
-        <TooltipLite
+        <Tooltip
           content={'生成优化版中英文 Prompt'}
         >
           <i
@@ -103,7 +104,7 @@ const SingleInput = ({
               (!value.length ? ' opacity-60' : '')
             }
           ></i>
-        </TooltipLite>
+        </Tooltip>
       )}
       <i
         onClick={main ? onAdd : onRemove}

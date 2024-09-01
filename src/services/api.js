@@ -1,4 +1,5 @@
 import { getSecretKey } from "../store/storage";
+import imageGenPrompt from "./prompt/image-gen.txt?raw"
 
 export const fetchUserInfo = async () => {
   const sk = getSecretKey();
@@ -30,25 +31,11 @@ export const getOptimizedPrompts = async (userInput) => {
       'Authorization': `Bearer ${sk}`
     },
     body: JSON.stringify({
-      model: "Qwen/Qwen2-7B-Instruct",
+      model: "THUDM/glm-4-9b-chat",
       messages: [
         {
           role: "system",
-          content: `
-          你是一个AI绘画提示词专家。现在用户正在向你学习怎么写出更有效的提示词。
-          ###
-          我会将用户输入的提示词给你，要求：
-          1. 请根据该提示词给出两个优化过的 prompt（一个英文，一个中文），这两个 prompt 中不要包含对用户的建议。如果用户输入不明确，可以随机返回一个场景。
-          2. 另外针对用户输入可能存在的问题给出一个合理的建议。
-          3. 请以JSON格式返回结果。
-          ###
-          请务必按照以下格式返回结果：
-          {
-            advise: '此处是你针对用户的提示词提出的建议，如果用户输入很完善，可以做适当夸奖',
-            zh: '你优化过的中文的AI绘画提示词',
-            en: '你优化过的英文的AI绘画提示词'
-          }
-          `
+          content: imageGenPrompt
         },
         {
           role: "user",

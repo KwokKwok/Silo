@@ -10,6 +10,7 @@ import { TooltipLite, message, notification, Button } from 'tdesign-react';
 import { Dropdown } from 'tdesign-react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Tooltip from './MobileCompatible/Tooltip';
 
 export default function () {
   const [showPopup, setShowPopup] = useState();
@@ -69,14 +70,14 @@ export default function () {
         )}
 
         {!isImageMode && (
-          <TooltipLite placement="bottom" content="新增模型">
+          <Tooltip placement="bottom" content="新增模型">
             <i
               className="block i-ri-apps-2-add-line cursor-pointer mr-4"
               onClick={addMoreModel}
             ></i>
-          </TooltipLite>
+          </Tooltip>
         )}
-        <TooltipLite
+        <Tooltip
           placement="bottom"
           content={isImageMode ? '切换对话模式' : '切换生图模式'}
         >
@@ -89,7 +90,7 @@ export default function () {
               ' block color-current mr-4 cursor-pointer'
             }
           ></i>
-        </TooltipLite>
+        </Tooltip>
         <i
           className={
             (isDark ? 'i-ri-sun-line' : 'i-ri-moon-line') +

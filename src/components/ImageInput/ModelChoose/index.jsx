@@ -1,9 +1,10 @@
 import React from 'react';
-import { Tooltip, Tag, Button } from 'tdesign-react';
+import { Tag, Button } from 'tdesign-react';
 import { getImageModels } from '../../../utils/models';
 import { useActiveImageModels } from '../../../store/storage';
 import ConfigOptions from './ConfigOptions'; // 新增导入
 import { useRef } from 'react';
+import Tooltip from '../../MobileCompatible/Tooltip';
 
 const ModelChoose = ({ onGenerate, onBack }) => {
   const [selectedModels, setSelectedModels] = useActiveImageModels();

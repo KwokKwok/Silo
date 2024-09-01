@@ -10,6 +10,7 @@ import { useImageModelOptions } from '../../../utils/options/image-options';
 import { forwardRef } from 'react';
 import { useImperativeHandle } from 'react';
 import { useState } from 'react';
+import Tooltip from '../../MobileCompatible/Tooltip';
 
 const ConfigOptions = forwardRef(({}, ref) => {
   const [modelId, setModelId] = useState();
@@ -42,12 +43,12 @@ const ConfigOptions = forwardRef(({}, ref) => {
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span>{option.label}</span>
-                <TooltipLite content={option.tooltip}>
+                <Tooltip content={option.tooltip}>
                   <i
                     className="i-ri-question-line ml-2 cursor-pointer"
                     style={{ marginLeft: '5px' }}
                   ></i>
-                </TooltipLite>
+                </Tooltip>
               </div>
               <InputNumber
                 value={currentConfig[option.prop]}
@@ -79,12 +80,12 @@ const ConfigOptions = forwardRef(({}, ref) => {
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
                 <span>{option.label}</span>
-                <TooltipLite content={option.tooltip}>
+                <Tooltip content={option.tooltip}>
                   <i
                     className="i-ri-question-line ml-2 cursor-pointer"
                     style={{ marginLeft: '5px' }}
                   ></i>
-                </TooltipLite>
+                </Tooltip>
               </div>
               <Select
                 value={currentConfig[option.prop]}
@@ -159,11 +160,11 @@ const ConfigOptions = forwardRef(({}, ref) => {
       header={`配置 ${modelId} `}
       footer={
         <div className="flex justify-end">
-          <TooltipLite content="不同模型支持的参数或有效区间可能存在不同，将尽可能将当前配置应用到其他的模型">
+          <Tooltip content="不同模型支持的参数或有效区间可能存在不同，将尽可能将当前配置应用到其他的模型">
             <Button theme="default" variant="text" onClick={applyToAll}>
               应用到全部
             </Button>
-          </TooltipLite>
+          </Tooltip>
           <Button
             className="ml-2"
             theme="primary"
