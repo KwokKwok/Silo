@@ -5,7 +5,7 @@ import { LOCAL_STORAGE_KEY } from '../utils/types';
 let _cacheKey = ''
 export function getSecretKey (forceUpdate = false) {
   if (!_cacheKey || forceUpdate) {
-    _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY)
+    _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, import.meta.env.VITE_DEFAULT_SK)
   }
   return _cacheKey
 }
