@@ -37,3 +37,15 @@ export const useActiveImageModels = () => {
 
   return [models, updateActiveImageModels];
 }
+
+
+const isImageMode = atom(getLocalStorage(LOCAL_STORAGE_KEY.IMAGE_MODE, 'false') === 'true')
+
+export const useIsImageMode = () => {
+  const [value, setValue] = useAtom(isImageMode);
+  const setIsImageMode = (isImageMode) => {
+    setLocalStorage(LOCAL_STORAGE_KEY.IMAGE_MODE, isImageMode);
+    setValue(isImageMode);
+  }
+  return [value, setIsImageMode]
+}

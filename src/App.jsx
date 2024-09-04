@@ -8,17 +8,20 @@ import {
   BrowserRouter as Router,
 } from 'react-router-dom';
 import ImageGenerate from './pages/image-generate';
+import { useIsImageMode } from './store/storage';
 
 function App() {
+  const [isImageMode] = useIsImageMode();
   return (
     <div className="h-dvh w-full flex flex-col selection:bg-primary selection:text-white pb-2 text-sm">
       <Router>
         <HeaderAndPopup />
-        <Routes>
+        {isImageMode ? <ImageGenerate /> : <Chat />}
+        {/* <Routes>
           <Route path="/" element={<Navigate to="/chat" replace />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/image" element={<ImageGenerate />} />
-        </Routes>
+        </Routes> */}
       </Router>
     </div>
   );

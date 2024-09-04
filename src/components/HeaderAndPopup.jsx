@@ -1,12 +1,12 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import { useActiveModels, useIsRowMode } from '../store/app';
-import { useSecretKey } from '../store/storage';
+import { useIsImageMode, useSecretKey } from '../store/storage';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/api';
 import { useDarkMode, useIsMobile } from '../utils/use';
 import CustomModelDrawer from './CustomModelDrawer';
-import { TooltipLite, message, notification, Button } from 'tdesign-react';
+import { message, notification, Button } from 'tdesign-react';
 import { Dropdown } from 'tdesign-react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -17,8 +17,8 @@ export default function () {
   const [secretKey, setSecretKey] = useSecretKey();
   const [isDark, setDarkMode] = useDarkMode();
 
-  const location = useLocation();
-  const isImageMode = location.pathname === '/image';
+  // const location = useLocation();
+  const [isImageMode, setImageMode] = useIsImageMode();
   const customModelRef = useRef();
   const { data, error, runAsync } = useRequest(fetchUserInfo, {
     pollingErrorRetryCount: 60 * 1000,
@@ -82,7 +82,7 @@ export default function () {
           content={isImageMode ? '切换对话模式' : '切换生图模式'}
         >
           <i
-            onClick={() => navigate(isImageMode ? '/chat' : '/image')}
+            onClick={() => setImageMode(!isImageMode)}
             className={
               (isImageMode
                 ? 'iconify mingcute--chat-1-line'

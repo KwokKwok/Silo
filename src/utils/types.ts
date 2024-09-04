@@ -74,4 +74,8 @@ export enum LOCAL_STORAGE_KEY {
    * 图像生成记录
    */
   IMAGE_GENERATE_RECORDS = 'image_generate_records',
+  /**
+   * 生图模式
+   */
+  IMAGE_MODE = 'image_mode',
 }
