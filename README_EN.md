@@ -1,7 +1,7 @@
 [简体中文](https://github.com/KwokKwok/Silo)
 
 <p align="center"><a target="_blank" href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
-<h1 align="center">Silo - SiliconCloud API Playground</h1>
+<h1 align="center">Silo - Pure front-end multi-model chat, text-to-image generation</h1>
 
 <p align="center"><a target="_blank" rel="noreferrer noopener" href="https://chat.kwok.ink"><img alt="ONLINE" src="https://img.shields.io/badge/ONLINE-112418.svg?&style=for-the-badge&logo=safari&logoColor=white"></a></p>
 
@@ -10,8 +10,10 @@
 <a target="_blank" rel="noreferrer noopener" href="https://vercel.com/new/clone?repository-url=https://github.com/KwokKwok/SiloChat.git&project-name=silo-chat&repository-name=SiloChat"><img alt="Deploy" src="https://img.shields.io/badge/Deploy To Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a></p>
 
 <br/>
-<p align="center">Silo is an application based on the <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a> API, which currently supports multiple large models for simultaneous dialogue(Just like Vercel AI Playground, ChatHub, ChatALL, etc.), with extremely fast response times. It supports model parameter adjustments and automatic balance refresh functions. </p>
+<p align="center">Silo is an application mainly based on the <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a> API, which currently supports multiple large models for simultaneous <b>chat、text to image</b>, with extremely fast response times. It supports model parameter adjustments and automatic balance refresh functions.</p>
+<p align="center">You can also conveniently add models such as Google Gemini, Claude, OpenAI, and others.</p>
 <br/>
+<p align="center">And it does not require a backend/server.</p>
 
 ## Features
 
@@ -19,7 +21,7 @@
 🚀 Based on SiliconCloud API, rich models and fast response<br>
 🔑 Simple configuration, you only need to configure the key once<br>
 💰 Support SiliconCloud balance automatic refresh<br>
-🧩 Provides the ability to add custom models to use models outside of the API<br>
+🧩 Provides the ability to add custom models to use models outside of the API。Quickly supports Gemini, Claude, DeepSeek, ZhiPu, and provides OpenAI-compatible configurations, as well as a hardcore method of writing your own code.<br>
 🔄 Support adjusting model order<br>
 🌙 Night Mode<br>
 📱 Mobile phone support (limited by screen size, a simpler version is provided)<br>
@@ -38,3 +40,15 @@
 <a target="_blank" rel="noreferrer noopener" href="https://github.com/KwokKwok/SiloChat/releases"><img alt="github releases" src="https://img.shields.io/badge/RELEASES-181717.svg?&style=for-the-badge&logo=github&logoColor=white"></a></p>
 
 When the version of this project changes, it will be automatically packaged and submitted to the Chrome App Store and Edge Addons, and the generated zip file will be uploaded to [GitHub Releases](https://github.com/KwokKwok/SiloChat/releases). You can also download it directly and install it in the browser.
+
+## Acknowledgments
+
+1. Thanks to [SiliconCloud](https://siliconflow.cn/zh-cn/siliconcloud) for the API support.
+1. The chat page was referenced from [Vercel AI Playground](https://sdk.vercel.ai/playground), and the column division was referenced from [ChatHub](https://chathub.gg/).
+1. The translation used the default prompt of [Immersive Translate](https://immersivetranslate.com/zh-Hans/), which was very effective.
+
+## Buy me a coffee
+
+> Thanks to the suggestion from [黄少侠@Jike](https://m.okjike.com/users/18C4EC79-964F-4DF5-8D63-033A2345B2ED). This project is open source and completely free. If you find this project useful, feel free to Buy me a coffee~
+
+<img src="https://i.imgur.com/Z8zXeSP.jpeg" alt="Buy Me A Coffee" width="224">
