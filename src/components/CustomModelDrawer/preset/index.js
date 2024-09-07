@@ -1,9 +1,11 @@
 import laughingBabyResolveFn from "./laughingBaby.js?raw"
 import geminiResolveFn from "./gemini.js"
+import claudeChat from "./claude.js";
 import deepseekResolveFn from "./deepseek.js"
 import { CUSTOM_PRESET_PREFIX } from "../../../utils/types";
 import { openAiCompatibleChat } from "../../../utils/utils.js";
 import { getSecretKey } from "../../../store/storage.js";
+import zhipuaiChat from "./zhipuai.js";
 
 const CUSTOM_MODEL_PRESET = [
   {
@@ -46,11 +48,52 @@ const CUSTOM_MODEL_PRESET = [
         label: '密钥',
         prop: 'apiKey',
         placeholder: '请输入 API_KEY',
-        url: 'https://chat.kwok.ink'
       }
     ],
     resolveFn: geminiResolveFn,
     link: 'https://deepmind.google/technologies/gemini/'
+  },
+  {
+    name: 'Claude',
+    id: 'preset-claude',
+    icon: 'https://cdn-avatars.huggingface.co/v1/production/uploads/1670531762351-6200d0a443eb0913fa2df7cc.png',
+    ids: 'anthropic/claude-3-5-sonnet-20240620,anthropic/claude-3-opus-20240229,anthropic/claude-3-sonnet-20240229,anthropic/claude-3-haiku-20240307',
+    length: '',
+    price: void 0,
+    paramsMode: true,
+    apiVersion: '2023-06-01', // 默认值
+    baseUrl: 'https://api.anthropic.com',
+    params: [
+      {
+        type: 'input',
+        rules: [
+          { required: true, message: '必填', type: 'error' }
+        ],
+        label: '密钥',
+        prop: 'apiKey',
+        placeholder: '请输入 API KEY',
+      },
+      {
+        type: 'input',
+        rules: [
+          { required: true, message: '必填', type: 'error' }
+        ],
+        label: '请求域名',
+        prop: 'baseUrl',
+        placeholder: '请输入请求域名',
+      },
+      {
+        type: 'input',
+        rules: [
+          { required: true, message: '必填', type: 'error' }
+        ],
+        label: 'API版本',
+        prop: 'apiVersion',
+        placeholder: '请输入 API 版本',
+      },
+    ],
+    resolveFn: claudeChat,
+    link: 'https://claude.ai/'
   },
   {
     name: 'DeepSeek',
@@ -68,11 +111,33 @@ const CUSTOM_MODEL_PRESET = [
         label: '密钥',
         prop: 'apiKey',
         placeholder: '请输入 API_KEY',
-        url: 'https://chat.kwok.ink'
+        url: 'https://platform.deepseek.com/api_keys'
       }
     ],
     resolveFn: deepseekResolveFn,
     link: 'https://www.deepseek.com/'
+  },
+  {
+    name: '智谱AI',
+    id: 'preset-zhipuai',
+    icon: '',
+    ids: 'THUDM/GLM-4-Flash,THUDM/GLM-4-0520',
+    price: void 0,
+    paramsMode: true,
+    params: [
+      {
+        type: 'input',
+        rules: [
+          { required: true, message: '必填', type: 'error' }
+        ],
+        label: '密钥',
+        prop: 'apiKey',
+        placeholder: '请输入 API_KEY',
+        url: 'https://bigmodel.cn/usercenter/apikeys'
+      }
+    ],
+    resolveFn: zhipuaiChat,
+    link: 'https://bigmodel.cn/'
   }
 ].map(item => ({ ...item, name: CUSTOM_PRESET_PREFIX + item.name, isPreset: true, params: item.paramsMode ? item.params || [] : [] }));
 

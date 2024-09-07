@@ -85,7 +85,7 @@ export default function ({ model }) {
           prefixIcon={
             <div className="relative">
               <img
-                src={getModelIcon(model)}
+                src={modelDetail.icon}
                 className="relative w-4 h-4 rounded-sm"
               />
               {hasActiveCustomModel && !modelDetail?.isCustom && (
@@ -97,9 +97,7 @@ export default function ({ model }) {
             </div>
           }
           filterable
-          filter={(value, option) =>
-            option.value.toLowerCase().includes(value.toLowerCase())
-          }
+          filter={(value, option, ...rest) => option['data-keywords'].includes(value.toLowerCase())}
           value={model}
           placeholder=" "
           onChange={onModelChange}
@@ -110,6 +108,7 @@ export default function ({ model }) {
               key={idx}
               value={option.id}
               label={option.name}
+              data-keywords={(option.id + option.keywords).toLowerCase()}
             >
               <div className="flex flex-col">
                 <div className="flex items-center">
@@ -165,6 +164,16 @@ export default function ({ model }) {
                       ¥{option.price}/1M
                     </Tag>
                   )}
+                  {option.needVerify && (
+                    <Tag
+                      className="ml-2"
+                      variant="outline"
+                      size="small"
+                      theme="primary"
+                    >
+                      需实名
+                    </Tag>
+                  )}
                 </div>
               </div>
             </Select.Option>
@@ -188,25 +197,25 @@ export default function ({ model }) {
               {[
                 ...(!modelDetail?.isCustom || modelDetail?.link
                   ? [
-                      {
-                        icon:
-                          !modelDetail.link ||
+                    {
+                      icon:
+                        !modelDetail.link ||
                           modelDetail.link.startsWith('https://huggingface.co/')
-                            ? 'i-logos-hugging-face-icon'
-                            : 'i-mingcute-external-link-fill',
-                        onClick: () => {
-                          if (modelDetail.link) {
-                            window.open(modelDetail.link, '_blank');
-                            return;
-                          }
-                          window.open(
-                            'https://huggingface.co/' + model,
-                            '_blank'
-                          );
-                        },
-                        text: '详情',
+                          ? 'i-logos-hugging-face-icon'
+                          : 'i-mingcute-external-link-line',
+                      onClick: () => {
+                        if (modelDetail.link) {
+                          window.open(modelDetail.link, '_blank');
+                          return;
+                        }
+                        window.open(
+                          'https://huggingface.co/' + model,
+                          '_blank'
+                        );
                       },
-                    ]
+                      text: '详情',
+                    },
+                  ]
                   : []),
                 {
                   icon: 'i-mingcute-broom-line',

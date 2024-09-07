@@ -20,7 +20,7 @@ export function getCustomModels () {
       return item.ids.split(',').map(id => {
         const icon = item.icon || getModelIcon(id);
         const [series, ...rest] = id.split('/');
-        return ({ ...item, ids: void 0, id, series, name: rest.join('/'), resolveFn, icon, isCustom: true })
+        return ({ ...item, keywords: item.keywords || keywordsMap[series], ids: void 0, id, series, name: rest.join('/'), resolveFn, icon, isCustom: true })
       })
     }).reduce((acc, cur) => [...acc, ...cur], []);
   }
@@ -45,10 +45,22 @@ export function getModelIcon (model) {
   return _iconCache[model];
 }
 
-const textModelOf = (id, price, length) => {
+const keywordsMap = {
+  'Qwen': '阿里云,aliyun,通义千问',
+  'THUDM': '智谱AI,智谱清言,BigModel,清华大学',
+  'google': '谷歌,Brad',
+  'meta-llama': 'Facebook',
+  'internlm': '书生浦语大模型书生大模型,上海AI实验室,商汤科技,上海人工智能实验室香港中文大学和复旦大学',
+  'mistralai': '法国欧洲',
+  'deepseek-ai': '私募巨头幻方量化深度求索',
+  '01-ai': '01万物零一万物李开复'
+}
+
+const textModelOf = (id, price, length, needVerify) => {
   const [series, name] = id.split('/');
   const icon = getModelIcon(id);
-  return { id, name, series, price, length, icon }
+  const keywords = keywordsMap[series];
+  return { id, name, series, price, length, icon, keywords, needVerify }
 }
 
 export const SILICON_MODELS = [
@@ -59,11 +71,12 @@ export const SILICON_MODELS = [
   textModelOf("THUDM/chatglm3-6b", 0, 32),
   textModelOf("01-ai/Yi-1.5-9B-Chat-16K", 0, 16),
   textModelOf("01-ai/Yi-1.5-6B-Chat", 0, 4),
-  textModelOf("google/gemma-2-9b-it", 0, 8,),
+  textModelOf("google/gemma-2-9b-it", 0, 8, true),
   textModelOf("internlm/internlm2_5-7b-chat", 0, 32),
-  textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8),
-  textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 8),
-  textModelOf("mistralai/Mistral-7B-Instruct-v0.2", 0, 32),
+  textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8, true),
+  textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 8, true),
+  textModelOf("mistralai/Mistral-7B-Instruct-v0.2", 0, 32, true),
+  textModelOf("mattshumer/Reflection-Llama-3.1-70B", 4.13, 8, true),
   textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32),
   textModelOf("Qwen/Qwen2-Math-72B-Instruct", 4.13, 32),
   textModelOf("Qwen/Qwen2-57B-A14B-Instruct", 1.26, 32),
@@ -75,11 +88,11 @@ export const SILICON_MODELS = [
   textModelOf("deepseek-ai/DeepSeek-V2-Chat", 1.33, 32),
   textModelOf("deepseek-ai/deepseek-llm-67b-chat", 1, 4),
   textModelOf("internlm/internlm2_5-20b-chat", 32, 1),
-  textModelOf("meta-llama/Meta-Llama-3.1-405B-Instruct", 21, 32),
-  textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 32),
-  textModelOf("meta-llama/Meta-Llama-3-70B-Instruct", 4.13, 32),
-  textModelOf("mistralai/Mixtral-8x7B-Instruct-v0.1", 1.26, 32),
-  textModelOf("google/gemma-2-27b-it", 1.26, 8),
+  textModelOf("meta-llama/Meta-Llama-3.1-405B-Instruct", 21, 32, true),
+  textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 32, true),
+  textModelOf("meta-llama/Meta-Llama-3-70B-Instruct", 4.13, 32, true),
+  textModelOf("mistralai/Mixtral-8x7B-Instruct-v0.1", 1.26, 32, true),
+  textModelOf("google/gemma-2-27b-it", 1.26, 8, true),
 ]
 
 export const SILICON_MODELS_IDS = SILICON_MODELS.map(i => i.id)

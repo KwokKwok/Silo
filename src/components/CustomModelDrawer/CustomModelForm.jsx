@@ -92,14 +92,14 @@ export default forwardRef((props, ref) => {
           const isValid = ids.every(item => ID_REGEX.test(item));
           return isValid
             ? Promise.resolve({
-                result: true,
-              })
+              result: true,
+            })
             : Promise.resolve({
-                result: false,
-                message:
-                  'ID格式错误，请检查是否符合: {manufacturer}/{model-name}，多个需用英文逗号隔开',
-                type: 'warning',
-              });
+              result: false,
+              message:
+                'ID格式错误，请检查是否符合: {manufacturer}/{model-name}，多个需用英文逗号隔开',
+              type: 'warning',
+            });
         },
       },
     ],
@@ -111,6 +111,16 @@ export default forwardRef((props, ref) => {
       rules[item.prop] = item.rules || [];
     });
   }
+  const idsFormItem = (
+    <FormItem
+      key="ids"
+      label="模型ID"
+      name="ids"
+      help="格式：{manufacturer}/{model-name}，多个可用英文逗号隔开"
+    >
+      <Input placeholder="" />
+    </FormItem>
+  );
   return (
     <>
       <Form
@@ -152,11 +162,22 @@ export default forwardRef((props, ref) => {
         </FormItem>
         {!selected ? null : selected.paramsMode ? (
           <>
-            <FormItem key="ids" label="模型ID" name="ids">
-              <Input placeholder="{manufacturer}/{model-name}，多个可用英文逗号隔开" />
-            </FormItem>
+            {idsFormItem}
             {selected.params.map(item => (
-              <FormItem key={item.prop} label={item.label} name={item.prop}>
+              <FormItem
+                key={item.prop}
+                label={item.label}
+                name={item.prop}
+                help={item.help}
+                statusIcon={
+                  item.url ? (
+                    <i
+                      className="iconify mingcute--external-link-line cursor-pointer w-5 h-5 ml-1"
+                      onClick={() => window.open(item.url, '_blank')}
+                    ></i>
+                  ) : null
+                }
+              >
                 {item.type === 'input' ? (
                   <Input placeholder={item.placeholder} />
                 ) : (
@@ -170,9 +191,7 @@ export default forwardRef((props, ref) => {
             <FormItem label="模型名字" name="name">
               <Input placeholder="方便查看用" />
             </FormItem>
-            <FormItem label="模型ID" name="ids">
-              <Input placeholder="{manufacturer}/{model-name}，多个可用英文逗号隔开" />
-            </FormItem>
+            {idsFormItem}
             {selected?.isOpenAiCompatible ? (
               <>
                 <FormItem key="baseUrl" label="请求地址" name="baseUrl">

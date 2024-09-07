@@ -1,4 +1,4 @@
-export default async function geminiChat (modelId, messages, options, controller, onChunk, onEnd, onError, modelConfig) {
+export default async function geminiChat (modelConfig, modelId, messages, options, controller, onChunk, onEnd, onError) {
   // 请填写 API_KEY ！！！
   const { apiKey = '' } = modelConfig;
   if (!apiKey) {
