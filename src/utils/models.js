@@ -124,8 +124,8 @@ const imageModelOf = (id, price) => {
 }
 
 const IMAGE_MODELS = [
-  // imageModelOf("black-forest-labs/FLUX.1-dev", 0),
-  imageModelOf("black-forest-labs/FLUX.1-schnell", 0),
+  // imageModelOf("black-forest-labs/FLUX.1-dev", -1,),
+  imageModelOf("black-forest-labs/FLUX.1-schnell", -1),
   imageModelOf("stabilityai/stable-diffusion-3-medium", 0),
   imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", 0),
   imageModelOf("stabilityai/stable-diffusion-2-1", 0),

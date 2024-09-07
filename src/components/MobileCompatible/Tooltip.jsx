@@ -6,7 +6,7 @@ function Tooltip (props) {
     if (isMobile) {
         return props.children;
     }
-    return <TooltipLite {...props}>{props.children}</TooltipLite>
+    return <TooltipLite className={props?.content ? '' : "opacity-0"} {...props}>{props.children}</TooltipLite>
 }
 
 export default Tooltip;

@@ -36,10 +36,11 @@ function ImageGenerations ({ generations }) {
   }, [generations]);
 
   const breakpointColumnsObj = {
-    default: 4,
+    default: 5,
+    1400: 4,
     1100: 3,
     700: 2,
-    500: 1
+    500: 1,
   };
 
   return (

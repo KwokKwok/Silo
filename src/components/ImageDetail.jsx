@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { forwardRef } from 'react';
 import { ImageViewer } from 'tdesign-react';
 
-const ImageDetail = ({}, ref) => {
+const ImageDetail = ({ }, ref) => {
   const [visible, setVisible] = useState(false);
   const [generation, setGeneration] = useState(null);
   React.useImperativeHandle(ref, () => ({
@@ -18,7 +18,10 @@ const ImageDetail = ({}, ref) => {
       <ImageViewer
         className="backdrop-blur-sm filter"
         visible={visible}
-        images={generation?.images || []}
+        images={(generation?.images || []).map(item => ({
+          mainImage: item,
+          download: false,
+        }))}
         onClose={() => setVisible(false)}
       />
     </div>

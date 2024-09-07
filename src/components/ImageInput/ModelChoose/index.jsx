@@ -55,6 +55,11 @@ const ModelChoose = ({ onGenerate, onBack }) => {
                       免费
                     </Tag>
                   )}
+                  {option.price === -1 && (
+                    <Tag size="small" theme="primary" className="mr-1">
+                      Trial
+                    </Tag>
+                  )}
                   {!!option.series && (
                     <Tag variant="outline" size="small" theme="primary">
                       {option.series}
@@ -76,7 +81,7 @@ const ModelChoose = ({ onGenerate, onBack }) => {
         })}
       </div>
       <ConfigOptions ref={configModelRef} />
-      <div className="mt-2 flex items-center justify-center pb-12 mt-8">
+      <div className="flex items-center justify-center pb-12 mt-8">
         <Button
           variant="outline"
           onClick={onBack}

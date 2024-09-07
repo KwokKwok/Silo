@@ -1,5 +1,6 @@
 import { getChatRequestOptions } from "./options/chat-options"
 import { getChatResolver } from './models';
+import { fmtBaseUrl } from "./format";
 export function createOpenAICompatibleRequestOptions (sk, model, messages, options = {}) {
   return {
     method: 'POST',
@@ -36,14 +37,15 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
   if (!sk) {
     return onError(new Error('API Key未配置'))
   }
-  fetch(`${baseUrl}/chat/completions`, { ...createOpenAICompatibleRequestOptions(sk, modelId, messages, chatOptions), signal: controller.current.signal })
+  fetch(`${fmtBaseUrl(baseUrl)}/chat/completions`, { ...createOpenAICompatibleRequestOptions(sk, modelId, messages, chatOptions), signal: controller.current.signal })
     .then(async response => {
       if (!response.body) {
         throw new Error('Stream not available');
       }
       if (response.status != '200') {
         const data = await response.json();
-        throw new Error(`${data.message}`)
+        const { message, error } = data;
+        throw new Error(message || error?.message || JSON.stringify(data))
       }
       return response.body; // 获取响应体的流
     })

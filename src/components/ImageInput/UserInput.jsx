@@ -1,13 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useIsMobile } from '../../utils/use';
-import { TooltipLite } from 'tdesign-react';
 import { Button } from 'tdesign-react';
 import { useRequest } from 'ahooks';
-import { getOptimizedPrompts } from '../../services/api';
-import { message } from 'tdesign-react';
-import { notification } from 'tdesign-react';
+import { getOptimizedPrompts, getEnglishText } from '../../services/api';
 import Tooltip from '../MobileCompatible/Tooltip';
 
+const NOT_ENGLISH_REGEX = /[^\w\s,.!'?\\-]/;
 const SingleInput = ({
   main,
   onAdd,
@@ -34,27 +32,43 @@ const SingleInput = ({
   }, [value]);
 
   const {
-    loading,
-    data: gptResponse,
-    runAsync,
+    loading: generateLoading,
+    data: generateGpt,
+    runAsync: runGenerate,
   } = useRequest(getOptimizedPrompts, {
     manual: true,
   });
 
+  const {
+    loading: translateLoading,
+    data: translateData,
+    runAsync: runTranslate
+  } = useRequest(getEnglishText, {
+    manual: true,
+  })
+
+  const onTranslateToEnglish = () => {
+    runTranslate(value).then(data => {
+      onChange(data.trim())
+    });
+  };
+
   const onGeneratePrompt = () => {
-    runAsync(value).then(data => {
-      notification.info({
-        title: '优化提示',
-        content:
-          data.advise,
-        closeBtn: true,
-        duration: 1000 * 6,
-        placement: 'bottom-right',
-        offset: [-20, -20],
-      });
+    runGenerate(value).then(data => {
+      // notification.info({
+      //   title: '优化提示',
+      //   content:
+      //     data.advise,
+      //   closeBtn: true,
+      //   duration: 1000 * 6,
+      //   placement: 'bottom-right',
+      //   offset: [-20, -20],
+      // });
       addGeneratedPrompt(data);
     });
   };
+
+  const isNotEnglish = NOT_ENGLISH_REGEX.test(value);
 
   const onInput = e => {
     onChange(e.target.value.trimStart());
@@ -88,33 +102,51 @@ const SingleInput = ({
         onKeyDown={onKeyDown}
         ref={inputRef}
         disabled={disabled}
-        className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none pl-2 pr-16 text-base leading-6"
+        className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none pl-2 pr-28 text-base leading-6"
       />
-      {main && (
-        <Tooltip
-          content={'生成优化版中英文 Prompt'}
-        >
-          <i
-            onClick={loading || !value.length ? null : onGeneratePrompt}
-            className={
-              'absolute bottom-3 right-12 z-20 w-6 h-6  mr-2 cursor-pointer transition-all duration-500 ease-in-out ' +
-              (loading
-                ? ' i-mingcute-loading-3-fill animate-spin '
-                : ' iconify mingcute--quill-pen-ai-line') +
-              (!value.length ? ' opacity-60' : '')
-            }
-          ></i>
-        </Tooltip>
-      )}
-      <i
-        onClick={main ? onAdd : onRemove}
-        className={
-          'absolute bottom-3 right-4 z-20 w-6 h-6  mr-2 cursor-pointer transition-all duration-500 ease-in-out ' +
-          (main
-            ? ' i-mingcute-add-circle-fill'
-            : ' i-mingcute-minus-circle-fill')
+      <div className='absolute flex items-center top-0 h-12 right-4 z-20 '>
+        {
+          <Tooltip
+            content={'翻译为英文'}
+          >
+            <i
+              onClick={translateLoading || !isNotEnglish ? null : onTranslateToEnglish}
+              className={
+                'w-6 h-6 block mr-2 transition-all duration-500 ease-in-out ' +
+                (translateLoading
+                  ? ' i-mingcute-loading-3-fill animate-spin '
+                  : ' iconify mingcute--translate-2-ai-line') +
+                (!isNotEnglish ? ' opacity-60' : ' cursor-pointer')
+              }
+            ></i>
+          </Tooltip>
         }
-      ></i>
+        {main && (
+          <Tooltip
+            content={generateGpt?.advise || '生成优化版中英文 Prompt'}
+          >
+            <i
+              onClick={generateLoading || !value.length ? null : onGeneratePrompt}
+              className={
+                'w-6 h-6 block mr-2 cursor-pointer transition-all duration-500 ease-in-out ' +
+                (generateLoading
+                  ? ' i-mingcute-loading-3-fill animate-spin '
+                  : ' iconify mingcute--quill-pen-ai-line') +
+                (!value.length ? ' opacity-60' : '')
+              }
+            ></i>
+          </Tooltip>
+        )}
+        <i
+          onClick={main ? onAdd : onRemove}
+          className={
+            'w-6 h-6  mr-2 cursor-pointer transition-all duration-500 ease-in-out ' +
+            (main
+              ? ' i-mingcute-add-circle-fill'
+              : ' i-mingcute-minus-circle-fill')
+          }
+        ></i>
+      </div>
     </div>
   );
 };
