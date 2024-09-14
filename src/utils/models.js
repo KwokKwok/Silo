@@ -84,6 +84,7 @@ export const SILICON_MODELS = [
   textModelOf("Qwen/Qwen1.5-32B-Chat", 1.26, 32),
   textModelOf("Qwen/Qwen1.5-14B-Chat", 0.70, 32),
   textModelOf("01-ai/Yi-1.5-34B-Chat-16K", 1.26, 16),
+  textModelOf("deepseek-ai/DeepSeek-V2.5", 1.33, 32),
   textModelOf("deepseek-ai/DeepSeek-Coder-V2-Instruct", 1.33, 32),
   textModelOf("deepseek-ai/DeepSeek-V2-Chat", 1.33, 32),
   textModelOf("deepseek-ai/deepseek-llm-67b-chat", 1, 4),

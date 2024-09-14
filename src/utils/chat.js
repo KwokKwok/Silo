@@ -1,18 +1,72 @@
+import { useEffect } from "react";
 import { useActiveModels } from "../store/app";
+import { getModelIcon } from "./models";
 import { ERROR_PREFIX } from "./types";
-import { useRefresh } from "./use";
+import { useMultiRows, useRefresh } from "./use";
 import { streamChat } from "./utils";
+import { getQuestionEvaluation, getResponseEvaluationResults } from "../services/api";
 
 /**
  * 用于存放用户信息，key 为时间戳
  */
 let userMessages = {};
+let lastMessage = null;
+/**
+ * 评估信息
+ */
+let evaluationInput = {};
 
 function _addUserMessage (message) {
   const chatId = Date.now();
   const newMessage = { content: message, chatId };
+  getQuestionEvaluation(message).then(isEvaluate => {
+    if (isEvaluate) {
+      evaluationInput[chatId] = {
+        done: false,
+        message: newMessage,
+        results: [],
+        best: [],
+      }
+    }
+  })
   userMessages[chatId] = message;
+  lastMessage = newMessage;
   return newMessage;
+}
+
+function _evaluateResponse (activeChats, refreshController) {
+  if (!lastMessage) return;
+  const { chatId, content } = lastMessage
+  if (!evaluationInput[chatId]) return
+  const responses = activeChats.map(item => ({ model: item.model, content: item.messages[chatId] })).filter(item => item.content);
+  const promises = getResponseEvaluationResults(content, responses);
+  const evaluate = evaluationInput[chatId];
+  promises.forEach(p => {
+    p.then(result => {
+      evaluate.results.push(result);
+      refreshController.refresh()
+    })
+  })
+  Promise.all(promises).then(() => {
+    evaluate.done = true;
+    const winners = evaluate.results.flatMap(item => item.winners);
+    const winnerCounts = winners.reduce((counts, winner) => {
+      counts[winner] = (counts[winner] || 0) + 1;
+      return counts;
+    }, {});
+    const maxCount = Math.max(...Object.values(winnerCounts));
+    const mostFrequentWinners = Object.keys(winnerCounts).filter(winner => winnerCounts[winner] === maxCount);
+    evaluate.best = mostFrequentWinners.map(model => {
+      const supports = evaluate.results.reduce((arr, cur) => {
+        if (cur.winners.includes(model)) {
+          arr.push(cur.judge)
+        }
+        return arr
+      }, [])
+      return { model, supports }
+    })
+    refreshController.refresh()
+  })
 }
 
 /**
@@ -25,7 +79,7 @@ export function getUserMessages () {
 }
 
 
-function _streamChat (chat, newMessage) {
+function _streamChat (chat, newMessage, systemPrompt) {
   const { chatId, content } = newMessage;
   chat.controller.current = new AbortController();
   chat.loading = true;
@@ -50,6 +104,9 @@ function _streamChat (chat, newMessage) {
     return [...arr, { role: 'user', content: userMessage }, { role: 'assistant', content: aiMessage }].filter(item => item.role != 'assistant' || !item.content.startsWith(ERROR_PREFIX))
   }, [])
   chatMessage.push({ role: 'user', content })
+  if (systemPrompt) {
+    chatMessage.unshift({ role: 'system', content: systemPrompt })
+  }
 
   // 可以先展示用户消息
   chat.messages[chatId] = ''
@@ -75,6 +132,23 @@ export function useActiveChatsMessages () {
 }
 
 /**
+ * 获取最后的响应
+ */
+export function useLastGptResponse () {
+  const [rows] = useMultiRows();
+  const sortedActiveModels = (rows[0] || []).flatMap((item, index) =>
+    rows[1]?.[index] ? [item, rows[1][index]] : [item]
+  );
+  const chatId = Object.keys(userMessages)[0];
+  return sortedActiveModels.map(model => ({
+    model,
+    message: allChats[model]?.messages[chatId] || '',
+    loading: allChats[model]?.loading || false,
+    icon: getModelIcon(model),
+  }))
+}
+
+/**
  * 获取用户与模型完整的消息交互（用户消息和模型消息是分开存放的）
  * @param {string} model 模型 id 
  */
@@ -82,8 +156,9 @@ export function useChatMessages (model) {
   const chatMessages = allChats[model]?.messages || {};
   return Object.keys(chatMessages).map(chatId => ({
     chatId,
+    evaluate: evaluationInput[chatId],
     user: userMessages[chatId],
-    ai: chatMessages[chatId]
+    ai: chatMessages[chatId],
   }))
 }
 
@@ -94,14 +169,14 @@ export function useSingleChat (model) {
   return allChats[model] || {};
 }
 
-export function useSiloChat () {
+export function useSiloChat (systemPrompt) {
   const { activeModels } = useActiveModels();
-  const refresh = useRefresh(48);
+  const refreshController = useRefresh(48);
   const activeChats = activeModels.map(item => {
     if (!allChats[item]) {
       allChats[item] = {
         loading: false,
-        messages: [],
+        messages: {},
         controller: {},
         model: item,
         stop (clear) {
@@ -120,14 +195,18 @@ export function useSiloChat () {
     return allChats[item];
   })
   const loading = activeChats.some(chat => chat.loading);
-  if (!loading) {
-    refresh.stop();
-  }
+  useEffect(() => {
+    if (!loading) {
+      refreshController.refresh();
+      refreshController.stop();
+      _evaluateResponse(activeChats, refreshController);
+    }
+  }, [loading])
   const onSubmit = (message) => {
-    refresh.start();
+    refreshController.start();
     const newMessage = _addUserMessage(message);
     activeChats.forEach(chat => {
-      _streamChat(chat, newMessage);
+      _streamChat(chat, newMessage, systemPrompt);
     })
   }
   const onStop = (clear) => {
@@ -137,7 +216,7 @@ export function useSiloChat () {
     if (clear) {
       userMessages = {}
     }
-    refresh.refresh();
+    refreshController.refresh();
   }
   return { loading, onSubmit, onStop }
 }

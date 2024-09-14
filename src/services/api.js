@@ -33,3 +33,46 @@ export const getEnglishText = async (userInput) => {
   Translated Text:`, { systemPrompt: 'You are a highly skilled translation engine with expertise in the technology sector. Your function is to translate texts accurately into English, maintaining the original format, technical terms, and abbreviations. Do not add any explanations or annotations to the translated text.' })
   return result;
 };
+
+export const getQuestionEvaluation = async (userInput) => {
+  const result = await getChatCompletion(`你将判断用户的输入是否可能会有可评估的回答。输出 0 到 100 的数字，数字越大表示回答越可能具有评估性，数字越小表示越不可能。
+  输出数字，不要输出其他任何内容。问题如下：
+  <input>${userInput}</input>，take a breath, and think step by step`, { top_p: 0.2 })
+  console.log(result);
+  return parseInt(result) >= 50;
+}
+
+export const getResponseEvaluationResults = (userInput, responses, judges = ['Qwen/Qwen2-7B-Instruct', 'THUDM/glm-4-9b-chat', '01-ai/Yi-1.5-9B-Chat-16K', 'internlm/internlm2_5-7b-chat']) => {
+  const prompt = `请对模型的回答进行细致的分析和评估，输出 0 到 100 分的分数，数字越大表示回答的质量越高，数字越小表示回答的质量越低。
+  严格输出 JSON 格式的分数： { "<model_id1>":<score>, "<model_id2>": <score>, "best": "model_id of the best response" } 。
+  问题如下：
+  <input>${userInput}</input>
+  各模型回答如下：
+  ${responses.map((item) => `<id>${item.model}</id><response>${item.content}</response>`).join('\n')}
+  
+  take a breath, and think step by step`
+  console.log(prompt);
+  const models = responses.map(item => item.model);
+  return judges.map(judge => getChatCompletion(prompt, { modelId: judge, json: true, top_p: 0.2 }).then(res => {
+    try {
+      console.log(res);
+      let { best } = res;
+      if (models.includes(best)) {
+        return [best]
+      }
+      let winner = models[0];
+      models.forEach(id => {
+        if (res[id] > res[winner]) {
+          winner = id;
+        }
+      })
+      const winnerScore = res[winner];
+      return models.filter(id => res[id] == winnerScore);
+    } catch (error) {
+      return []
+    }
+  }).then(winners => ({
+    judge,
+    winners
+  })))
+}

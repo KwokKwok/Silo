@@ -39,6 +39,10 @@ export const CUSTOM_PRESET_PREFIX = '[Preset] ';
 
 export enum LOCAL_STORAGE_KEY {
   /**
+   * 主题
+   */
+  THEME_MODE = 'theme-mode',
+  /**
    * 密钥
    */
   SECRET_KEY = 'sc_key',

@@ -40,40 +40,48 @@ export function clearUserData(clearToken = false) {
   setLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, token);
 }
 
-
 interface ChatCompletionOptions {
   modelId?: string;
   systemPrompt?: string;
   json?: boolean;
   temperature?: number;
+  top_p?: number;
   [key: string]: any;
 }
 
-export const getChatCompletion = async (prompt: string, options: ChatCompletionOptions = {}, retryLimit = 3) => {
+export const getChatCompletion = async (
+  prompt: string,
+  options: ChatCompletionOptions = {},
+  retryLimit = 3
+) => {
   const sk = getSecretKey();
   if (!sk) throw new Error('缺少密钥');
-  const { modelId, systemPrompt, temperature, json, ...rest } = options || {};
+  const { modelId, systemPrompt, temperature, json, top_p, ...rest } =
+    options || {};
 
   const url = 'https://api.siliconflow.cn/v1/chat/completions';
   const messages = [] as any[];
-  const response_format = options?.json ? {
-    'type': 'json_object'
-  } : undefined;
-  if (systemPrompt) messages.push({ role: "system", content: systemPrompt })
-  messages.push({ role: "user", content: prompt })
+  const response_format = options?.json
+    ? {
+        type: 'json_object',
+      }
+    : undefined;
+  if (systemPrompt) messages.push({ role: 'system', content: systemPrompt });
+  messages.push({ role: 'user', content: prompt });
   const requestOption = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${sk}`
+      Authorization: `Bearer ${sk}`,
     },
     body: JSON.stringify({
-      model: modelId || "THUDM/glm-4-9b-chat",
+      model: modelId || 'THUDM/glm-4-9b-chat',
       messages,
-      temperature: isNumber(temperature) ? temperature : 0.7,
+      temperature: top_p || isNumber(temperature) ? temperature : 0.7,
+      top_p,
       response_format,
-      ...rest
-    })
+      ...rest,
+    }),
   };
   try {
     const response = await fetch(url, requestOption);
@@ -90,11 +98,11 @@ export const getChatCompletion = async (prompt: string, options: ChatCompletionO
       if (retryLimit > 0) {
         return getChatCompletion(prompt, options, retryLimit - 1);
       } else {
-        throw e
+        throw e;
       }
     }
   } catch (error) {
     console.error('获取GPT响应失败:', error);
     throw error;
   }
-}
+};

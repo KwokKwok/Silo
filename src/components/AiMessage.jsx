@@ -15,11 +15,21 @@ export default function AiMessage({
   content,
   isLast,
   showModelName = false,
+  plain = false,
+  evaluate = {},
 }) {
   const [isDark] = useDarkMode();
   const { loading } = useSingleChat(model);
   // 用于渲染一个行内的 loading
   const APPEND_MARK = ` \`${LOADING_MATCH_TOKEN}\``;
+
+  const isBest = (evaluate?.best || []).some(item => item.model === model);
+  const likes = (evaluate?.results || [])
+    .map(item => (item.winners.includes(model) ? item.judge : ''))
+    .filter(Boolean);
+  if (likes.length) {
+    console.log(model, content);
+  }
 
   if (isLast && loading) {
     content += APPEND_MARK;
@@ -33,7 +43,14 @@ export default function AiMessage({
           {content.replace(ERROR_PREFIX, '')}
         </span>
       ) : (
-        <div className=" relative flex-shrink-0 max-w-full mb-2 leading-6 px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md">
+        <div
+          className={
+            ' relative flex-shrink-0 max-w-full leading-6 ' +
+            (plain
+              ? ''
+              : 'mb-2 px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md')
+          }
+        >
           {showModelName && (
             <span className="text-xs mb-1 flex items-center text-gray-500 dark:text-gray-400">
               <img
@@ -100,8 +117,28 @@ export default function AiMessage({
               },
             }}
           />
+          {likes.length > 0 && (
+            <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center">
+              <div className="flex items-center border border-primary rounded-[12px] overflow-hidden h-6 box-border pl-6 pr-2 relative ">
+                <div className="absolute -left-[1px] flex items-center justify-center h-6 w-6 rounded-[12px] bg-primary ">
+                  <i className="iconify mingcute--thumb-up-2-fill text-white" />
+                </div>
+                {likes.map(item => (
+                  <img
+                    alt={item}
+                    key={item}
+                    className="ml-2 w-4 h-4 rounded-sm"
+                    src={getModelIcon(item)}
+                  />
+                ))}
+              </div>
+              {isBest ? (
+                <span className="ml-4">已由 AI 票选为最佳回复 </span>
+              ) : null}
+            </div>
+          )}
         </div>
       ),
-    [content]
+    [content, likes, isBest]
   );
 }

@@ -2,7 +2,7 @@ import { useResponsive } from "ahooks";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
-import { getJsonDataFromLocalStorage } from "./helpers";
+import { getJsonDataFromLocalStorage, getLocalStorage, setJsonDataToLocalStorage, setLocalStorage } from "./helpers";
 import { LOCAL_STORAGE_KEY } from "./types";
 import { useActiveModels, useIsRowMode } from "../store/app";
 
@@ -17,11 +17,11 @@ export function useIsMobile () {
 
 export function useDarkMode () {
   // 另外有一部分逻辑在 index.html，因为需要提前给 body 加 dark class
-  const initialValue = localStorage.getItem('theme-mode') ? localStorage.getItem('theme-mode') === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialValue = getLocalStorage(LOCAL_STORAGE_KEY.THEME_MODE, matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') == 'dark';
   const [isDark, setDarkMode] = useState(initialValue);
   const functionRef = useRef(() => { });
   functionRef.current = function toggleDarkMode (isDark) {
-    localStorage.setItem('theme-mode', isDark ? 'dark' : 'light');
+    setLocalStorage(LOCAL_STORAGE_KEY.THEME_MODE, isDark ? 'dark' : 'light');
     document.documentElement.setAttribute(
       'theme-mode',
       isDark ? 'dark' : 'light'
@@ -57,13 +57,14 @@ export function useRefresh (minGap = 16) {
   const [_, setValue] = useState(0);
   const timer = useRef(0);
   const refresh = () => setValue(Date.now());
+  const stop = () => clearTimeout(timer.current);
   const start = () => {
+    stop();
     timer.current = setTimeout(() => {
       refresh();
       start();
     }, minGap);
   }
-  const stop = () => clearTimeout(timer.current);
   minGap = Math.max(minGap, 0)
   return { start, stop, refresh };
 }
@@ -85,7 +86,7 @@ export function useAutoScrollToBottomRef () {
 let _sortedRows = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.USER_SORT_SETTINGS, [])
 const setRows = (rows) => {
   _sortedRows = rows;
-  localStorage.setItem(LOCAL_STORAGE_KEY.USER_SORT_SETTINGS, JSON.stringify(rows));
+  setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.USER_SORT_SETTINGS, rows);
 }
 export function useMultiRows () {
   const { activeModels } = useActiveModels();
