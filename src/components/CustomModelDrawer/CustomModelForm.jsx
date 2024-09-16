@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { Button } from 'tdesign-react';
 import { CUSTOM_PRESET_PREFIX } from '../../utils/types';
 import { useMemo } from 'react';
+import { isBrowserExtension } from '@src/utils/utils';
 const { FormItem } = Form;
 
 const ID_REGEX = /^[a-zA-Z0-9_\-@\.]+\/[a-zA-Z0-9_\-@\.\/]+$/;
@@ -92,14 +93,14 @@ export default forwardRef((props, ref) => {
           const isValid = ids.every(item => ID_REGEX.test(item));
           return isValid
             ? Promise.resolve({
-              result: true,
-            })
+                result: true,
+              })
             : Promise.resolve({
-              result: false,
-              message:
-                'ID格式错误，请检查是否符合: {manufacturer}/{model-name}，多个需用英文逗号隔开',
-              type: 'warning',
-            });
+                result: false,
+                message:
+                  'ID格式错误，请检查是否符合: {manufacturer}/{model-name}，多个需用英文逗号隔开',
+                type: 'warning',
+              });
         },
       },
     ],
@@ -208,8 +209,15 @@ export default forwardRef((props, ref) => {
                 </FormItem>
               </>
             ) : (
-              <FormItem label="解析函数" name="resolveFn">
+              <FormItem
+                label="解析函数"
+                help={
+                  isBrowserExtension ? '浏览器扩展暂不支持自定义解析函数' : ''
+                }
+                name="resolveFn"
+              >
                 <Textarea
+                  disabled={isBrowserExtension}
                   rows={10}
                   placeholder="建议调试好后复制过来，这里就不再做编辑器了"
                 />

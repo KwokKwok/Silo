@@ -1,0 +1,42 @@
+import { useEffect } from 'react';
+import { useState } from 'react';
+
+export default function ({ close, payload, visible }) {
+  const url = browser.runtime.getURL('ext.html') + '#web-copilot';
+  const [loaded, setLoaded] = useState(false);
+  const iframeRef = useRef(null);
+
+  useEffect(() => {
+    if (!visible) {
+      iframeRef.current.contentWindow.postMessage(
+        JSON.stringify({ type: 'clear' }),
+        '*'
+      );
+      return;
+    }
+    if (payload.type) {
+      iframeRef.current.contentWindow.postMessage(JSON.stringify(payload), '*');
+    }
+  }, [payload, loaded, visible]);
+  return (
+    <div
+      className={
+        'fixed inset-0 z-[99999] transform bg-black bg-opacity-70 filter backdrop-blur flex justify-center items-center h-full ' +
+        (visible ? '' : 'translate-x-full translate-y-full')
+      }
+      onClick={close}
+    >
+      <iframe
+        ref={iframeRef}
+        onLoad={() => {
+          setLoaded(true);
+        }}
+        className={
+          'border-none transition-opacity duration-300 outline-none rounded-[16px] shadow-xl bg-black overflow-hidden w-[512px] h-[80dvh] ' +
+          (loaded ? 'opacity-100' : 'opacity-0')
+        }
+        src={url}
+      ></iframe>
+    </div>
+  );
+}

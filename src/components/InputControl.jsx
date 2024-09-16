@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../utils/use';
 import { Popconfirm } from 'tdesign-react';
 
-export default function ({ onStop, onSubmit, loading }) {
+export default function ({ onStop, onSubmit, loading, enter, placeholder }) {
   const [input, setInput] = useState('');
   const inputRef = useRef();
   const isMobile = useIsMobile();
@@ -44,7 +44,7 @@ export default function ({ onStop, onSubmit, loading }) {
   };
 
   const onKeyDown = e => {
-    if (isMobile) return; // 移动端只允许点击发送
+    if (!enter && isMobile) return; // 移动端只允许点击发送
     if (e.key === 'Enter') {
       // 允许回车键发送
       if (!e.shiftKey) {
@@ -67,9 +67,6 @@ export default function ({ onStop, onSubmit, loading }) {
           (input.includes('\n') ? 'rounded-2xl' : 'rounded-3xl')
         }
       >
-        {/* <Popconfirm content={'确认删除订单吗'} cancelBtn={null}>
-          <Button theme="primary">删除订单</Button>
-        </Popconfirm> */}
         <i
           className={
             (loading ? 'translate-x-0' : '-translate-x-10') +
@@ -99,6 +96,7 @@ export default function ({ onStop, onSubmit, loading }) {
           style={{ height: '1.5rem' }}
           onInput={onInput}
           onKeyDown={onKeyDown}
+          placeholder={loading ? '正在思考中...' : placeholder}
           ref={inputRef}
           disabled={loading}
           className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none px-10 text-base leading-6"

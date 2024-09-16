@@ -6,7 +6,14 @@ export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
     name: 'Silo - SiliconCloud API Playground',
+    permissions: [],
     action: {},
+    "web_accessible_resources": [
+      {
+        "resources": ["ext.html"],
+        "matches": ['*://*/*']
+      }
+    ]
   },
   vite: () => ({
     esbuild: {
@@ -14,4 +21,10 @@ export default defineConfig({
       drop: ['debugger'], // 删除 debugger
     },
   }),
+  alias: {
+    '@src': path.resolve(__dirname, './src'),
+  },
+  runner: {
+    startUrls: ["https://developer.mozilla.org/en-US/docs/Web/CSS/perspective"],
+  },
 });

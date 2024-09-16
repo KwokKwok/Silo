@@ -83,3 +83,5 @@ export function streamChat (model, messages, controller, onChunk, onEnd, onError
   const resolver = getChatResolver(model);
   return resolver(model, messages, modelChatOptions, controller, onChunk, onEnd, onError)
 }
+
+export const isBrowserExtension = !!import.meta.env.BROWSER
