@@ -6,7 +6,7 @@ export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
     name: 'Silo - SiliconCloud API Playground',
-    permissions: [],
+    permissions: ['contextMenus'],
     action: {},
     "web_accessible_resources": [
       {

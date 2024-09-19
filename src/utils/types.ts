@@ -79,7 +79,12 @@ export enum LOCAL_STORAGE_KEY {
    */
   IMAGE_GENERATE_RECORDS = 'image_generate_records',
   /**
+   * @deprecated 已废弃，使用路由判断
    * 生图模式
    */
   IMAGE_MODE = 'image_mode',
+  /**
+   * 禅模式
+   */
+  ZEN_MODE = 'zen_mode',
 }

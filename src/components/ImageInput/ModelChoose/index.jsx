@@ -18,10 +18,11 @@ const ModelChoose = ({ onGenerate, onBack }) => {
           return (
             <div
               key={option.id}
-              className={`flex flex-col p-3 border rounded-lg cursor-pointer transition-colors ${isSelected
-                ? 'border-primary bg-primary-light dark:bg-primary-dark'
-                : 'border-gray-200 dark:border-gray-700'
-                }`}
+              className={`flex flex-col p-3 border rounded-lg cursor-pointer transition-colors ${
+                isSelected
+                  ? 'border-primary bg-primary-light dark:bg-primary-dark'
+                  : 'border-gray-200 dark:border-gray-700'
+              }`}
               onClick={() => {
                 const newSelectedModels = isSelected
                   ? selectedModels.filter(id => id !== option.id)
@@ -66,7 +67,7 @@ const ModelChoose = ({ onGenerate, onBack }) => {
                     </Tag>
                   )}
                   <i
-                    className="i-logos-hugging-face-icon opacity-30 hover:opacity-100 transition-opacity ml-2"
+                    className="i-mingcute-external-link-line opacity-100 transition-opacity ml-2"
                     onClick={() => {
                       window.open(
                         'https://huggingface.co/' + option.id,
@@ -82,10 +83,7 @@ const ModelChoose = ({ onGenerate, onBack }) => {
       </div>
       <ConfigOptions ref={configModelRef} />
       <div className="flex items-center justify-center pb-12 mt-8">
-        <Button
-          variant="outline"
-          onClick={onBack}
-        >
+        <Button variant="outline" onClick={onBack}>
           返回
         </Button>
         <Button

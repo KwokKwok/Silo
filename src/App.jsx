@@ -8,21 +8,29 @@ import {
   HashRouter as Router,
 } from 'react-router-dom';
 import ImageGenerate from './pages/image-generate';
-import { useIsImageMode } from './store/storage';
 import WebCopilot from './pages/web-copilot';
 
 function App() {
-  const [isImageMode] = useIsImageMode();
   return (
     <div className="h-dvh w-full flex flex-col selection:bg-primary selection:text-white pb-2 text-sm">
       <Router>
         <Routes>
+          <Route path="/" element={<Navigate to="/chat" />} />
           <Route
-            path="/"
+            path="/image"
             element={
               <>
                 <HeaderAndPopup />
-                {isImageMode ? <ImageGenerate /> : <Chat />}
+                <ImageGenerate />
+              </>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <>
+                <HeaderAndPopup />
+                <Chat />
               </>
             }
           />

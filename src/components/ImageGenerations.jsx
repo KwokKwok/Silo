@@ -10,7 +10,7 @@ const models = _allImagesModels.reduce(
   {}
 );
 
-function ImageGenerations ({ generations }) {
+function ImageGenerations({ generations }) {
   const detailRef = useRef();
   const [visibleGenerations, setVisibleGenerations] = useState([]);
 
@@ -123,8 +123,8 @@ function ImageGenerations ({ generations }) {
                   </div>
                 )}
 
-                <div className="absolute top-2 right-2 flex items-center space-x-2">
-                  <div className="bg-black bg-opacity-50 backdrop-blur-sm text-white pl-1 pr-2 py-1 rounded flex items-center">
+                <div className="absolute top-1 right-1 flex items-center space-x-2">
+                  <div className="bg-white dark:bg-black bg-opacity-60 dark:bg-opacity-60  backdrop-blur-sm text-black dark:text-white pl-1 pr-2 py-1 rounded flex items-center">
                     <div className="w-4 h-4 mr-1 bg-white rounded-sm flex items-center justify-center p-[2px]">
                       <img
                         alt={generation.model}

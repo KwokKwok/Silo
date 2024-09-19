@@ -7,7 +7,7 @@ import { Tag } from 'tdesign-react';
 import { useIsMobile } from '../../utils/use';
 import DrawPlaceholder from '../../assets/img/draw.svg';
 
-function ImageInput ({
+function ImageInput({
   className,
   startGenerate,
   loading,
@@ -90,20 +90,31 @@ function ImageInput ({
       <div
         className={`w-full flex flex-col justify-end items-center pb-4 h-full max-w-[760px] mx-auto ${className}`}
       >
-        {!showModelChoose && prompts.length == 1 && (
-          <img src={DrawPlaceholder} className="w-2/3 flex-1" alt="" />
+        {!showModelChoose && (
+          <div className="flex-1 items-center justify-center flex">
+            <img
+              src={DrawPlaceholder}
+              className="h-full max-h-[33dvw]"
+              alt=""
+            />
+          </div>
         )}
-        {!showModelChoose && <div className="flex-shrink-0 w-full pb-4">
-          <UserInput
-            inputs={prompts}
-            setInputs={setPrompts}
-            onGenerate={onGenerate}
-            onSubmit={onPromptDone}
-          />
-        </div>}
+        {!showModelChoose && (
+          <div className="flex-shrink-0 w-full pb-4">
+            <UserInput
+              inputs={prompts}
+              setInputs={setPrompts}
+              onGenerate={onGenerate}
+              onSubmit={onPromptDone}
+            />
+          </div>
+        )}
         {showModelChoose && (
           <div className="mt-4 flex-1 px-4 overflow-auto">
-            <ModelChoose onBack={() => setShowModelChoose(false)} onGenerate={onGenerate} />
+            <ModelChoose
+              onBack={() => setShowModelChoose(false)}
+              onGenerate={onGenerate}
+            />
           </div>
         )}
       </div>
@@ -129,9 +140,8 @@ function ImageInput ({
           pointerEvents: isUserInputComplete ? 'none' : 'auto',
         }}
       >
-        {prompts.length === 1 ? (
-          <img src={DrawPlaceholder} className="w-72 mb-4" alt="" />
-        ) : null}
+        <img src={DrawPlaceholder} className={'h-36 mb-4 '} alt="" />
+
         <UserInput
           inputs={prompts}
           setInputs={setPrompts}
@@ -150,7 +160,10 @@ function ImageInput ({
           pointerEvents: isUserInputComplete ? 'auto' : 'none',
         }}
       >
-        <ModelChoose onBack={() => setIsUserInputComplete(false)} onGenerate={onGenerate} />
+        <ModelChoose
+          onBack={() => setIsUserInputComplete(false)}
+          onGenerate={onGenerate}
+        />
       </div>
     </div>
   );

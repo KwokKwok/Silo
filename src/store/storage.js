@@ -49,3 +49,14 @@ export const useIsImageMode = () => {
   }
   return [value, setIsImageMode]
 }
+
+const isZenMode = atom(getLocalStorage(LOCAL_STORAGE_KEY.ZEN_MODE, 'false') === 'true')
+
+export const useZenMode = () => {
+  const [value, setValue] = useAtom(isZenMode);
+  const setIsZenMode = (isZenMode) => {
+    setLocalStorage(LOCAL_STORAGE_KEY.ZEN_MODE, isZenMode);
+    setValue(isZenMode);
+  }
+  return [value, setIsZenMode]
+}

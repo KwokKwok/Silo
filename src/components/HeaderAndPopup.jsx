@@ -1,7 +1,7 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import { useActiveModels, useIsRowMode } from '../store/app';
-import { useIsImageMode, useSecretKey } from '../store/storage';
+import { useIsImageMode, useSecretKey, useZenMode } from '../store/storage';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/api';
 import { useDarkMode, useIsMobile } from '../utils/use';
@@ -17,8 +17,9 @@ export default function () {
   const [secretKey, setSecretKey] = useSecretKey();
   const [isDark, setDarkMode] = useDarkMode();
 
-  // const location = useLocation();
-  const [isImageMode, setImageMode] = useIsImageMode();
+  const location = useLocation();
+  // const [isImageMode, setImageMode] = useIsImageMode();
+  const isImageMode = location.pathname === '/image';
   const customModelRef = useRef();
   const { data, error, runAsync } = useRequest(fetchUserInfo, {
     pollingErrorRetryCount: 60 * 1000,
@@ -42,6 +43,14 @@ export default function () {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [isRowMode, setIsRowMode] = useIsRowMode();
+  const [isZenMode, setIsZenMode] = useZenMode();
+
+  const [showInZen, setShowInZen] = useState(false);
+  useEffect(() => {
+    if (isZenMode) {
+      setShowInZen(false);
+    }
+  }, [isZenMode]);
 
   useEffect(() => {
     setShowPopup(error);
@@ -50,7 +59,24 @@ export default function () {
 
   return (
     <>
-      <div className="h-12 w-full filter backdrop-blur text-xl flex items-center px-4">
+      {isZenMode && (
+        <div
+          className="h-3 hover:bg-primary hover:bg-opacity-10 transition-colors"
+          onMouseOver={() => setShowInZen(true)}
+        ></div>
+      )}
+      <div
+        onMouseLeave={() => setShowInZen(false)}
+        className={
+          'h-12 w-full filter backdrop-blur text-xl flex items-center px-4 ' +
+          (isZenMode
+            ? 'fixed top-0 left-0 right-0 z-50 transform transition-visible duration-300 delay-150 ' +
+              (showInZen
+                ? 'translate-y-0 opacity-100'
+                : '-translate-y-full opacity-0')
+            : ' ')
+        }
+      >
         <img src="/logo.svg" alt="logo" className="w-6 mr-6" />
 
         <span className="mr-auto"></span>
@@ -82,7 +108,7 @@ export default function () {
           content={isImageMode ? '切换对话模式' : '切换生图模式'}
         >
           <i
-            onClick={() => setImageMode(!isImageMode)}
+            onClick={() => navigate(isImageMode ? '/chat' : '/image')}
             className={
               (isImageMode
                 ? 'iconify mingcute--chat-1-line'
@@ -110,6 +136,12 @@ export default function () {
               hidden: isMobile || isImageMode,
               disabled: activeModels.length <= 1,
               title: isRowMode ? '多列模式' : '双行模式',
+            },
+            {
+              icon: 'iconify mingcute--lotus-line',
+              onClick: () => setIsZenMode(!isZenMode),
+              hidden: isMobile,
+              title: isZenMode ? '退出禅模式' : '禅模式',
             },
             {
               icon: 'i-ri-key-line',

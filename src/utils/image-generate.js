@@ -60,7 +60,7 @@ async function fetchImageGenerate (generation) {
   const { prompt, model, modelOptions, controller } = generation;
   // return mockImageGenerate(generation)
 
-  const url = `https://api.siliconflow.cn/v1/${model}/text-to-image`;
+  const url = `https://api.siliconflow.cn/v1/image/generations`;
   const options = {
     method: 'POST',
     headers: {
@@ -69,6 +69,7 @@ async function fetchImageGenerate (generation) {
       authorization: `Bearer ${getSecretKey()}`
     },
     body: JSON.stringify({
+      model,
       prompt,
       ...modelOptions
     }),

@@ -2,6 +2,7 @@ import { debounce } from "lodash-es";
 import { LOCAL_STORAGE_KEY } from "../types";
 import { useState } from "react";
 import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "../helpers";
+import { getAllTextModels } from "../models";
 
 //#region 工具类
 const optionOf = (name, prop, tooltip, min, max, defaultValue) => ({
@@ -78,6 +79,14 @@ Object.keys(_allModelChatOptions).forEach(model => {
   _optionObjMap[model] = _optionsToObj(_allModelChatOptions[model])
 })
 
+const setAllModelRequestOptions = (options) => {
+  getAllTextModels().forEach(({ id: model }) => {
+    _optionObjMap[model] = _optionsToObj(options)
+    _allModelChatOptions[model] = options
+  })
+  setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.CHAT_MODEL_OPTIONS, _allModelChatOptions)
+}
+
 const setModelRequestOptions = debounce((model, options) => {
   _optionObjMap[model] = _optionsToObj(options)
   _allModelChatOptions[model] = options
@@ -114,5 +123,13 @@ export const useChatOptions = (model) => {
     option.value = hooks[option.prop][0];
   });
 
-  return [options, onPropChange];
+  const onApplyToAll = () => {
+    setAllModelRequestOptions(options);
+    options.forEach(option => {
+      const { prop, value } = option;
+      hooks[prop][1](value);
+    });
+  }
+
+  return { options, onPropChange, onApplyToAll };
 }

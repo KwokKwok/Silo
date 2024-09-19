@@ -13,6 +13,9 @@ export default {
     extend: {
       colors: {
         primary: '#0f54ff'
+      },
+      transitionProperty: {
+        'visible': 'transform, opacity',
       }
     },
   },

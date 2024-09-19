@@ -10,6 +10,8 @@ import ChatOptionAdjust from '../ChatOptionAdjust';
 import { useAutoScrollToBottomRef, useRefresh } from '../../utils/use';
 import ScLogo from '../../assets/img/sc-logo.png';
 import { useRef } from 'react';
+import { useZenMode } from '@src/store/storage';
+import { useState } from 'react';
 
 export default function ({ model, plain = false }) {
   const messages = useChatMessages(model);
@@ -20,6 +22,7 @@ export default function ({ model, plain = false }) {
     item => model === item.id || !activeModels.includes(item.id)
   );
   const modelDetail = allTextModels.find(item => item.id === model) || {};
+  const [isZenMode] = useZenMode();
   const hasActiveCustomModel = activeModels.some(
     item =>
       !SILICON_MODELS_IDS.includes(item) &&
@@ -54,19 +57,22 @@ export default function ({ model, plain = false }) {
     setActiveModels(newModels);
   };
 
-  const isMouseOver = useRef(false);
+  const [isMouseOver, _setIsMouseOver] = useState(false);
+  const mouseOverRef = useRef();
   const toggleMouseOver = value => {
-    isMouseOver.current = value;
+    _setIsMouseOver(value);
+    mouseOverRef.current = value;
   };
   const iconClassName = 'cursor-pointer text-lg opacity-70 ml-2 flex-shrink-0 ';
   const { scrollRef, scrollToBottom } = useAutoScrollToBottomRef();
+  const lastAiMessage = messages[messages.length - 1]?.ai;
   useEffect(() => {
-    if (!plain && isMouseOver.current) return;
+    if (!plain && mouseOverRef.current) return;
     if (messages.length > 0);
     {
       scrollToBottom();
     }
-  }, [messages, isMouseOver]);
+  }, [lastAiMessage]);
   return (
     <div
       data-model={model}
@@ -82,7 +88,10 @@ export default function ({ model, plain = false }) {
       {!plain && (
         <div
           className={
-            'h-10 z-20 rounded filter  backdrop-blur overflow-hidden items-center px-2  flex absolute top-0 left-0 right-0 bg-[#fff8] dark:bg-[#0008] shadow-sm'
+            'h-10 z-20 rounded filter  backdrop-blur overflow-hidden items-center px-2  flex absolute top-0 left-0 right-0 bg-[#fff8] dark:bg-[#0008] shadow-sm transform transition-visible duration-300 delay-150 ' +
+            (!isZenMode || isMouseOver
+              ? 'translate-y-0 opacity-100'
+              : '-translate-y-full opacity-0')
           }
         >
           <Select
@@ -268,7 +277,7 @@ export default function ({ model, plain = false }) {
         <div
           className={
             'w-full flex flex-col h-full overflow-auto ' +
-            (plain ? 'px-4' : ' pt-12 px-2 text-sm ')
+            (plain || isZenMode ? ' pt-2 px-2' : ' pt-12 px-2 text-sm ')
           }
           ref={scrollRef}
         >

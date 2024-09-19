@@ -81,8 +81,8 @@ export default function AiMessage({
                 const match = /language-(\w+)/.exec(className || '');
                 return (
                   <>
-                    {match || children?.length > 24 ? (
-                      <div className="relative group">
+                    {match ? (
+                      <div className={'relative group rounded overflow-hidden'}>
                         <CopyToClipboard
                           text={children}
                           onCopy={() => message.success('已复制')}
@@ -93,6 +93,7 @@ export default function AiMessage({
                           {...rest}
                           customStyle={{
                             overflowX: 'auto',
+                            borderRadius: '4px',
                             fontSize: '12px',
                           }}
                           PreTag="div"
@@ -139,6 +140,6 @@ export default function AiMessage({
           )}
         </div>
       ),
-    [content, likes, isBest]
+    [content, likes, isBest, isDark]
   );
 }

@@ -8,16 +8,16 @@ import wordExplainPrompt from '@src/services/prompt/web-copilot.txt?raw';
 
 export default function ({ message }) {
   const { loading, onSubmit, onStop } = useSiloChat(
-    `${wordExplainPrompt}${JSON.stringify(message.context)}\n`
+    `${wordExplainPrompt}<context>${JSON.stringify(
+      message.context
+    )}</context>\n`
   );
 
   useEffect(() => {
     onStop(true);
     if (message) {
       setTimeout(() => {
-        if (message.type === 'query') {
-          onSubmit(message.selection);
-        }
+        onSubmit(message.message);
       }, 16);
     }
   }, [message]);
@@ -47,7 +47,7 @@ export default function ({ message }) {
 
   if (!modelResponses.length) return null;
   return (
-    <div className="flex-1 py-4 flex flex-col h-full w-full pb-[8px]">
+    <div className="flex-1 flex flex-col h-full w-full pb-[8px]">
       <div className="flex-1 h-0 overflow-auto pb-4 relative text-sm leading-6">
         {modelResponses[activeIndex] && (
           <SingleChatPanel model={modelResponses[activeIndex].model} plain />
