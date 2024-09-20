@@ -89,9 +89,7 @@ export default function ({ model, plain = false }) {
         <div
           className={
             'h-10 z-20 rounded filter  backdrop-blur overflow-hidden items-center px-2  flex absolute top-0 left-0 right-0 bg-[#fff8] dark:bg-[#0008] shadow-sm transform transition-visible duration-300 delay-150 ' +
-            (!isZenMode || isMouseOver
-              ? 'translate-y-0 opacity-100'
-              : '-translate-y-full opacity-0')
+            (isZenMode ? 'opacity-0 hover:opacity-100' : '')
           }
         >
           <Select

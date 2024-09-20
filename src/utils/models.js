@@ -64,10 +64,11 @@ const textModelOf = (id, price, length, needVerify) => {
 }
 
 export const SILICON_MODELS = [
+  textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32),
+  textModelOf("THUDM/glm-4-9b-chat", 0, 32),
   textModelOf("Qwen/Qwen2-7B-Instruct", 0, 32),
   textModelOf("Qwen/Qwen2-1.5B-Instruct", 0, 32),
   textModelOf("Qwen/Qwen1.5-7B-Chat", 0, 32),
-  textModelOf("THUDM/glm-4-9b-chat", 0, 32),
   textModelOf("THUDM/chatglm3-6b", 0, 32),
   textModelOf("01-ai/Yi-1.5-9B-Chat-16K", 0, 16),
   textModelOf("01-ai/Yi-1.5-6B-Chat", 0, 4),
@@ -77,6 +78,9 @@ export const SILICON_MODELS = [
   textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 8, true),
   textModelOf("mistralai/Mistral-7B-Instruct-v0.2", 0, 32, true),
   textModelOf("mattshumer/Reflection-Llama-3.1-70B", 4.13, 8, true),
+  textModelOf("Qwen/Qwen2.5-72B-Instruct", 4.13, 32),
+  textModelOf("Qwen/Qwen2.5-32B-Instruct", 1.26, 32),
+  textModelOf("Qwen/Qwen2.5-14B-Instruct", 0.7, 32),
   textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32),
   textModelOf("Qwen/Qwen2-Math-72B-Instruct", 4.13, 32),
   textModelOf("Qwen/Qwen2-57B-A14B-Instruct", 1.26, 32),
