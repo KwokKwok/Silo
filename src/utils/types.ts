@@ -87,4 +87,12 @@ export enum LOCAL_STORAGE_KEY {
    * 禅模式
    */
   ZEN_MODE = 'zen_mode',
+  /**
+   * System Prompts
+   */
+  SYSTEM_PROMPTS = 'system_prompts',
+  /**
+   * 当前使用的 System Prompt
+   */
+  ACTIVE_SYSTEM_PROMPT = 'active_system_prompt',
 }

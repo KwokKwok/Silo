@@ -20,6 +20,7 @@ export default {
     },
   },
   plugins: [
+    require('@tailwindcss/typography'),
     addIconSelectors(["ri", "mingcute", "logos"]),
     iconsPlugin({
       // Select the icon collections you want to use

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../utils/use';
 import { Popconfirm } from 'tdesign-react';
+import SystemPromptSelector from './SystemPromptSelector';
 
 export default function ({ onStop, onSubmit, loading, enter, placeholder }) {
   const [input, setInput] = useState('');
@@ -56,7 +57,7 @@ export default function ({ onStop, onSubmit, loading, enter, placeholder }) {
   };
 
   const actionBaseClassName =
-    'absolute top-3 left-4  transition-transform transform duration-500 w-6 h-6 opacity-75 z-20 cursor-pointer';
+    'absolute bottom-3 right-4 z-20 w-6 h-6  mr-2 cursor-pointer transition-all duration-500 ease-in-out ';
 
   return (
     <>
@@ -67,28 +68,7 @@ export default function ({ onStop, onSubmit, loading, enter, placeholder }) {
           (input.includes('\n') ? 'rounded-2xl' : 'rounded-3xl')
         }
       >
-        <i
-          className={
-            (loading ? 'translate-x-0' : '-translate-x-10') +
-            ' i-mingcute-pause-circle-line ' +
-            actionBaseClassName
-          }
-          onClick={() => onStop(false)}
-        ></i>
-        <Popconfirm
-          content={'确定清空所有对话吗？'}
-          cancelBtn={null}
-          placement="right-bottom"
-          onConfirm={() => onStop(true)}
-        >
-          <i
-            className={
-              (!loading ? 'translate-x-0' : '-translate-x-10') +
-              ' i-mingcute-broom-line ' +
-              actionBaseClassName
-            }
-          ></i>
-        </Popconfirm>
+        <SystemPromptSelector />
         <textarea
           type="text"
           rows={1}
@@ -99,17 +79,44 @@ export default function ({ onStop, onSubmit, loading, enter, placeholder }) {
           placeholder={loading ? '正在思考中...' : placeholder}
           ref={inputRef}
           disabled={loading}
-          className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none px-10 text-base leading-6"
+          className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none px-2 text-base leading-6"
         />
         <i
           className={
-            'i-mingcute-send-fill absolute bottom-3 right-4 z-20 w-6 h-6  mr-2 cursor-pointer transition-all duration-500 ease-in-out ' +
+            actionBaseClassName +
+            ' i-mingcute-send-fill ' +
             (input.length
               ? 'translate-y-0 opacity-100'
               : 'translate-y-10 opacity-20')
           }
           onClick={onSend}
         ></i>
+        <>
+          <i
+            className={
+              (!input.length && loading ? 'translate-x-0' : 'translate-x-20') +
+              ' i-mingcute-pause-circle-line ' +
+              actionBaseClassName
+            }
+            onClick={() => onStop(false)}
+          ></i>
+          <Popconfirm
+            content={'确定清空所有对话吗？'}
+            cancelBtn={null}
+            placement="right-bottom"
+            onConfirm={() => onStop(true)}
+          >
+            <i
+              className={
+                (!input.length && !loading
+                  ? 'translate-x-0'
+                  : 'translate-x-20') +
+                ' i-mingcute-broom-line ' +
+                actionBaseClassName
+              }
+            ></i>
+          </Popconfirm>
+        </>
       </div>
     </>
   );

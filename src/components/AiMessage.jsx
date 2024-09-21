@@ -27,9 +27,6 @@ export default function AiMessage({
   const likes = (evaluate?.results || [])
     .map(item => (item.winners.includes(model) ? item.judge : ''))
     .filter(Boolean);
-  if (likes.length) {
-    console.log(model, content);
-  }
 
   if (isLast && loading) {
     content += APPEND_MARK;
@@ -64,7 +61,7 @@ export default function AiMessage({
           <Markdown
             children={content}
             remarkPlugins={[remarkGfm]}
-            className="silo-markdown"
+            className="silo-markdown prose !max-w-none prose-pre:bg-transparent prose-li:my-0 prose-slate prose-sm dark:prose-invert !leading-[1.6em]"
             components={{
               code(props) {
                 let { children, className, node, ...rest } = props;
@@ -82,7 +79,11 @@ export default function AiMessage({
                 return (
                   <>
                     {match ? (
-                      <div className={'relative group rounded overflow-hidden'}>
+                      <div
+                        className={
+                          'not-prose relative group rounded overflow-hidden'
+                        }
+                      >
                         <CopyToClipboard
                           text={children}
                           onCopy={() => message.success('已复制')}
@@ -95,6 +96,7 @@ export default function AiMessage({
                             overflowX: 'auto',
                             borderRadius: '4px',
                             fontSize: '12px',
+                            margin: '0',
                           }}
                           PreTag="div"
                           children={children}
@@ -107,7 +109,7 @@ export default function AiMessage({
                         {...rest}
                         className={
                           className +
-                          '  text-xs leading-4 px-1 rounded-sm bg-[#878378] bg-opacity-15 dark:bg-teal  text-[#EB5757] dark:text-cyan-300 font-code'
+                          ' not-prose text-xs leading-4 px-1 rounded-sm bg-[#878378] bg-opacity-15 dark:bg-teal  text-[#EB5757] dark:text-cyan-300 font-code'
                         }
                       >
                         {children}

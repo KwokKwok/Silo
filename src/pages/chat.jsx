@@ -3,9 +3,11 @@ import MultiPanelMessages from '../components/MultiPanelMessages';
 import { useIsMobile } from '../utils/use';
 import { useSiloChat } from '../utils/chat';
 import InputControl from '../components/InputControl';
+import { useSystemPrompts } from '@src/utils/system-prompt';
 
 function Chat() {
-  const { loading, onSubmit, onStop } = useSiloChat();
+  const { active } = useSystemPrompts();
+  const { loading, onSubmit, onStop } = useSiloChat(active.content);
   const isMobile = useIsMobile();
   return (
     <>

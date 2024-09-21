@@ -60,3 +60,38 @@ export const useZenMode = () => {
   }
   return [value, setIsZenMode]
 }
+
+
+const activeSystemPromptIdAtom = atom(
+  getLocalStorage(
+    LOCAL_STORAGE_KEY.ACTIVE_SYSTEM_PROMPT,
+    ''
+  )
+);
+
+export function useActiveSystemPromptId () {
+  const [activeSystemPromptId, _setActiveSystemPromptId] = useAtom(
+    activeSystemPromptIdAtom
+  );
+  const setActiveSystemPromptId = (id) => {
+    _setActiveSystemPromptId(id);
+    setLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_SYSTEM_PROMPT, id);
+  };
+  return [activeSystemPromptId, setActiveSystemPromptId];
+}
+
+const allCustomSystemPromptsAtom = atom(
+  getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.SYSTEM_PROMPTS, [])
+);
+
+export function useCustomSystemPrompts () {
+  const [allCustomSystemPrompts, _setAllCustomSystemPrompts] = useAtom(
+    allCustomSystemPromptsAtom
+  );
+
+  const setAllCustomSystemPrompts = (prompts) => {
+    _setAllCustomSystemPrompts(prompts);
+    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.SYSTEM_PROMPTS, prompts);
+  };
+  return [allCustomSystemPrompts, setAllCustomSystemPrompts];
+}

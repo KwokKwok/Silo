@@ -10,4 +10,18 @@
     border: 1px solid;
     padding: 6px;
   }
+
+  pre {
+    padding: 0 !important;
+  }
+
+  ul,
+  p,
+  ol,
+  pre,
+  table,
+  blockquote,
+  dl {
+    margin: 8px 0;
+  }
 }
