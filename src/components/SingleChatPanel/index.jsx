@@ -133,6 +133,15 @@ export default function ({ model, plain = false }) {
                       alt={option.name}
                     />
                     <span>{option.name}</span>
+                    {option.price === -1 && (
+                      <Tag
+                        className="ml-2 scale-[0.8]"
+                        size="small"
+                        theme="primary"
+                      >
+                        Trial
+                      </Tag>
+                    )}
                     {option.price === 0 && (
                       <Tag
                         className="ml-2 scale-[0.8]"
@@ -169,7 +178,7 @@ export default function ({ model, plain = false }) {
                         {option.length}K
                       </Tag>
                     )}
-                    {!!option.price && (
+                    {option.price > 0 && (
                       <Tag
                         className="ml-2"
                         variant="outline"
@@ -212,27 +221,27 @@ export default function ({ model, plain = false }) {
                 {[
                   ...(!modelDetail?.isCustom || modelDetail?.link
                     ? [
-                        {
-                          icon:
-                            !modelDetail.link ||
+                      {
+                        icon:
+                          !modelDetail.link ||
                             modelDetail.link.startsWith(
                               'https://huggingface.co/'
                             )
-                              ? 'i-logos-hugging-face-icon'
-                              : 'i-mingcute-external-link-line',
-                          onClick: () => {
-                            if (modelDetail.link) {
-                              window.open(modelDetail.link, '_blank');
-                              return;
-                            }
-                            window.open(
-                              'https://huggingface.co/' + model,
-                              '_blank'
-                            );
-                          },
-                          text: '详情',
+                            ? 'i-logos-hugging-face-icon'
+                            : 'i-mingcute-external-link-line',
+                        onClick: () => {
+                          if (modelDetail.link) {
+                            window.open(modelDetail.link, '_blank');
+                            return;
+                          }
+                          window.open(
+                            'https://huggingface.co/' + model,
+                            '_blank'
+                          );
                         },
-                      ]
+                        text: '详情',
+                      },
+                    ]
                     : []),
                   {
                     icon: 'i-mingcute-broom-line',

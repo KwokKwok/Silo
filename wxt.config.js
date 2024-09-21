@@ -5,7 +5,7 @@ console.log(path.resolve(__dirname, './src'));
 export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    name: 'Silo - SiliconCloud API Playground',
+    name: 'Silo - 多模型对话、文生图',
     permissions: ['contextMenus'],
     action: {},
     "web_accessible_resources": [

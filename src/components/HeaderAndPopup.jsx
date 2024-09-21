@@ -71,9 +71,9 @@ export default function () {
           'h-12 w-full filter backdrop-blur text-xl flex items-center px-4 ' +
           (isZenMode
             ? 'fixed top-0 left-0 right-0 z-50 transform transition-visible duration-300 delay-150 ' +
-              (showInZen
-                ? 'translate-y-0 opacity-100'
-                : '-translate-y-full opacity-0')
+            (showInZen
+              ? 'translate-y-0 opacity-100'
+              : '-translate-y-full opacity-0')
             : ' ')
         }
       >
@@ -278,7 +278,7 @@ export default function () {
                 </span>
               )}
               <span className="mt-6 text-sm text-gray-500">
-                本站使用 SiliconCloud API，需要您先注册一个 SiliconCloud 账号
+                本站主要基于 SiliconCloud API 来提供开箱即用的多模型对话和文生图能力，需要您先注册一个 SiliconCloud 账号
                 <br />
                 现在
                 <a
@@ -286,9 +286,9 @@ export default function () {
                   target="_blank"
                   href="https://cloud.siliconflow.cn?referrer=clzs72zzb02jqmp5vn9s5tj15"
                 >
-                  注册 SiliconCloud（aff）
+                  注册 SiliconCloud
                 </a>
-                即送 14 元额度可用于体验付费模型
+                官方也会赠送 14 元额度可用于体验付费模型
                 {/* <br />
                 也欢迎使用我的
                 <a className="mx-1" href="" target="_blank">
