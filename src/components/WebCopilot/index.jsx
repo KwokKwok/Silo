@@ -86,10 +86,11 @@ export default function ({ message }) {
         <div className="flex-1 relative flex-shrink-0 ml-2">
           <InputControl
             placeholder="继续问我吧"
+            plain
             enter
             onStop={onStop}
             onSubmit={onSubmit}
-            loading={loading}
+            loading={modelResponses[activeIndex]?.loading}
           />
         </div>
       </div>

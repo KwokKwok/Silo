@@ -7,17 +7,10 @@ export default function ({ close, payload, visible }) {
   const iframeRef = useRef(null);
 
   useEffect(() => {
-    if (!visible) {
-      iframeRef.current.contentWindow.postMessage(
-        JSON.stringify({ type: 'clear' }),
-        '*'
-      );
-      return;
-    }
     if (payload.type) {
       iframeRef.current.contentWindow.postMessage(JSON.stringify(payload), '*');
     }
-  }, [payload, loaded, visible]);
+  }, [payload]);
   return (
     <div
       className={

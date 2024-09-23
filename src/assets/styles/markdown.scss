@@ -1,27 +1,32 @@
 .silo-markdown {
-
-  table {
-    margin: 8px 0;
+  pre>code {
+    padding: 8px 12px !important;
+    display: block;
+    overflow-x: auto;
   }
 
-  table,
-  th,
-  td {
-    border: 1px solid;
-    padding: 6px;
-  }
+  // table {
+  //   margin: 8px 0;
+  // }
+
+  // table,
+  // th,
+  // td {
+  //   border: 1px solid;
+  //   padding: 6px;
+  // }
 
   pre {
     padding: 0 !important;
   }
 
-  ul,
-  p,
-  ol,
-  pre,
-  table,
-  blockquote,
-  dl {
-    margin: 8px 0;
-  }
+  // ul,
+  // p,
+  // ol,
+  // pre,
+  // table,
+  // blockquote,
+  // dl {
+  //   margin: 8px 0;
+  // }
 }

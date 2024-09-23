@@ -61,7 +61,7 @@ export default function AiMessage({
           <Markdown
             children={content}
             remarkPlugins={[remarkGfm]}
-            className="silo-markdown prose !max-w-none prose-pre:bg-transparent prose-li:my-0 prose-slate prose-sm dark:prose-invert !leading-[1.6em]"
+            className="silo-markdown prose !max-w-none prose-pre:bg-transparent prose-slate prose-red prose-sm dark:prose-invert prose-headings:text-primary dark:prose-headings:text-[#2ddaff]"
             components={{
               code(props) {
                 let { children, className, node, ...rest } = props;
@@ -109,10 +109,10 @@ export default function AiMessage({
                         {...rest}
                         className={
                           className +
-                          ' not-prose text-xs leading-4 px-1 rounded-sm bg-[#878378] bg-opacity-15 dark:bg-teal  text-[#EB5757] dark:text-cyan-300 font-code'
+                          ' text-xs leading-4 px-1 rounded-sm bg-[#878378] bg-opacity-15 dark:bg-teal  text-[#EB5757] dark:text-cyan-300 font-code'
                         }
                       >
-                        {children}
+                        {children.trim()}
                       </code>
                     )}
                   </>
@@ -142,6 +142,6 @@ export default function AiMessage({
           )}
         </div>
       ),
-    [content, likes, isBest, isDark]
+    [content, likes.length, isBest, isDark]
   );
 }

@@ -3,7 +3,14 @@ import { useIsMobile } from '../utils/use';
 import { Popconfirm } from 'tdesign-react';
 import SystemPromptSelector from './SystemPromptSelector';
 
-export default function ({ onStop, onSubmit, loading, enter, placeholder }) {
+export default function ({
+  onStop,
+  onSubmit,
+  loading,
+  enter,
+  placeholder,
+  plain = false,
+}) {
   const [input, setInput] = useState('');
   const inputRef = useRef();
   const isMobile = useIsMobile();
@@ -68,7 +75,7 @@ export default function ({ onStop, onSubmit, loading, enter, placeholder }) {
           (input.includes('\n') ? 'rounded-2xl' : 'rounded-3xl')
         }
       >
-        <SystemPromptSelector />
+        {!plain && <SystemPromptSelector />}
         <textarea
           type="text"
           rows={1}
