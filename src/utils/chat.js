@@ -16,10 +16,10 @@ let lastMessage = null;
  */
 let evaluationInput = {};
 
-function _addUserMessage (message) {
+function _addUserMessage (message, systemPrompt) {
   const chatId = Date.now();
   const newMessage = { content: message, chatId };
-  getQuestionEvaluation(message).then(isEvaluate => {
+  getQuestionEvaluation(message, systemPrompt).then(isEvaluate => {
     if (isEvaluate) {
       evaluationInput[chatId] = {
         done: false,
@@ -34,12 +34,12 @@ function _addUserMessage (message) {
   return newMessage;
 }
 
-function _evaluateResponse (activeChats, refreshController) {
+function _evaluateResponse (activeChats, refreshController, systemPrompt) {
   if (!lastMessage) return;
   const { chatId, content } = lastMessage
   if (!evaluationInput[chatId]) return
   const responses = activeChats.map(item => ({ model: item.model, content: item.messages[chatId] })).filter(item => item.content);
-  const promises = getResponseEvaluationResults(content, responses);
+  const promises = getResponseEvaluationResults(content, systemPrompt, responses);
   const evaluate = evaluationInput[chatId];
   promises.forEach(p => {
     p.then(result => {
@@ -199,12 +199,12 @@ export function useSiloChat (systemPrompt) {
     if (!loading) {
       refreshController.refresh();
       refreshController.stop();
-      _evaluateResponse(activeChats, refreshController);
+      _evaluateResponse(activeChats, refreshController, systemPrompt);
     }
   }, [loading])
   const onSubmit = (message) => {
     refreshController.start();
-    const newMessage = _addUserMessage(message);
+    const newMessage = _addUserMessage(message, systemPrompt);
     activeChats.forEach(chat => {
       _streamChat(chat, newMessage, systemPrompt);
     })

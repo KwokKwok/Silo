@@ -12,55 +12,7 @@ export function getSecretKey (forceUpdate = false) {
 
 const secretKeyAtom = atom(getSecretKey(true))
 
-export const useSecretKey = () => {
-  const [value, setValue] = useAtom(secretKeyAtom);
-  const setSecretKey = (key) => {
-    if (key == '用用你的') {
-      key = atob('c2stcW5scXN5cHZrZ2djdHVzd3dra3BiYXN0YnZsaXhzbmVlbXpxbXdxaHlmaWp5ZGpv')
-    }
-    setLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, key);
-    setValue(key);
-    _cacheKey = key;
-  }
-  return [value, setSecretKey]
-}
-
-
-const activeImageModels = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS, ['black-forest-labs/FLUX.1-schnell', 'stabilityai/stable-diffusion-3-medium']))
-
-export const useActiveImageModels = () => {
-  const [models, setModels] = useAtom(activeImageModels);
-  const updateActiveImageModels = (newModels) => {
-    setModels(newModels);
-    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS, newModels)
-  };
-
-  return [models, updateActiveImageModels];
-}
-
-
-const isImageMode = atom(getLocalStorage(LOCAL_STORAGE_KEY.IMAGE_MODE, 'false') === 'true')
-
-export const useIsImageMode = () => {
-  const [value, setValue] = useAtom(isImageMode);
-  const setIsImageMode = (isImageMode) => {
-    setLocalStorage(LOCAL_STORAGE_KEY.IMAGE_MODE, isImageMode);
-    setValue(isImageMode);
-  }
-  return [value, setIsImageMode]
-}
-
-const isZenMode = atom(getLocalStorage(LOCAL_STORAGE_KEY.ZEN_MODE, 'false') === 'true')
-
-export const useZenMode = () => {
-  const [value, setValue] = useAtom(isZenMode);
-  const setIsZenMode = (isZenMode) => {
-    setLocalStorage(LOCAL_STORAGE_KEY.ZEN_MODE, isZenMode);
-    setValue(isZenMode);
-  }
-  return [value, setIsZenMode]
-}
-
+const isZenModeAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.ZEN_MODE, 'false') === 'true')
 
 const activeSystemPromptIdAtom = atom(
   getLocalStorage(
@@ -69,29 +21,51 @@ const activeSystemPromptIdAtom = atom(
   )
 );
 
-export function useActiveSystemPromptId () {
-  const [activeSystemPromptId, _setActiveSystemPromptId] = useAtom(
-    activeSystemPromptIdAtom
-  );
-  const setActiveSystemPromptId = (id) => {
-    _setActiveSystemPromptId(id);
-    setLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_SYSTEM_PROMPT, id);
-  };
-  return [activeSystemPromptId, setActiveSystemPromptId];
-}
+const activeImageModels = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS, ['black-forest-labs/FLUX.1-schnell', 'stabilityai/stable-diffusion-3-medium']))
 
 const allCustomSystemPromptsAtom = atom(
   getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.SYSTEM_PROMPTS, [])
 );
 
-export function useCustomSystemPrompts () {
-  const [allCustomSystemPrompts, _setAllCustomSystemPrompts] = useAtom(
-    allCustomSystemPromptsAtom
-  );
+const atomMap = {
+  [LOCAL_STORAGE_KEY.SYSTEM_PROMPTS]: allCustomSystemPromptsAtom,
+  [LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS]: activeImageModels,
+  [LOCAL_STORAGE_KEY.ACTIVE_SYSTEM_PROMPT]: activeSystemPromptIdAtom,
+  [LOCAL_STORAGE_KEY.ZEN_MODE]: isZenModeAtom,
+  [LOCAL_STORAGE_KEY.SECRET_KEY]: secretKeyAtom,
+}
 
-  const setAllCustomSystemPrompts = (prompts) => {
-    _setAllCustomSystemPrompts(prompts);
-    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.SYSTEM_PROMPTS, prompts);
-  };
-  return [allCustomSystemPrompts, setAllCustomSystemPrompts];
+/**
+ * 获取localStorage 存储的 JSON 数据
+ * @param {LOCAL_STORAGE_KEY} key 
+ * @returns 
+ */
+export function useLocalStorageJSONAtom (key) {
+  return useLocalStorageAtom(key, true)
+}
+
+export function useLocalStorageAtom (key, isJson = false) {
+  const [value, setValue] = useAtom(atomMap[key]);
+  const setValueToLocalStorage = (newValue) => {
+    setValue(newValue);
+    (isJson ? setJsonDataToLocalStorage : setLocalStorage)(key, newValue)
+  }
+  return [value, setValueToLocalStorage]
+}
+
+export const useSecretKey = () => {
+  const [value, setValue] = useLocalStorageAtom(LOCAL_STORAGE_KEY.SECRET_KEY)
+  const setSecretKey = (key) => {
+    setValue(key);
+    _cacheKey = key;
+  }
+  return [value, setSecretKey]
+}
+
+export function useActiveSystemPromptId () {
+  return useLocalStorageAtom(LOCAL_STORAGE_KEY.ACTIVE_SYSTEM_PROMPT)
+}
+
+export const useZenMode = () => {
+  return useLocalStorageAtom(LOCAL_STORAGE_KEY.ZEN_MODE)
 }

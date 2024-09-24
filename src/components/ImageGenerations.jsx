@@ -3,6 +3,7 @@ import { getImageModels } from '../utils/models';
 import FailedImg from '../assets/img/failed.svg';
 import ImageDetail from './ImageDetail';
 import Masonry from 'react-masonry-css';
+import { useTranslation } from 'react-i18next';
 
 const _allImagesModels = getImageModels();
 const models = _allImagesModels.reduce(
@@ -11,6 +12,7 @@ const models = _allImagesModels.reduce(
 );
 
 function ImageGenerations({ generations }) {
+  const { t } = useTranslation();
   const detailRef = useRef();
   const [visibleGenerations, setVisibleGenerations] = useState([]);
 
@@ -70,7 +72,7 @@ function ImageGenerations({ generations }) {
                     }}
                   >
                     <p className="text-gray-500 dark:text-gray-400">
-                      正在生成...
+                      {t('正在生成...')}
                     </p>
                   </div>
                 ) : generation.error ? (
@@ -86,10 +88,10 @@ function ImageGenerations({ generations }) {
                       <img
                         src={FailedImg}
                         className="flex-1 h-0 mb-4"
-                        alt="生成失败"
+                        alt={t('生成失败')}
                       />
                       <span className="text-sm flex-shrink-0 mb-2">
-                        生成失败
+                        {t('生成失败')}
                       </span>
                       <span className="px-4 text-xs flex-shrink-0">
                         {generation.error}
@@ -109,13 +111,13 @@ function ImageGenerations({ generations }) {
                       <>
                         <img
                           src={generation.images[0]}
-                          alt={`生成的图片`}
+                          alt={`Generated image for prompt: ${generation.prompt}`}
                           className="w-full h-full object-cover"
                         />
                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <span className="text-white text-lg flex flex-col items-center">
                             <i className="iconify mingcute--eye-2-line w-6 h-6 mb-2" />
-                            <span>点击预览</span>
+                            <span>{t('点击预览')}</span>
                           </span>
                         </div>
                       </>
@@ -133,13 +135,14 @@ function ImageGenerations({ generations }) {
                       />
                     </div>
                     <span className="text-xs">
+                      {models[generation.model].isPro ? 'Pro/' : ''}
                       {models[generation.model].name}
                     </span>
                   </div>
                   {generation.images.length > 1 && (
                     <div className="bg-black bg-opacity-50 backdrop-blur-sm text-white px-2 py-1 rounded flex items-center">
                       <span className="text-xs">
-                        {generation.images.length}张
+                        {generation.images.length} P
                       </span>
                     </div>
                   )}

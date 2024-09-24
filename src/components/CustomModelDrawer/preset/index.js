@@ -9,7 +9,7 @@ import zhipuaiChat from "./zhipuai.js";
 
 const CUSTOM_MODEL_PRESET = [
   {
-    name: '爱笑的小孩（带参数说明）',
+    name: 'Laughing Baby（Example）',
     icon: 'https://chat.kwok.ink/logo.svg',
     id: 'preset-ai-laughing-baby',
     ids: 'Silo/Laughing-Baby-16K,Silo/Laughing-Baby-32K',
@@ -47,7 +47,6 @@ const CUSTOM_MODEL_PRESET = [
         ],
         label: '密钥',
         prop: 'apiKey',
-        placeholder: '请输入 API_KEY',
       }
     ],
     resolveFn: geminiResolveFn,
@@ -71,25 +70,22 @@ const CUSTOM_MODEL_PRESET = [
         ],
         label: '密钥',
         prop: 'apiKey',
-        placeholder: '请输入 API KEY',
       },
       {
         type: 'input',
         rules: [
           { required: true, message: '必填', type: 'error' }
         ],
-        label: '请求域名',
+        label: '请求地址',
         prop: 'baseUrl',
-        placeholder: '请输入请求域名',
       },
       {
         type: 'input',
         rules: [
           { required: true, message: '必填', type: 'error' }
         ],
-        label: 'API版本',
+        label: 'API 版本',
         prop: 'apiVersion',
-        placeholder: '请输入 API 版本',
       },
     ],
     resolveFn: claudeChat,
@@ -110,7 +106,6 @@ const CUSTOM_MODEL_PRESET = [
         ],
         label: '密钥',
         prop: 'apiKey',
-        placeholder: '请输入 API_KEY',
         url: 'https://platform.deepseek.com/api_keys'
       }
     ],
@@ -132,7 +127,6 @@ const CUSTOM_MODEL_PRESET = [
         ],
         label: '密钥',
         prop: 'apiKey',
-        placeholder: '请输入 API_KEY',
         url: 'https://bigmodel.cn/usercenter/apikeys'
       }
     ],

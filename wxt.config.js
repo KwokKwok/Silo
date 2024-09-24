@@ -5,7 +5,7 @@ console.log(path.resolve(__dirname, './src'));
 export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    name: 'Silo - 多模型对话、文生图',
+    name: 'Silo - Multi-model chat, text-to-image',
     permissions: ['contextMenus'],
     action: {},
     "web_accessible_resources": [

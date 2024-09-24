@@ -95,4 +95,8 @@ export enum LOCAL_STORAGE_KEY {
    * 当前使用的 System Prompt
    */
   ACTIVE_SYSTEM_PROMPT = 'active_system_prompt',
+  /**
+   * Chat Input History
+   */
+  CHAT_INPUT_HISTORY = 'chat_input_history',
 }

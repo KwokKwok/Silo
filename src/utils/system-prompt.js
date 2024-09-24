@@ -1,10 +1,11 @@
 import {
   useActiveSystemPromptId,
-  useCustomSystemPrompts,
+  useLocalStorageJSONAtom,
 } from '@src/store/storage'
 import { useMemo } from 'react';
 
 import ImgNon from "@src/assets/img/non.svg";
+import { LOCAL_STORAGE_KEY } from './types';
 
 const presetOf = (
   name,
@@ -15,12 +16,12 @@ const presetOf = (
 
 const systemPromptPresets = [
   presetOf(
-    '无',
+    'None',
     ImgNon,
     'Nothing. Go ahead and have fun',
     ''
   ),
-  presetOf('小红书助手', 'https://avatar.vercel.sh/7lvegw8mhol056y0fm14jsa.svg?text=小红书', '以小红书博主的文章结构，以我给出的主题写一篇帖子推荐。', '你的任务是以小红书博主的文章结构，以我给出的主题写一篇帖子推荐。你的回答应包括使用表情符号来增加趣味和互动，以及与每个段落相匹配的图片。请以一个引人入胜的介绍开始，为你的推荐设置基调。然后，提供至少三个与主题相关的段落，突出它们的独特特点和吸引力。在你的写作中使用表情符号，使它更加引人入胜和有趣。对于每个段落，请提供一个与描述内容相匹配的图片。这些图片应该视觉上吸引人，并帮助你的描述更加生动形象。我给出的主题是：'),
+  presetOf('English Translator', 'https://sf-maas-uat-prod.oss-cn-shanghai.aliyuncs.com/outputs/8a95ce92-bbd5-4b51-998b-0da2ebd0f7dc_0.png', '', 'You are a highly skilled translation engine with expertise in the technology sector. Your function is to translate texts accurately into English, maintaining the original format, technical terms, and abbreviations. Do not add any explanations or annotations to the translated text.Translate the following source text to English, Output translation directly without any additional text.Source Text: '),
   presetOf('费曼老师', 'https://sf-maas-uat-prod.oss-cn-shanghai.aliyuncs.com/outputs/deeab01e-60eb-4e90-b421-e9937876c0d2_00001_.png', '', `请用简单易懂的语言解释一个概念，比如可以包含如下几个方面：
     定义：这个概念是什么？
     背景和发展历史：这个概念是如何产生的？它的发展历程是怎样的？
@@ -38,7 +39,7 @@ export const SYSTEM_PROMPT_PRESETS = systemPromptPresets;
 
 export function useSystemPrompts () {
   const [activeId, setActiveId] = useActiveSystemPromptId();
-  const [customPrompts, setCustomPrompts] = useCustomSystemPrompts();
+  const [customPrompts, setCustomPrompts] = useLocalStorageJSONAtom(LOCAL_STORAGE_KEY.SYSTEM_PROMPTS);
   const all = useMemo(() => [...systemPromptPresets, ...customPrompts], [customPrompts])
   const active = all.find(p => p.id === activeId) || all[0];
   const save = (prompt) => {

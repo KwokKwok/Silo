@@ -17,13 +17,15 @@
 
 ## Features
 
-🌐 Browser extension and online access available<br>
+🌐 Browser extension and web access available, and you can chat with page by using extension<br>
 🚀 Based on SiliconCloud API, rich models and fast response<br>
 🔑 Simple configuration, you only need to configure the key once<br>
 💰 Support SiliconCloud balance automatic refresh<br>
 🧩 Provides the ability to add custom models to use models outside of the API。Quickly supports Gemini, Claude, DeepSeek, ZhiPu, and provides OpenAI-compatible configurations, as well as a hardcore method of writing your own code.<br>
 🔄 Support adjusting model order<br>
 🌙 Night Mode<br>
+🧘‍♂️ Zen mode<br>
+🇬🇧 i18n support<br>
 📱 Mobile phone support (limited by screen size, a simpler version is provided)<br>
 📦 Pure front-end implementation (convenient for migration, CDN deployment, etc., does not rely on server transfer)<br>
 🔧 Model parameter adjustment<br>
@@ -47,8 +49,14 @@ When the version of this project changes, it will be automatically packaged and 
 1. The chat page was referenced from [Vercel AI Playground](https://sdk.vercel.ai/playground), and the column division was referenced from [ChatHub](https://chathub.gg/).
 1. The translation used the default prompt of [Immersive Translate](https://immersivetranslate.com/zh-Hans/), which was very effective.
 
-## Buy me a coffee
+## More
+
+<details>
+<summary>Buy Me A Coffee</summary>
+
+### Buy me a coffee
 
 > Thanks to the suggestion from [黄少侠@Jike](https://m.okjike.com/users/18C4EC79-964F-4DF5-8D63-033A2345B2ED). This project is open source and completely free. If you find this project useful, feel free to Buy me a coffee~
 
 <img src="https://i.imgur.com/Z8zXeSP.jpeg" alt="Buy Me A Coffee" width="224">
+</details>

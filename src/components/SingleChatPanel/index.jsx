@@ -2,7 +2,7 @@ import { useEffect, Fragment } from 'react';
 import AiMessage from '../AiMessage';
 import UserMessage from '../UserMessage';
 import ChatHolder from '../ChatHolder';
-import { Select, Tag, Popup, Button } from 'tdesign-react';
+import { Select, Tag, Popup } from 'tdesign-react';
 import { getAllTextModels, SILICON_MODELS_IDS } from '../../utils/models';
 import { useActiveModels } from '../../store/app';
 import { useChatMessages, useSingleChat } from '../../utils/chat';
@@ -12,8 +12,11 @@ import ScLogo from '../../assets/img/sc-logo.png';
 import { useRef } from 'react';
 import { useZenMode } from '@src/store/storage';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Dropdown } from 'tdesign-react';
 
 export default function ({ model, plain = false }) {
+  const { t } = useTranslation();
   const messages = useChatMessages(model);
   const { activeModels, setActiveModels, removeActiveModel } =
     useActiveModels();
@@ -195,7 +198,7 @@ export default function ({ model, plain = false }) {
                         size="small"
                         theme="primary"
                       >
-                        需实名
+                        {t('需实名')}
                       </Tag>
                     )}
                   </div>
@@ -215,66 +218,51 @@ export default function ({ model, plain = false }) {
           >
             <i className={iconClassName + 'i-mingcute-settings-2-line '} />
           </Popup>
-          <Popup
-            content={
-              <div className="flex flex-col">
-                {[
-                  ...(!modelDetail?.isCustom || modelDetail?.link
-                    ? [
-                      {
-                        icon:
-                          !modelDetail.link ||
-                            modelDetail.link.startsWith(
-                              'https://huggingface.co/'
-                            )
-                            ? 'i-logos-hugging-face-icon'
-                            : 'i-mingcute-external-link-line',
-                        onClick: () => {
-                          if (modelDetail.link) {
-                            window.open(modelDetail.link, '_blank');
-                            return;
-                          }
-                          window.open(
-                            'https://huggingface.co/' + model,
-                            '_blank'
-                          );
-                        },
-                        text: '详情',
-                      },
-                    ]
-                    : []),
-                  {
-                    icon: 'i-mingcute-broom-line',
-                    onClick: () => onStop(true),
-                    text: '清空',
-                  },
-                  {
-                    icon: 'i-mingcute-close-line',
-                    danger: true,
-                    disabled: activeModels.length === 1,
-                    onClick: onClose,
-                    text: '关闭',
-                  },
-                ].map(item => (
-                  <Button
-                    key={item.text}
-                    onClick={item.onClick}
-                    disabled={item.disabled}
-                    theme={item.danger ? 'danger' : 'default'}
-                    variant="text"
-                    icon={<i className={item.icon + ' mr-2'} />}
-                  >
-                    {item.text}
-                  </Button>
-                ))}
-              </div>
-            }
+          <Dropdown
+            maxColumnWidth="160"
             placement="bottom-right"
-            showArrow
             trigger="click"
+            options={[
+              {
+                icon:
+                  !modelDetail.link ||
+                  modelDetail.link.startsWith('https://huggingface.co/')
+                    ? 'i-logos-hugging-face-icon'
+                    : 'i-mingcute-external-link-line',
+                onClick: () => {
+                  if (modelDetail.link) {
+                    window.open(modelDetail.link, '_blank');
+                    return;
+                  }
+                  window.open('https://huggingface.co/' + model, '_blank');
+                },
+                text: t('详情'),
+                hidden: modelDetail?.isCustom && !modelDetail.link,
+              },
+              {
+                icon: 'i-mingcute-broom-line',
+                onClick: () => onStop(true),
+                text: t('清空'),
+              },
+              {
+                icon: 'i-mingcute-close-line',
+                danger: true,
+                disabled: activeModels.length === 1,
+                onClick: onClose,
+                text: t('关闭'),
+              },
+            ]
+              .filter(item => !item.hidden)
+              .map(item => ({
+                prefixIcon: <i className={item.icon + ' mr-0'} />,
+                content: item.text,
+                onClick: item.onClick,
+                disabled: item.disabled,
+                value: item.text,
+              }))}
           >
-            <i className={iconClassName + 'i-mingcute-more-2-fill'}></i>
-          </Popup>
+            <i className={iconClassName + 'i-mingcute-more-2-fill'}></i>{' '}
+          </Dropdown>
         </div>
       )}
 

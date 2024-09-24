@@ -1,13 +1,18 @@
 import React from 'react';
 import { Tag, Button } from 'tdesign-react';
 import { getImageModels } from '../../../utils/models';
-import { useActiveImageModels } from '../../../store/storage';
+import { useLocalStorageJSONAtom } from '../../../store/storage';
 import ConfigOptions from './ConfigOptions'; // 新增导入
 import { useRef } from 'react';
 import Tooltip from '../../MobileCompatible/Tooltip';
+import { useTranslation } from 'react-i18next';
+import { LOCAL_STORAGE_KEY } from '@src/utils/types';
 
 const ModelChoose = ({ onGenerate, onBack }) => {
-  const [selectedModels, setSelectedModels] = useActiveImageModels();
+  const { t } = useTranslation();
+  const [selectedModels, setSelectedModels] = useLocalStorageJSONAtom(
+    LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS
+  );
   const configModelRef = useRef();
 
   return (
@@ -38,7 +43,7 @@ const ModelChoose = ({ onGenerate, onBack }) => {
                     alt={option.name}
                   />
                 </div>
-                <Tooltip content="编辑配置">
+                <Tooltip content={t('调整配置')}>
                   <i
                     className="i-mingcute-settings-2-line text-xl text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light transition-colors"
                     onClick={e => {
@@ -51,9 +56,19 @@ const ModelChoose = ({ onGenerate, onBack }) => {
               <div className="flex flex-col">
                 <span className="font-medium">{option.name}</span>
                 <div className="flex items-center mt-1">
+                  {!!option.series && (
+                    <Tag
+                      variant="outline"
+                      size="small"
+                      theme="primary"
+                      className="mr-1"
+                    >
+                      {option.series}
+                    </Tag>
+                  )}
                   {option.price === 0 && (
                     <Tag size="small" theme="primary" className="mr-1">
-                      免费
+                      Free
                     </Tag>
                   )}
                   {option.price === -1 && (
@@ -61,13 +76,14 @@ const ModelChoose = ({ onGenerate, onBack }) => {
                       Trial
                     </Tag>
                   )}
-                  {!!option.series && (
-                    <Tag variant="outline" size="small" theme="primary">
-                      {option.series}
+                  {option.isPro && (
+                    <Tag size="small" theme="warning" className="mr-0">
+                      Pro
                     </Tag>
                   )}
+
                   <i
-                    className="i-mingcute-external-link-line opacity-100 transition-opacity ml-2"
+                    className="ri--links-fill iconify ml-2"
                     onClick={() => {
                       window.open(
                         'https://huggingface.co/' + option.id,
@@ -84,7 +100,7 @@ const ModelChoose = ({ onGenerate, onBack }) => {
       <ConfigOptions ref={configModelRef} />
       <div className="flex items-center justify-center pb-12 mt-8">
         <Button variant="outline" onClick={onBack}>
-          返回
+          {t('返回')}
         </Button>
         <Button
           variant="outline"
@@ -92,7 +108,7 @@ const ModelChoose = ({ onGenerate, onBack }) => {
           className="ml-4"
           onClick={onGenerate}
         >
-          开始生成
+          {t('开始生成')}
         </Button>
       </div>
     </div>

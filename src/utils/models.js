@@ -125,20 +125,26 @@ export function getChatResolver (modelId) {
 }
 
 const imageModelOf = (id, price) => {
-  const [series, name] = id.split('/');
-  const icon = getModelIcon(id);
-  return { id, name, series, price, icon }
+  const isPro = id.startsWith('Pro/');
+  let fullName = id;
+  if (isPro) {
+    fullName = id.replace('Pro/', '')
+  }
+  const [series, name] = fullName.split('/');
+  const icon = getModelIcon(fullName);
+  return { id, name, series, price, icon, isPro }
 }
 
 const IMAGE_MODELS = [
-  imageModelOf("black-forest-labs/FLUX.1-dev", -1),
+  imageModelOf("black-forest-labs/FLUX.1-dev"),
   imageModelOf("black-forest-labs/FLUX.1-schnell", -1),
-  imageModelOf("stabilityai/stable-diffusion-3-medium", 0),
-  imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", 0),
-  imageModelOf("stabilityai/stable-diffusion-2-1", 0),
-  imageModelOf("stabilityai/sd-turbo", 0),
-  imageModelOf("stabilityai/sdxl-turbo", 0),
-  imageModelOf("ByteDance/SDXL-Lightning", 0),
+  imageModelOf("stabilityai/stable-diffusion-3-medium", -1),
+  imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", -1),
+  imageModelOf("stabilityai/stable-diffusion-2-1", -1),
+  imageModelOf("stabilityai/sd-turbo", -1),
+  imageModelOf("stabilityai/sdxl-turbo", -1),
+  imageModelOf("ByteDance/SDXL-Lightning", -1),
+  imageModelOf('Pro/black-forest-labs/FLUX.1-schnell')
 ]
 
 export function getImageModels () {

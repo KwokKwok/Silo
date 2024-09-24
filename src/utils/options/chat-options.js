@@ -20,7 +20,7 @@ function getDefaultChatOptions () {
     optionOf(
       'Max Tokens',
       'max_tokens',
-      'The maximum number of tokens to generate. 生成的最大 token 数',
+      '生成的最大 token 数',
       50,
       4096,
       512
@@ -52,7 +52,7 @@ function getDefaultChatOptions () {
     optionOf(
       'Frequency Penalty',
       'frequency_penalty',
-      'Controls the penalty for repeated tokens. 影响模型重复使用相同单词或短语的可能性，较高的数值意味着越不鼓励重复，0 表示对模型的行为没有影响',
+      '影响模型重复使用相同单词或短语的可能性，较高的数值意味着越不鼓励重复，0 表示对模型的行为没有影响',
       -2,
       2,
       0

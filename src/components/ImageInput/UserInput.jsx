@@ -4,6 +4,7 @@ import { Button } from 'tdesign-react';
 import { useRequest } from 'ahooks';
 import { getOptimizedPrompts, getEnglishText } from '../../services/api';
 import Tooltip from '../MobileCompatible/Tooltip';
+import { useTranslation } from 'react-i18next';
 
 const NOT_ENGLISH_REGEX = /[^\w\s,.!'?\\-]/;
 const SingleInput = ({
@@ -16,6 +17,7 @@ const SingleInput = ({
   onChange,
   disabled,
 }) => {
+  const { t } = useTranslation();
   const inputRef = useRef();
   const isMobile = useIsMobile();
   // 自动调整输入框高度
@@ -31,6 +33,12 @@ const SingleInput = ({
     }
   }, [value]);
 
+  useEffect(() => {
+    if (main) {
+      inputRef.current.focus();
+    }
+  }, [main, inputRef]);
+
   const {
     loading: generateLoading,
     data: generateGpt,
@@ -42,14 +50,14 @@ const SingleInput = ({
   const {
     loading: translateLoading,
     data: translateData,
-    runAsync: runTranslate
+    runAsync: runTranslate,
   } = useRequest(getEnglishText, {
     manual: true,
-  })
+  });
 
   const onTranslateToEnglish = () => {
     runTranslate(value).then(data => {
-      onChange(data.trim())
+      onChange(data.trim());
     });
   };
 
@@ -104,13 +112,13 @@ const SingleInput = ({
         disabled={disabled}
         className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none pl-2 pr-28 text-base leading-6"
       />
-      <div className='absolute flex items-center top-0 h-12 right-4 z-20 '>
+      <div className="absolute flex items-center top-0 h-12 right-4 z-20 ">
         {
-          <Tooltip
-            content={'翻译为英文'}
-          >
+          <Tooltip content={t('翻译为英文')}>
             <i
-              onClick={translateLoading || !isNotEnglish ? null : onTranslateToEnglish}
+              onClick={
+                translateLoading || !isNotEnglish ? null : onTranslateToEnglish
+              }
               className={
                 'w-6 h-6 block mr-2 transition-all duration-500 ease-in-out ' +
                 (translateLoading
@@ -122,11 +130,11 @@ const SingleInput = ({
           </Tooltip>
         }
         {main && (
-          <Tooltip
-            content={generateGpt?.advise || '生成优化版中英文 Prompt'}
-          >
+          <Tooltip content={generateGpt?.advise || t('生成优化版 Prompt')}>
             <i
-              onClick={generateLoading || !value.length ? null : onGeneratePrompt}
+              onClick={
+                generateLoading || !value.length ? null : onGeneratePrompt
+              }
               className={
                 'w-6 h-6 block mr-2 cursor-pointer transition-all duration-500 ease-in-out ' +
                 (generateLoading
@@ -152,6 +160,7 @@ const SingleInput = ({
 };
 
 export default function ({ inputs, setInputs, onStop, onSubmit, onGenerate }) {
+  const { t } = useTranslation();
   const validInputs = inputs.filter(item => item.trim());
 
   const addInput = () => {
@@ -166,7 +175,7 @@ export default function ({ inputs, setInputs, onStop, onSubmit, onGenerate }) {
 
   const addGeneratedPrompt = data => {
     const [main, ...rest] = inputs;
-    const newInputs = [main, data.zh, data.en, ...rest];
+    const newInputs = [main, data.optimized, ...rest];
     setInputs(newInputs);
   };
 
@@ -194,7 +203,7 @@ export default function ({ inputs, setInputs, onStop, onSubmit, onGenerate }) {
           disabled={validInputs.length === 0}
           onClick={onSubmit}
         >
-          调整模型或参数
+          {t('调整模型或参数')}
         </Button>
         <Button
           variant="outline"
@@ -203,7 +212,7 @@ export default function ({ inputs, setInputs, onStop, onSubmit, onGenerate }) {
           disabled={validInputs.length === 0}
           onClick={onGenerate}
         >
-          开始生成
+          {t('开始生成')}
         </Button>
       </div>
     </div>

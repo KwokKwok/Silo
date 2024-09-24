@@ -186,6 +186,7 @@ const sdOf = (id, smaller = false, maxInferenceStep = 50) => {
 const IMAGE_MODEL_OPTIONS = [
   fluxOf('black-forest-labs/FLUX.1-dev'),
   fluxOf('black-forest-labs/FLUX.1-schnell'),
+  fluxOf('Pro/black-forest-labs/FLUX.1-schnell'),
   sdOf("stabilityai/stable-diffusion-3-medium"),
   sdOf("stabilityai/stable-diffusion-xl-base-1.0"),
   sdOf("stabilityai/stable-diffusion-2-1", true),

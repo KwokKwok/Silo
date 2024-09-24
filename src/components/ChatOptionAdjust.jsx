@@ -3,16 +3,22 @@ import { InputNumber } from 'tdesign-react';
 import { useChatOptions } from '../utils/options/chat-options';
 import Tooltip from './MobileCompatible/Tooltip';
 import { Button } from 'tdesign-react';
+import { useTranslation } from 'react-i18next';
 
 export default function ({ model }) {
+  const { t } = useTranslation();
   const { options, onPropChange, onApplyToAll } = useChatOptions(model);
   return (
     <div className="flex flex-col !w-64 p-1">
       {options.map(option => (
         <div key={option.prop} className="flex flex-col">
           <div className="flex items-center">
-            <span>{option.name}</span>
-            <Tooltip content={option.tooltip} placement="top" showArrow={false}>
+            <span>{t(option.name)}</span>
+            <Tooltip
+              content={t(option.tooltip)}
+              placement="top"
+              showArrow={false}
+            >
               <i className="i-mingcute-information-fill ml-2 mt-2" />
             </Tooltip>
             <InputNumber
@@ -45,7 +51,7 @@ export default function ({ model }) {
           size="small"
           onClick={onApplyToAll}
         >
-          应用到全部
+          {t('应用到全部')}
         </Button>
       </div>
     </div>

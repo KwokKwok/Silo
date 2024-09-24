@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useIsMobile } from '../utils/use';
 import { Popconfirm } from 'tdesign-react';
 import SystemPromptSelector from './SystemPromptSelector';
+import { useTranslation } from 'react-i18next';
 
 export default function ({
   onStop,
@@ -11,9 +12,12 @@ export default function ({
   placeholder,
   plain = false,
 }) {
+  const { t } = useTranslation();
   const [input, setInput] = useState('');
   const inputRef = useRef();
   const isMobile = useIsMobile();
+
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     if (!loading) {
@@ -60,6 +64,10 @@ export default function ({
         onSend();
       } else {
       }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
     }
   };
 
@@ -108,7 +116,7 @@ export default function ({
             onClick={() => onStop(false)}
           ></i>
           <Popconfirm
-            content={'确定清空所有对话吗？'}
+            content={t('确定清空所有对话吗？')}
             cancelBtn={null}
             placement="right-bottom"
             onConfirm={() => onStop(true)}

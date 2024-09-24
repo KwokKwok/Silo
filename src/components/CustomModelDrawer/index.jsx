@@ -5,9 +5,11 @@ import { Dialog } from 'tdesign-react/es';
 import CustomModelForm from './CustomModelForm';
 import { useRef } from 'react';
 import { Drawer } from 'tdesign-react';
+import { useTranslation } from 'react-i18next';
 
 // 用户需要输入模型名称、图标、解析方法等信息
 export default forwardRef(({}, ref) => {
+  const { t } = useTranslation();
   useImperativeHandle(ref, () => ({
     open: () => setVisible(true),
   }));
@@ -23,7 +25,7 @@ export default forwardRef(({}, ref) => {
   };
   return (
     <Drawer
-      header="添加自定义模型"
+      header={t('自定义模型')}
       size="large"
       visible={visible}
       confirmOnEnter

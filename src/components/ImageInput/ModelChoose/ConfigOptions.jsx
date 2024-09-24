@@ -1,18 +1,13 @@
-import {
-  Dialog,
-  Button,
-  TooltipLite,
-  Select,
-  InputNumber,
-  Slider,
-} from 'tdesign-react';
+import { Dialog, Button, Select, InputNumber, Slider } from 'tdesign-react';
 import { useImageModelOptions } from '../../../utils/options/image-options';
 import { forwardRef } from 'react';
 import { useImperativeHandle } from 'react';
 import { useState } from 'react';
 import Tooltip from '../../MobileCompatible/Tooltip';
+import { useTranslation } from 'react-i18next';
 
 const ConfigOptions = forwardRef(({}, ref) => {
+  const { t } = useTranslation();
   const [modelId, setModelId] = useState();
   const [visible, setVisible] = useState(false);
   const {
@@ -42,12 +37,9 @@ const ConfigOptions = forwardRef(({}, ref) => {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span>{option.label}</span>
-                <Tooltip content={option.tooltip}>
-                  <i
-                    className="i-ri-question-line ml-2 cursor-pointer"
-                    style={{ marginLeft: '5px' }}
-                  ></i>
+                <span>{t(option.label)}</span>
+                <Tooltip content={t(option.tooltip)}>
+                  <i className="i-ri-question-line ml-2 cursor-pointer block"></i>
                 </Tooltip>
               </div>
               <InputNumber
@@ -79,12 +71,9 @@ const ConfigOptions = forwardRef(({}, ref) => {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span>{option.label}</span>
-                <Tooltip content={option.tooltip}>
-                  <i
-                    className="i-ri-question-line ml-2 cursor-pointer"
-                    style={{ marginLeft: '5px' }}
-                  ></i>
+                <span>{t(option.label)}</span>
+                <Tooltip content={t(option.tooltip)}>
+                  <i className="i-ri-question-line ml-2 cursor-pointer block"></i>
                 </Tooltip>
               </div>
               <Select
@@ -157,12 +146,16 @@ const ConfigOptions = forwardRef(({}, ref) => {
       visible={visible}
       onClose={onHide}
       onEscKeydown={onHide}
-      header={`配置 ${modelId} `}
+      header={`${modelId}`}
       footer={
         <div className="flex justify-end">
-          <Tooltip content="不同模型支持的参数或有效区间可能存在不同，将尽可能将当前配置应用到其他的模型">
+          <Tooltip
+            content={t(
+              '不同模型支持的参数或有效区间可能存在不同，将尽可能将当前配置应用到其他的模型'
+            )}
+          >
             <Button theme="default" variant="text" onClick={applyToAll}>
-              应用到全部
+              {t('应用到全部')}
             </Button>
           </Tooltip>
           <Button
@@ -171,7 +164,7 @@ const ConfigOptions = forwardRef(({}, ref) => {
             variant="outline"
             onClick={onHide}
           >
-            确定
+            {t('确定')}
           </Button>
         </div>
       }

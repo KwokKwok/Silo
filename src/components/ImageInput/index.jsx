@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import UserInput from './UserInput';
 import ModelChoose from './ModelChoose/index';
-import { useActiveImageModels } from '../../store/storage';
+import { useLocalStorageJSONAtom } from '../../store/storage';
 import { getImageGenerateOptions } from '../../utils/options/image-options';
 import { Tag } from 'tdesign-react';
 import { useIsMobile } from '../../utils/use';
 import DrawPlaceholder from '../../assets/img/draw.svg';
+import { LOCAL_STORAGE_KEY } from '@src/utils/types';
 
 function ImageInput({
   className,
@@ -17,7 +18,9 @@ function ImageInput({
 }) {
   const [prompts, setPrompts] = useState(['']);
   const [isUserInputComplete, setIsUserInputComplete] = useState(false);
-  const [activeImageModels] = useActiveImageModels();
+  const [activeImageModels] = useLocalStorageJSONAtom(
+    LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS
+  );
   const isMobile = useIsMobile();
   const [showModelChoose, setShowModelChoose] = useState(false);
 

@@ -2,13 +2,17 @@ import { useSystemPrompts } from '@src/utils/system-prompt';
 import React, { useState } from 'react';
 import { Popup, Button, Drawer, Input, Textarea, Form } from 'tdesign-react';
 import Tooltip from './MobileCompatible/Tooltip';
+import { useTranslation } from 'react-i18next';
+import { useIsMobile } from '@src/utils/use';
 const FormItem = Form.FormItem;
 
 function SystemPromptSelector() {
+  const { t } = useTranslation();
   const { active, setActive, all, save, remove } = useSystemPrompts();
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [editingPrompt, setEditingPrompt] = useState(null);
   const [editingIcon, setEditingIcon] = useState('');
+  const isMobile = useIsMobile();
 
   const onEdit = prompt => {
     setEditingPrompt(prompt);
@@ -68,7 +72,7 @@ function SystemPromptSelector() {
                       <div className="flex-1"></div>
                       <Button
                         size="small"
-                        icon={<i className="i-mingcute-copy-2-line" />}
+                        icon={<i className="i-mingcute-copy-2-line mr-1" />}
                         variant="text"
                         onClick={e => {
                           e.stopPropagation();
@@ -83,13 +87,13 @@ function SystemPromptSelector() {
                           );
                         }}
                       >
-                        复制
+                        {t('复制')}
                       </Button>
                       {!prompt?.isPreset && (
                         <>
                           <Button
                             size="small"
-                            icon={<i className="i-mingcute-edit-line" />}
+                            icon={<i className="i-mingcute-edit-line mr-1" />}
                             variant="text"
                             className="ml-auto"
                             onClick={e => {
@@ -97,11 +101,11 @@ function SystemPromptSelector() {
                               onEdit(prompt);
                             }}
                           >
-                            编辑
+                            {t('编辑')}
                           </Button>
                           <Button
                             size="small"
-                            icon={<i className="i-mingcute-delete-line" />}
+                            icon={<i className="i-mingcute-delete-line mr-1" />}
                             variant="text"
                             theme="danger"
                             onClick={e => {
@@ -109,7 +113,7 @@ function SystemPromptSelector() {
                               remove(prompt);
                             }}
                           >
-                            删除
+                            {t('删除')}
                           </Button>
                         </>
                       )}
@@ -128,7 +132,7 @@ function SystemPromptSelector() {
                 />
               </Popup>
             ))}
-            <Tooltip content="新增系统提示词">
+            <Tooltip content={t('新增系统提示词')}>
               <div
                 className="text-primary w-6 h-6 rounded-full border-2 flex items-center justify-center border-primary cursor-pointer p-1 font-semibold"
                 onClick={() => onEdit()}
@@ -148,10 +152,10 @@ function SystemPromptSelector() {
 
       <Drawer
         visible={drawerVisible}
-        size="large"
+        size={isMobile ? '100%' : 'large'}
         onClose={() => setDrawerVisible(false)}
         onConfirm={onFormConfirm}
-        header={editingPrompt ? '编辑系统提示词' : '新增系统提示词'}
+        header={t(editingPrompt ? '编辑系统提示词' : '新增系统提示词')}
       >
         <Form
           rules={rules}
@@ -187,16 +191,11 @@ function SystemPromptSelector() {
             }
           }}
         >
-          <FormItem label="名称" name="name">
-            <Input placeholder="请输入提示词名称" />
+          <FormItem label={t('名称')} name="name">
+            <Input />
           </FormItem>
-          <FormItem
-            help="默认使用 Vercel Avatar 服务，{随机背景}.svg?text={文本}，文字前添加空格可调整间距。当然，你也可以直接使用图标地址，比如你可以使用本站的文生图生成一个图标，然后使用它的地址"
-            label="图标"
-            name="icon"
-          >
+          <FormItem help={t('avatar-help')} label={t('图标')} name="icon">
             <Input
-              placeholder="提示词图标地址"
               suffixIcon={
                 editingIcon && (
                   <img
@@ -208,11 +207,11 @@ function SystemPromptSelector() {
               }
             />
           </FormItem>
-          <FormItem label="描述" name="desc">
-            <Textarea rows={3} placeholder="请输入提示词描述" />
+          <FormItem label={t('描述')} name="desc">
+            <Textarea rows={3} />
           </FormItem>
-          <FormItem label="内容" name="content">
-            <Textarea rows={5} placeholder="请输入提示词内容" />
+          <FormItem label={t('内容')} name="content">
+            <Textarea rows={5} />
           </FormItem>
         </Form>
       </Drawer>

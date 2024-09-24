@@ -1,7 +1,7 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import { useActiveModels, useIsRowMode } from '../store/app';
-import { useIsImageMode, useSecretKey, useZenMode } from '../store/storage';
+import { useSecretKey, useZenMode } from '../store/storage';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/api';
 import { useDarkMode, useIsMobile } from '../utils/use';
@@ -17,10 +17,9 @@ export default function () {
   const [showPopup, setShowPopup] = useState();
   const [secretKey, setSecretKey] = useSecretKey();
   const [isDark, setDarkMode] = useDarkMode();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
 
   const location = useLocation();
-  // const [isImageMode, setImageMode] = useIsImageMode();
   const isImageMode = location.pathname === '/image';
   const customModelRef = useRef();
   const { data, error, runAsync } = useRequest(fetchUserInfo, {
@@ -31,16 +30,19 @@ export default function () {
   useEffect(() => {
     if (secretKey == import.meta.env.VITE_DEFAULT_SK) {
       notification.info({
-        title: '您正在使用体验密钥',
-        content:
-          '体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥',
+        title: t('您正在使用体验密钥'),
+        content: t(
+          '体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥'
+        ),
         closeBtn: true,
         duration: 1000 * 6,
         placement: 'bottom-right',
         offset: [-20, -20],
       });
     }
-    runAsync();
+    runAsync().then(() => {
+      setShowPopup(false);
+    });
   }, [secretKey]);
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -98,7 +100,7 @@ export default function () {
         )}
 
         {!isImageMode && (
-          <Tooltip placement="bottom" content="新增模型">
+          <Tooltip placement="bottom" content={t('新增模型')}>
             <i
               className="block i-ri-apps-2-add-line cursor-pointer mr-4"
               onClick={addMoreModel}
@@ -107,7 +109,7 @@ export default function () {
         )}
         <Tooltip
           placement="bottom"
-          content={isImageMode ? '切换对话模式' : '切换生图模式'}
+          content={t(isImageMode ? '切换对话模式' : '切换文生图模式')}
         >
           <i
             onClick={() => navigate(isImageMode ? '/chat' : '/image')}
@@ -119,32 +121,6 @@ export default function () {
             }
           ></i>
         </Tooltip>
-        <Dropdown
-          maxColumnWidth="160"
-          trigger="click"
-          placement="bottom-right"
-          onClick={({ value }) => i18n.changeLanguage(value)}
-          options={[
-            {
-              label: '简体中文',
-              value: 'zh',
-            },
-            {
-              label: 'English',
-              value: 'en',
-            },
-          ]
-            .filter(item => !item.hidden)
-            .map(item => ({
-              content: item.label,
-              value: item.value,
-              // disabled: item.value === i18n.language,
-            }))}
-        >
-          <i
-            className={'iconify mingcute--translate-2-line cursor-pointer mr-4'}
-          ></i>
-        </Dropdown>
         <i
           className={
             (isDark ? 'i-ri-sun-line' : 'i-ri-moon-line') +
@@ -154,105 +130,135 @@ export default function () {
         ></i>
         <Dropdown
           maxColumnWidth="160"
+          direction="left"
           trigger="click"
           options={[
             {
               icon: isRowMode
-                ? 'i-mingcute-columns-3-line'
-                : 'i-mingcute-rows-3-line',
+                ? 'i-mingcute-columns-3-fill'
+                : 'i-mingcute-rows-3-fill',
               onClick: () => setIsRowMode(!isRowMode),
               hidden: isMobile || isImageMode,
               disabled: activeModels.length <= 1,
-              title: isRowMode ? '多列模式' : '双行模式',
+              title: t(isRowMode ? '多列模式' : '双行模式'),
             },
             {
-              icon: 'iconify mingcute--lotus-line',
+              icon: 'iconify mingcute--radiobox-line',
               onClick: () => setIsZenMode(!isZenMode),
               hidden: isMobile,
-              title: isZenMode ? '退出禅模式' : '禅模式',
+              title: t(isZenMode ? '退出禅模式' : '禅模式'),
             },
             {
               icon: 'i-ri-key-line',
-              title: '修改密钥',
+              title: t('修改密钥'),
               onClick: () => setShowPopup(true),
             },
             {
               icon: 'i-mingcute-plugin-2-fill',
               onClick: () => customModelRef.current.open(),
               hidden: isMobile || isImageMode,
-              title: '自定义模型',
+              title: t('自定义模型'),
             },
             {
-              icon: 'i-ri-github-fill',
-              onClick: () => {
-                window.open('https://github.com/KwokKwok/Silo', '_blank');
-              },
-              title: 'GitHub',
+              icon: 'iconify mingcute--translate-2-line',
+              title: t('选择语言'),
+              children: [
+                {
+                  content: '简体中文',
+                  onClick: () => i18n.changeLanguage('zh'),
+                },
+                {
+                  content: 'English',
+                  onClick: () => i18n.changeLanguage('en'),
+                },
+              ],
             },
             {
-              icon: 'i-mingcute-wechat-fill',
-              onClick: async () => {
-                const notify = await notification.info({
-                  placement: 'bottom-right',
-                  offset: [-20, -20],
-                  title: '联系开发者',
-                  content: '您可以通过邮箱或是微信来联系到开发者',
-                  closeBtn: true,
-                  duration: 0,
-                  footer: (
-                    <>
-                      <a
-                        href={`mailto:kwokglory@outlook.com?subject=${encodeURIComponent(
-                          'Silo反馈'
-                        )}&body=${encodeURIComponent(
-                          '请说明问题，以便开发者及时处理'
-                        )}`}
-                        onClick={() => {
-                          notify.close();
-                        }}
-                      >
-                        <Button className="ml-2" theme="default" variant="text">
-                          发邮件
-                        </Button>
-                      </a>
-                      <CopyToClipboard
-                        text="17681890733"
-                        onCopy={() => {
-                          message.success('已复制到剪贴板');
-                          notify.close();
-                        }}
-                      >
-                        <Button className="ml-2" theme="primary" variant="text">
-                          使用微信
-                        </Button>
-                      </CopyToClipboard>
-                    </>
-                  ),
-                });
-              },
-              title: '联系开发者',
-            },
-            {
-              icon: 'i-logos-chrome',
-              group: 'ext',
-              onClick: () => {
-                window.open(
-                  'https://chromewebstore.google.com/detail/silo-siliconcloud-api-pla/nakohnjaacfmjiodegibhnepfmioejln',
-                  '_blank'
-                );
-              },
-              title: 'Chrome 扩展',
-            },
-            {
-              icon: 'i-logos-microsoft-edge',
-              group: 'ext',
-              onClick: () => {
-                window.open(
-                  'https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod',
-                  '_blank'
-                );
-              },
-              title: 'Edge Addons',
+              icon: 'iconify mingcute--more-3-fill',
+              title: t('更多'),
+              divider: true,
+              children: [
+                {
+                  icon: 'i-ri-github-fill',
+                  onClick: () => {
+                    window.open('https://github.com/KwokKwok/Silo', '_blank');
+                  },
+                  title: 'GitHub',
+                },
+                {
+                  icon: 'i-mingcute-wechat-fill',
+                  onClick: async () => {
+                    const notify = await notification.info({
+                      placement: 'bottom-right',
+                      offset: [-20, -20],
+                      title: t('联系开发者'),
+                      content: t('您可以通过邮箱或是微信直接联系开发者'),
+                      closeBtn: true,
+                      duration: 0,
+                      footer: (
+                        <>
+                          <a
+                            href={`mailto:kwokglory@outlook.com?subject=${encodeURIComponent(
+                              'Silo Feedback'
+                            )}&body=${encodeURIComponent('')}`}
+                            onClick={() => {
+                              notify.close();
+                            }}
+                          >
+                            <Button
+                              className="ml-2"
+                              theme="default"
+                              variant="text"
+                            >
+                              {t('发邮件')}
+                            </Button>
+                          </a>
+                          <CopyToClipboard
+                            text="17681890733"
+                            onCopy={() => {
+                              message.success(t('已复制'));
+                              notify.close();
+                            }}
+                          >
+                            <Button
+                              className="ml-2"
+                              theme="primary"
+                              variant="text"
+                            >
+                              {t('使用微信')}
+                            </Button>
+                          </CopyToClipboard>
+                        </>
+                      ),
+                    });
+                  },
+                  title: t('联系开发者'),
+                },
+                {
+                  icon: 'i-logos-chrome',
+                  onClick: () => {
+                    window.open(
+                      'https://chromewebstore.google.com/detail/silo-siliconcloud-api-pla/nakohnjaacfmjiodegibhnepfmioejln',
+                      '_blank'
+                    );
+                  },
+                  title: t('Chrome 扩展'),
+                },
+                {
+                  icon: 'i-logos-microsoft-edge',
+                  onClick: () => {
+                    window.open(
+                      'https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod',
+                      '_blank'
+                    );
+                  },
+                  title: 'Edge Addons',
+                },
+              ].map(item => ({
+                prefixIcon: <i className={item.icon + ' mr-0'} />,
+                content: item.title,
+                onClick: item.onClick,
+              })),
             },
           ]
             .filter(item => !item.hidden)
@@ -262,6 +268,7 @@ export default function () {
               onClick: item.onClick,
               disabled: item.disabled,
               value: item.title,
+              children: item.children,
             }))}
         >
           <i className={'i-ri-more-fill cursor-pointer'}></i>
@@ -288,15 +295,15 @@ export default function () {
               onClick={e => e.stopPropagation()}
             >
               <div className="flex items-center justify-center mb-6">
+                <img src="/logo.svg" alt="SiloChat" className="h-16 mr-8" />
                 <img src={ScLogo} alt="硅基流动" className="h-16 rounded-md" />
-                <img src="/logo.svg" alt="SiloChat" className="h-16 ml-8" />
               </div>
               <input
                 type="text"
                 value={secretKey}
                 autoFocus={!secretKey}
                 onChange={e => setSecretKey(e.target.value)}
-                placeholder="在这里输入 SiliconCloud API 密钥"
+                placeholder={t('在这里输入 SiliconCloud API 密钥')}
                 className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4"
               />
 
@@ -306,47 +313,37 @@ export default function () {
                 </span>
               )}
               <span className="mt-6 text-sm text-gray-500">
-                本站主要基于 SiliconCloud API
-                来提供开箱即用的多模型对话和文生图能力，需要您先注册一个
-                SiliconCloud 账号
+                {t('intro1')}
                 <br />
-                现在
                 <a
                   className="mx-1"
                   target="_blank"
                   href="https://cloud.siliconflow.cn?referrer=clzs72zzb02jqmp5vn9s5tj15"
                 >
-                  注册 SiliconCloud
+                  {t('现在注册 SiliconCloud')}
                 </a>
-                官方也会赠送 14 元额度可用于体验付费模型
-                {/* <br />
-                也欢迎使用我的
-                <a className="mx-1" href="" target="_blank">
-                  邀请链接
-                </a>
-                ，这样我也可以另外获得 14 元额度 */}
+                {t('官方也会赠送 14 元额度可用于体验付费模型')}
               </span>
 
               <span className="mt-4 text-sm text-gray-500">
-                如您已有账号，请
+                {t('如您已有账号，请')}
                 <a
                   className="mx-1"
                   href="https://cloud.siliconflow.cn/account/ak"
                   target="_blank"
                 >
-                  点击这里
+                  {t('点击这里获取 SiliconCloud 密钥')}
                 </a>
-                获取 SiliconCloud 密钥
               </span>
 
               <span className="mt-4 text-sm text-gray-500">
-                您的密钥将仅在浏览器中存储，请仅在安全的设备上使用本应用
+                {t('您的密钥将仅在浏览器中存储，请仅在安全的设备上使用本应用')}
               </span>
               <span
                 className="text-blue-400 cursor-pointer mt-4 text-sm"
                 onClick={() => setSecretKey(import.meta.env.VITE_DEFAULT_SK)}
               >
-                🤖 先不注册，用用你的 🤖
+                🤖 {t('先不注册，用用你的')} 🤖
               </span>
             </div>
           </div>
