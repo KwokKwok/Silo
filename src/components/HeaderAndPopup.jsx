@@ -11,11 +11,13 @@ import { Dropdown } from 'tdesign-react';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Tooltip from './MobileCompatible/Tooltip';
+import { useTranslation } from 'react-i18next';
 
 export default function () {
   const [showPopup, setShowPopup] = useState();
   const [secretKey, setSecretKey] = useSecretKey();
   const [isDark, setDarkMode] = useDarkMode();
+  const { i18n } = useTranslation();
 
   const location = useLocation();
   // const [isImageMode, setImageMode] = useIsImageMode();
@@ -71,9 +73,9 @@ export default function () {
           'h-12 w-full filter backdrop-blur text-xl flex items-center px-4 ' +
           (isZenMode
             ? 'fixed top-0 left-0 right-0 z-50 transform transition-visible duration-300 delay-150 ' +
-            (showInZen
-              ? 'translate-y-0 opacity-100'
-              : '-translate-y-full opacity-0')
+              (showInZen
+                ? 'translate-y-0 opacity-100'
+                : '-translate-y-full opacity-0')
             : ' ')
         }
       >
@@ -117,6 +119,32 @@ export default function () {
             }
           ></i>
         </Tooltip>
+        <Dropdown
+          maxColumnWidth="160"
+          trigger="click"
+          placement="bottom-right"
+          onClick={({ value }) => i18n.changeLanguage(value)}
+          options={[
+            {
+              label: '简体中文',
+              value: 'zh',
+            },
+            {
+              label: 'English',
+              value: 'en',
+            },
+          ]
+            .filter(item => !item.hidden)
+            .map(item => ({
+              content: item.label,
+              value: item.value,
+              // disabled: item.value === i18n.language,
+            }))}
+        >
+          <i
+            className={'iconify mingcute--translate-2-line cursor-pointer mr-4'}
+          ></i>
+        </Dropdown>
         <i
           className={
             (isDark ? 'i-ri-sun-line' : 'i-ri-moon-line') +
@@ -278,7 +306,9 @@ export default function () {
                 </span>
               )}
               <span className="mt-6 text-sm text-gray-500">
-                本站主要基于 SiliconCloud API 来提供开箱即用的多模型对话和文生图能力，需要您先注册一个 SiliconCloud 账号
+                本站主要基于 SiliconCloud API
+                来提供开箱即用的多模型对话和文生图能力，需要您先注册一个
+                SiliconCloud 账号
                 <br />
                 现在
                 <a

@@ -9,35 +9,46 @@ import {
 } from 'react-router-dom';
 import ImageGenerate from './pages/image-generate';
 import WebCopilot from './pages/web-copilot';
+import { useI18nSideEffect } from './utils/use';
+import { useTranslation } from 'react-i18next';
+import { ConfigProvider } from 'tdesign-react';
+import enConfig from 'tdesign-react/es/locale/en_US';
+import zhConfig from 'tdesign-react/es/locale/zh_CN';
+import { merge } from 'lodash-es';
 
 function App() {
+  useI18nSideEffect();
+  const { i18n } = useTranslation();
+  const globalConfig = merge(i18n.language === 'en' ? enConfig : zhConfig, {});
   return (
-    <div className="h-dvh w-full flex flex-col selection:bg-primary selection:text-white pb-2 text-sm">
-      <Router>
-        <Routes>
-          <Route path="/" element={<Navigate to="/chat" />} />
-          <Route
-            path="/image"
-            element={
-              <>
-                <HeaderAndPopup />
-                <ImageGenerate />
-              </>
-            }
-          />
-          <Route
-            path="/chat"
-            element={
-              <>
-                <HeaderAndPopup />
-                <Chat />
-              </>
-            }
-          />
-          <Route path="/web-copilot" element={<WebCopilot />} />
-        </Routes>
-      </Router>
-    </div>
+    <ConfigProvider globalConfig={globalConfig}>
+      <div className="h-dvh w-full flex flex-col selection:bg-primary selection:text-white pb-2 text-sm">
+        <Router>
+          <Routes>
+            <Route path="/" element={<Navigate to="/chat" />} />
+            <Route
+              path="/image"
+              element={
+                <>
+                  <HeaderAndPopup />
+                  <ImageGenerate />
+                </>
+              }
+            />
+            <Route
+              path="/chat"
+              element={
+                <>
+                  <HeaderAndPopup />
+                  <Chat />
+                </>
+              }
+            />
+            <Route path="/web-copilot" element={<WebCopilot />} />
+          </Routes>
+        </Router>
+      </div>
+    </ConfigProvider>
   );
 }
 

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { getJsonDataFromLocalStorage, getLocalStorage, setJsonDataToLocalStorage, setLocalStorage } from "./helpers";
 import { LOCAL_STORAGE_KEY } from "./types";
 import { useActiveModels, useIsRowMode } from "../store/app";
+import i18next from "i18next";
 
 /**
  * 响应式判断是否为移动端，>=992为PC
@@ -162,4 +163,23 @@ export function useMultiRows () {
   }, [activeModels, isRowMode])
 
   return [_sortedRows, setRows];
-} 
+}
+
+
+export function useI18nSideEffect () {
+  useEffect(() => {
+    const handleLanguageChange = () => {
+      document.title = i18next.t('title');
+      document.querySelector('html').lang = i18next.language;
+    };
+    handleLanguageChange();
+
+    // Listen for language changes
+    i18next.on('languageChanged', handleLanguageChange);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      i18next.off('languageChanged', handleLanguageChange);
+    };
+  }, []);
+}
