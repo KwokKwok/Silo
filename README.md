@@ -43,7 +43,7 @@
 
 ## 致谢
 
-1. 感谢 [SiliconCloud](https://siliconflow.cn/zh-cn/siliconcloud) 提供的 API 支持。
+1. 感谢 [SiliconCloud](https://siliconflow.cn/zh-cn/siliconcloud)。
 1. 聊天页面参考 [Vercel AI Playground](https://sdk.vercel.ai/playground)、分栏参考 [ChatHub](https://chathub.gg/)
 1. 翻译使用了 [沉浸式翻译](https://immersivetranslate.com/zh-Hans/) 的默认 Prompt，很有效，感谢！
 

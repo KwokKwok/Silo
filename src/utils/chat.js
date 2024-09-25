@@ -37,7 +37,7 @@ function _addUserMessage (message, systemPrompt) {
 function _evaluateResponse (activeChats, refreshController, systemPrompt) {
   if (!lastMessage) return;
   const { chatId, content } = lastMessage
-  if (!evaluationInput[chatId]) return
+  if (!evaluationInput[chatId] || evaluationInput[chatId].done) return
   const responses = activeChats.map(item => ({ model: item.model, content: item.messages[chatId] })).filter(item => item.content);
   const promises = getResponseEvaluationResults(content, systemPrompt, responses);
   const evaluate = evaluationInput[chatId];

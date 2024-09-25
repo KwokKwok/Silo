@@ -94,7 +94,7 @@ function ImageGenerations({ generations }) {
                         {t('生成失败')}
                       </span>
                       <span className="px-4 text-xs flex-shrink-0">
-                        {generation.error}
+                        {t(generation.error)}
                       </span>
                     </p>
                   </div>
@@ -150,7 +150,9 @@ function ImageGenerations({ generations }) {
                 <div
                   className={
                     'absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-800 transition-opacity duration-500 to-transparent px-2 pt-4 pb-2 ' +
-                    (generation.loading ? 'opacity-0' : 'opacity-90')
+                    (generation.loading || generation.error
+                      ? 'opacity-0'
+                      : 'opacity-90')
                   }
                 >
                   <p className="text-xs text-white truncate">

@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { getSecretKey } from "../store/storage";
 import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "./helpers";
 import { LOCAL_STORAGE_KEY } from "./types";
+import { checkModelLimit } from "./utils";
 
 // 模拟图片生成函数
 async function mockImageGenerate (generation) {
@@ -52,14 +53,10 @@ async function mockImageGenerate (generation) {
   });
 }
 
-
-
-
-
 async function fetchImageGenerate (generation) {
   const { prompt, model, modelOptions, controller } = generation;
   // return mockImageGenerate(generation)
-
+  await checkModelLimit(model)
   const url = `https://api.siliconflow.cn/v1/image/generations`;
   const options = {
     method: 'POST',

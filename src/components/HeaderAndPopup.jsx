@@ -1,7 +1,7 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import { useActiveModels, useIsRowMode } from '../store/app';
-import { useSecretKey, useZenMode } from '../store/storage';
+import { isExperienceSK, useSecretKey, useZenMode } from '../store/storage';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/api';
 import { useDarkMode, useIsMobile } from '../utils/use';
@@ -28,7 +28,7 @@ export default function () {
     manual: true,
   });
   useEffect(() => {
-    if (secretKey == import.meta.env.VITE_DEFAULT_SK) {
+    if (isExperienceSK()) {
       notification.info({
         title: t('您正在使用体验密钥'),
         content: t(
@@ -81,7 +81,12 @@ export default function () {
             : ' ')
         }
       >
-        <img src="/logo.svg" alt="logo" className="w-6 mr-6" />
+        <img
+          src="/logo.svg"
+          alt="logo"
+          className="w-6 mr-6 cursor-pointer"
+          onClick={() => navigate('/chat')}
+        />
 
         <span className="mr-auto"></span>
         {!!data && (
@@ -341,7 +346,7 @@ export default function () {
               </span>
               <span
                 className="text-blue-400 cursor-pointer mt-4 text-sm"
-                onClick={() => setSecretKey(import.meta.env.VITE_DEFAULT_SK)}
+                onClick={() => setSecretKey()}
               >
                 🤖 {t('先不注册，用用你的')} 🤖
               </span>

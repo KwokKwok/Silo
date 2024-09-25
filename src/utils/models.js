@@ -136,7 +136,7 @@ const imageModelOf = (id, price) => {
 }
 
 const IMAGE_MODELS = [
-  imageModelOf("black-forest-labs/FLUX.1-dev"),
+  imageModelOf("black-forest-labs/FLUX.1-dev", 1),
   imageModelOf("black-forest-labs/FLUX.1-schnell", -1),
   imageModelOf("stabilityai/stable-diffusion-3-medium", -1),
   imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", -1),
@@ -144,8 +144,17 @@ const IMAGE_MODELS = [
   imageModelOf("stabilityai/sd-turbo", -1),
   imageModelOf("stabilityai/sdxl-turbo", -1),
   imageModelOf("ByteDance/SDXL-Lightning", -1),
-  imageModelOf('Pro/black-forest-labs/FLUX.1-schnell')
+  imageModelOf('Pro/black-forest-labs/FLUX.1-schnell', 1)
 ]
+
+/**
+ * 判断体验密钥是否可用
+ */
+export function isLimitedModel (modelId) {
+  const IMAGE_LIMITED_MODELS = IMAGE_MODELS.filter(item => item.price > 0).map(item => item.id)
+  const TEXT_LIMITED_MODELS = []
+  return IMAGE_LIMITED_MODELS.includes(modelId) || TEXT_LIMITED_MODELS.includes(modelId)
+}
 
 export function getImageModels () {
   return [...IMAGE_MODELS]

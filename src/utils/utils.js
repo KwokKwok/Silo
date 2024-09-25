@@ -1,6 +1,8 @@
 import { getChatRequestOptions } from "./options/chat-options"
-import { getChatResolver } from './models';
+import { getChatResolver, isLimitedModel } from './models';
 import { fmtBaseUrl } from "./format";
+import { isExperienceSK } from "@src/store/storage";
+import i18next from "i18next";
 export function createOpenAICompatibleRequestOptions (sk, model, messages, options = {}) {
   return {
     method: 'POST',
@@ -85,3 +87,12 @@ export function streamChat (model, messages, controller, onChunk, onEnd, onError
 }
 
 export const isBrowserExtension = !!import.meta.env.BROWSER
+
+export async function checkModelLimit (modelId) {
+  if (isExperienceSK()) {
+    if (isLimitedModel(modelId)) {
+      throw new Error('为了长久的提供基础服务，体验密钥暂不支持该模型，请见谅')
+    }
+  }
+}
+

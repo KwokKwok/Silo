@@ -45,7 +45,7 @@ When the version of this project changes, it will be automatically packaged and 
 
 ## Acknowledgments
 
-1. Thanks to [SiliconCloud](https://siliconflow.cn/zh-cn/siliconcloud) for the API support.
+1. Thanks to [SiliconCloud](https://siliconflow.cn/zh-cn/siliconcloud).
 1. The chat page was referenced from [Vercel AI Playground](https://sdk.vercel.ai/playground), and the column division was referenced from [ChatHub](https://chathub.gg/).
 1. The translation used the default prompt of [Immersive Translate](https://immersivetranslate.com/zh-Hans/), which was very effective.
 

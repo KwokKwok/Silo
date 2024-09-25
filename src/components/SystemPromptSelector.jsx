@@ -126,7 +126,7 @@ function SystemPromptSelector() {
                   src={prompt.icon}
                   alt={prompt.name}
                   className={
-                    'w-6 h-6 mr-2 rounded-full overflow-hidden cursor-pointer transform transition-transform ' +
+                    'w-6 h-6 mr-2 rounded-full overflow-hidden cursor-pointer transform transition-transform select-none ' +
                     (prompt.id === active.id ? 'scale-[1.2]' : 'scale-100')
                   }
                 />
@@ -146,7 +146,7 @@ function SystemPromptSelector() {
         <img
           src={active.icon}
           alt={active.name}
-          className="w-6 h-6 rounded-full cursor-pointer transform scale-[1.15] mr-1"
+          className="w-6 h-6 select-none rounded-full cursor-pointer transform scale-[1.15] mr-1"
         />
       </Popup>
 

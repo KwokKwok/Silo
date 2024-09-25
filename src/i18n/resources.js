@@ -22,11 +22,11 @@ const resources = [
   },
   {
     zh: '切换对话模式',
-    en: 'Switch chat mode'
+    en: 'Switch to chat mode'
   },
   {
     zh: '切换文生图模式',
-    en: 'Switch text-to-image mode'
+    en: 'Switch to image mode'
   },
   {
     zh: '多列模式',
@@ -394,6 +394,14 @@ const resources = [
   {
     zh: '已由 AI 票选为最佳回复',
     en: 'AI voted as the best reply'
+  },
+  {
+    zh: '该问题的响应将由 AI 进行评估',
+    en: 'The response to this question will be evaluated by AI'
+  },
+  {
+    zh: '为了长久的提供基础服务，体验密钥暂不支持该模型，请见谅',
+    en: 'To ensure long-term provision of basic services, the experience key does not currently support this model. We appreciate your understanding.'
   }
 ]
 

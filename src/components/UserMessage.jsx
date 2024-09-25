@@ -1,7 +1,9 @@
+import { useTranslation } from 'react-i18next';
 import MessageShortcuts from './MessageShortcuts';
 import Tooltip from './MobileCompatible/Tooltip';
 
 export default function UserMessage({ content, evaluate }) {
+  const { t } = useTranslation();
   return (
     <MessageShortcuts copyText={content} placement="left">
       <div
@@ -12,7 +14,7 @@ export default function UserMessage({ content, evaluate }) {
             : ' border-opacity-0')
         }
       >
-        <Tooltip content={evaluate ? '该问题的响应将由 AI 进行评估' : ''}>
+        <Tooltip content={evaluate ? t('该问题的响应将由 AI 进行评估') : ''}>
           {content}
         </Tooltip>
       </div>

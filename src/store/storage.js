@@ -2,12 +2,18 @@ import { atom, useAtom } from 'jotai'
 import { getJsonDataFromLocalStorage, getLocalStorage, setJsonDataToLocalStorage, setLocalStorage } from '../utils/helpers';
 import { LOCAL_STORAGE_KEY } from '../utils/types';
 
+export const EXPERIENCE_SK = import.meta.env.VITE_DEFAULT_SK;
+
 let _cacheKey = ''
 export function getSecretKey (forceUpdate = false) {
   if (!_cacheKey || forceUpdate) {
-    _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, import.meta.env.VITE_DEFAULT_SK)
+    _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, EXPERIENCE_SK)
   }
   return _cacheKey
+}
+
+export function isExperienceSK () {
+  return getSecretKey() === EXPERIENCE_SK
 }
 
 const secretKeyAtom = atom(getSecretKey(true))
@@ -56,8 +62,9 @@ export function useLocalStorageAtom (key, isJson = false) {
 export const useSecretKey = () => {
   const [value, setValue] = useLocalStorageAtom(LOCAL_STORAGE_KEY.SECRET_KEY)
   const setSecretKey = (key) => {
-    setValue(key);
-    _cacheKey = key;
+    let _key = key || EXPERIENCE_SK;
+    setValue(_key);
+    _cacheKey = _key;
   }
   return [value, setSecretKey]
 }

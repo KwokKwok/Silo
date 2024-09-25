@@ -17,8 +17,6 @@ export default function ({
   const inputRef = useRef();
   const isMobile = useIsMobile();
 
-  const [history, setHistory] = useState([]);
-
   useEffect(() => {
     if (!loading) {
       setTimeout(() => {
@@ -79,7 +77,7 @@ export default function ({
       <div className="h-12"></div>
       <div
         className={
-          'min-h-12 z-50 absolute left-2 right-2 bottom-0 bg-white dark:bg-black flex px-4 py-3 shadow-md overflow-hidden transition-[border-radius] duration-400 ' +
+          'min-h-12 z-40 absolute left-2 right-2 bottom-0 bg-white dark:bg-black flex px-4 py-3 shadow-md overflow-hidden transition-[border-radius] duration-400 ' +
           (input.includes('\n') ? 'rounded-2xl' : 'rounded-3xl')
         }
       >
