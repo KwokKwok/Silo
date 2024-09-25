@@ -26,18 +26,15 @@ export default function ({ model }) {
               className="ml-auto !w-16 !text-center"
               placeholder=" "
               theme="normal"
-              allowInputOverLimit={false}
               step={option.step}
-              min={option.min}
-              max={option.max}
               value={option.value}
               onChange={value => onPropChange(option.prop, value)}
             />
           </div>
           <Slider
             className="mb-2 mt-1"
-            min={option.min}
-            max={option.max}
+            min={Math.min(option.min, option.value)}
+            max={Math.max(option.max, option.value)}
             step={option.step}
             value={option.value}
             onChange={value => onPropChange(option.prop, value)}
