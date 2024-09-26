@@ -19,7 +19,7 @@ export default function AiMessage({
   plain = false,
   evaluate = {},
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isDark] = useDarkMode();
   const { loading } = useSingleChat(model);
   // 用于渲染一个行内的 loading
@@ -144,6 +144,6 @@ export default function AiMessage({
           )}
         </div>
       ),
-    [content, likes.length, isBest, isDark]
+    [content, likes.length, isBest, isDark, i18n.language]
   );
 }

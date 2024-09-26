@@ -1,6 +1,10 @@
 import { atom, useAtom } from 'jotai'
 import { getJsonDataFromLocalStorage, getLocalStorage, setJsonDataToLocalStorage, setLocalStorage } from '../utils/helpers';
 import { LOCAL_STORAGE_KEY } from '../utils/types';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import { message } from 'tdesign-react';
+import i18next from 'i18next';
 
 export const EXPERIENCE_SK = import.meta.env.VITE_DEFAULT_SK;
 
@@ -9,7 +13,7 @@ export function getSecretKey (forceUpdate = false) {
   if (!_cacheKey || forceUpdate) {
     _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, EXPERIENCE_SK)
   }
-  return _cacheKey
+  return _cacheKey || EXPERIENCE_SK
 }
 
 export function isExperienceSK () {
@@ -62,7 +66,7 @@ export function useLocalStorageAtom (key, isJson = false) {
 export const useSecretKey = () => {
   const [value, setValue] = useLocalStorageAtom(LOCAL_STORAGE_KEY.SECRET_KEY)
   const setSecretKey = (key) => {
-    let _key = key || EXPERIENCE_SK;
+    let _key = key || '';
     setValue(_key);
     _cacheKey = _key;
   }
@@ -73,6 +77,42 @@ export function useActiveSystemPromptId () {
   return useLocalStorageAtom(LOCAL_STORAGE_KEY.ACTIVE_SYSTEM_PROMPT)
 }
 
+export function useLocalStorageFlag (key, defaultValue = false) {
+  const [value, setValue] = useState(getLocalStorage(key, defaultValue));
+  const setFlag = (flag) => {
+    setValue(flag);
+    setLocalStorage(key, flag);
+  };
+  return [value, setFlag];
+}
+
 export const useZenMode = () => {
-  return useLocalStorageAtom(LOCAL_STORAGE_KEY.ZEN_MODE)
+  const [value, setValue] = useLocalStorageAtom(LOCAL_STORAGE_KEY.ZEN_MODE);
+  const [hideNotify, setHideNotify] = useLocalStorageFlag(LOCAL_STORAGE_KEY.FLAG_NO_ZEN_MODE_HELP, false);
+  const _setValue = (value) => {
+    setValue(value);
+    if (value && !hideNotify) {
+      message.info({
+        content: i18next.t('zenModeTip'),
+        duration: 0,
+        closeBtn: i18next.t('不再提示'),
+        onClose: () => {
+          setHideNotify(true)
+        }
+      })
+    }
+  }
+  const handleKeyDown = (event) => {
+    if (event.key === 'Escape') {
+      _setValue(false);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+  return [value, _setValue];
 }
