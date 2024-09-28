@@ -214,6 +214,7 @@ export default function ({ model, plain = false }) {
             content={<ChatOptionAdjust model={model} />}
             placement="bottom-right"
             showArrow
+            destroyOnClose
             trigger="click"
           >
             <i className={iconClassName + 'i-mingcute-settings-2-line '} />

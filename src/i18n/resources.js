@@ -148,11 +148,11 @@ const resources = [
   },
   {
     zh: '现在注册 SiliconCloud',
-    en: 'Register SiliconCloud now'
+    en: 'Now register for SiliconCloud, '
   },
   {
     zh: '官方也会赠送 14 元额度可用于体验付费模型',
-    en: 'The official will also gift a 14 yuan credit that can be used to experience the paid model.'
+    en: 'and the official will also gift a 14 yuan credit for experiencing the paid model.'
   },
   {
     zh: '如您已有账号，请',
@@ -402,6 +402,15 @@ const resources = [
   {
     zh: '为了长久的提供基础服务，体验密钥暂不支持该模型，请见谅',
     en: 'To ensure long-term provision of basic services, the experience key does not currently support this model. We appreciate your understanding.'
+  },
+  {
+    _key: 'zenModeTip',
+    zh: '鼠标移至页面顶部或按下 Esc 键退出禅模式',
+    en: 'Move the mouse to the top of the page or press the Esc key to exit Zen Mode'
+  },
+  {
+    zh: '不再提示',
+    en: 'Okay'
   }
 ]
 

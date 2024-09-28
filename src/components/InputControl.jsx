@@ -11,11 +11,14 @@ export default function ({
   enter,
   placeholder,
   plain = false,
+  onCursorPre,
+  onCursorNext,
 }) {
   const { t } = useTranslation();
   const [input, setInput] = useState('');
   const inputRef = useRef();
   const isMobile = useIsMobile();
+  const validInput = input.trim();
 
   useEffect(() => {
     if (!loading) {
@@ -39,19 +42,23 @@ export default function ({
   }, [input]);
 
   const onInput = e => {
-    setInput(e.target.value.trimStart());
+    setInput(e.target.value);
   };
 
   const onSend = () => {
-    if (input) {
-      if (input == '/clear') {
-        onStop(true);
-      } else {
-        onSubmit(input.trim());
-      }
-      setInput('');
+    if (!validInput) return;
+    if (validInput == '/clear') {
+      onStop(true);
+    } else {
+      onSubmit(validInput);
     }
+    setInput('');
   };
+
+  const systemPromptSelectorRef = useRef();
+
+  const _onPre = onCursorPre || (() => systemPromptSelectorRef.current?.pre());
+  const _onNext = onCursorNext || (() => systemPromptSelectorRef.current?.next());
 
   const onKeyDown = e => {
     if (!enter && isMobile) return; // 移动端只允许点击发送
@@ -59,29 +66,36 @@ export default function ({
       // 允许回车键发送
       if (!e.shiftKey) {
         // shift+回车 换行不发送
+        e.preventDefault();
         onSend();
       } else {
       }
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
+    }
+    if (input.length) return;
+    // 获取光标的位置
+    const selectionStart = inputRef.current.selectionStart;
+    const isOnStart = selectionStart === 0;
+    const isOnEnd = selectionStart === input.length;
+    if (isOnStart && e.key === 'ArrowLeft') {
+      _onPre();
+    } else if (isOnEnd && e.key === 'ArrowRight') {
+      _onNext();
     }
   };
 
   const actionBaseClassName =
-    'absolute bottom-3 right-4 z-20 w-6 h-6  mr-2 cursor-pointer transition-all duration-500 ease-in-out ';
+    'absolute bottom-3 right-4 z-20 w-6 h-6 cursor-pointer transition-all duration-500 ease-in-out ';
 
   return (
     <>
       <div className="h-12"></div>
       <div
         className={
-          'min-h-12 z-40 absolute left-2 right-2 bottom-0 bg-white dark:bg-black flex px-4 py-3 shadow-md overflow-hidden transition-[border-radius] duration-400 ' +
+          'min-h-12 z-40 absolute left-2 right-2 bottom-0 bg-white dark:bg-black flex pl-4 pr-10 py-3 shadow-md overflow-hidden transition-[border-radius] duration-400 ' +
           (input.includes('\n') ? 'rounded-2xl' : 'rounded-3xl')
         }
       >
-        {!plain && <SystemPromptSelector />}
+        {!plain && <SystemPromptSelector ref={systemPromptSelectorRef} />}
         <textarea
           type="text"
           rows={1}
@@ -98,7 +112,7 @@ export default function ({
           className={
             actionBaseClassName +
             ' i-mingcute-send-fill ' +
-            (input.length
+            (validInput.length
               ? 'translate-y-0 opacity-100'
               : 'translate-y-10 opacity-20')
           }
@@ -107,7 +121,9 @@ export default function ({
         <>
           <i
             className={
-              (!input.length && loading ? 'translate-x-0' : 'translate-x-20') +
+              (!validInput.length && loading
+                ? 'translate-x-0'
+                : 'translate-x-20') +
               ' i-mingcute-pause-circle-line ' +
               actionBaseClassName
             }
@@ -121,7 +137,7 @@ export default function ({
           >
             <i
               className={
-                (!input.length && !loading
+                (!validInput.length && !loading
                   ? 'translate-x-0'
                   : 'translate-x-20') +
                 ' i-mingcute-broom-line ' +

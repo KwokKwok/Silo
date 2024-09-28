@@ -99,4 +99,8 @@ export enum LOCAL_STORAGE_KEY {
    * Chat Input History
    */
   CHAT_INPUT_HISTORY = 'chat_input_history',
+  /**
+   * 隐藏 Zen mode 提示
+   */
+  FLAG_NO_ZEN_MODE_HELP = 'flag_no_zen_mode_help',
 }

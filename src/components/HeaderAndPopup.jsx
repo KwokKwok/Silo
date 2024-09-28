@@ -346,7 +346,10 @@ export default function () {
               </span>
               <span
                 className="text-blue-400 cursor-pointer mt-4 text-sm"
-                onClick={() => setSecretKey()}
+                onClick={() => {
+                  setSecretKey();
+                  setShowPopup(false);
+                }}
               >
                 🤖 {t('先不注册，用用你的')} 🤖
               </span>

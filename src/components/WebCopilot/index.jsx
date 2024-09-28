@@ -25,25 +25,14 @@ export default function ({ message }) {
   const modelResponses = useLastGptResponse();
   const [activeIndex, setActiveIndex] = useState(0);
   const optionLength = modelResponses.length;
-  const handleKeyDown = event => {
+  const onCursor = offset => {
     setActiveIndex(prev => {
       let target = prev;
-      if (event.key === 'ArrowLeft') {
-        target--;
-      } else if (event.key === 'ArrowRight') {
-        target++;
-      }
+      target += offset;
       target = Math.max(0, Math.min(target, optionLength - 1));
       return target;
     });
   };
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [setActiveIndex, optionLength]);
 
   if (!modelResponses.length) return null;
   return (
@@ -65,11 +54,10 @@ export default function ({ message }) {
           {modelResponses.map((response, index) => (
             <div
               key={index}
-              className={`cursor-pointer mr-[8px] p-[4px] transition-transform duration-300 select-none ${
-                activeIndex === index
+              className={`cursor-pointer mr-[8px] p-[4px] transition-transform duration-300 select-none ${activeIndex === index
                   ? ' overflow-hidden shadow-lg scale-105'
                   : 'scale-100'
-              }`}
+                }`}
               onClick={() => setActiveIndex(index)}
             >
               <img
@@ -88,6 +76,8 @@ export default function ({ message }) {
             placeholder="继续问我吧"
             plain
             enter
+            onCursorPre={() => onCursor(-1)}
+            onCursorNext={() => onCursor(1)}
             onStop={onStop}
             onSubmit={onSubmit}
             loading={modelResponses[activeIndex]?.loading}

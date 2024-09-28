@@ -1,8 +1,8 @@
 import { getBuildInResolveFn } from "../components/CustomModelDrawer/preset";
-import { getSecretKey } from "../store/storage";
+import { getSecretKey, isExperienceSK } from "../store/storage";
 import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "./helpers";
 import { LOCAL_STORAGE_KEY } from "./types";
-import { openAiCompatibleChat } from "./utils";
+import { checkModelLimit, openAiCompatibleChat } from "./utils";
 
 const modules = import.meta.glob('../assets/img/models/*.*', { eager: true })
 
@@ -121,7 +121,11 @@ const customResolveFns = getAllTextModels().filter(item => item.resolveFn).reduc
  */
 export function getChatResolver (modelId) {
   if (customResolveFns[modelId]) return customResolveFns[modelId]
-  return (...args) => openAiCompatibleChat('https://api.siliconflow.cn/v1', getSecretKey(), modelId => modelId, ...args)
+  return (...args) => {
+    // 硅基模型校验模型限制
+    checkModelLimit(modelId)
+    return openAiCompatibleChat('https://api.siliconflow.cn/v1', getSecretKey(), modelId => modelId, ...args)
+  }
 }
 
 const imageModelOf = (id, price) => {
@@ -152,7 +156,7 @@ const IMAGE_MODELS = [
  */
 export function isLimitedModel (modelId) {
   const IMAGE_LIMITED_MODELS = IMAGE_MODELS.filter(item => item.price > 0).map(item => item.id)
-  const TEXT_LIMITED_MODELS = []
+  const TEXT_LIMITED_MODELS = SILICON_MODELS.filter(item => item.price > 0).map(item => item.id)
   return IMAGE_LIMITED_MODELS.includes(modelId) || TEXT_LIMITED_MODELS.includes(modelId)
 }
 

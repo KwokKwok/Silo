@@ -5,13 +5,82 @@ import { ERROR_PREFIX, LOADING_MATCH_TOKEN } from '../utils/types';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { message } from 'tdesign-react';
 import remarkGfm from 'remark-gfm';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
 import '../assets/styles/markdown.scss';
 import { useDarkMode } from '../utils/use';
 import { useSingleChat } from '../utils/chat';
 import { getModelIcon } from '../utils/models';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-export default function AiMessage({
+
+// From https://github.com/remarkjs/react-markdown/issues/785
+
+export function escapeBrackets (text) {
+  const pattern = /(```[\S\s]*?```|`.*?`)|\\\[([\S\s]*?[^\\])\\]|\\\((.*?)\\\)/g;
+  return text.replace(
+    pattern,
+    (
+      match,
+      codeBlock,
+      squareBracket,
+      roundBracket
+    ) => {
+      if (codeBlock != null) {
+        return codeBlock;
+      } else if (squareBracket != null) {
+        return `$$${squareBracket}$$`;
+      } else if (roundBracket != null) {
+        return `$${roundBracket}$`;
+      }
+      return match;
+    },
+  );
+}
+
+export function escapeMhchem (text) {
+  return text.replaceAll('$\\ce{', '$\\\\ce{').replaceAll('$\\pu{', '$\\\\pu{');
+}
+
+/**
+ * Preprocesses LaTeX content by replacing delimiters and escaping certain characters.
+ *
+ * @param content The input string containing LaTeX expressions.
+ * @returns The processed string with replaced delimiters and escaped characters.
+ */
+export function preprocessLaTeX (content) {
+  // Step 1: Protect code blocks
+  const codeBlocks = [];
+  content = content.replace(/(```[\s\S]*?```|`[^`\n]+`)/g, (match, code) => {
+    codeBlocks.push(code);
+    return `<<CODE_BLOCK_${codeBlocks.length - 1}>>`;
+  });
+
+  // Step 2: Protect existing LaTeX expressions
+  const latexExpressions = [];
+  content = content.replace(/(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\(.*?\\\))/g, (match) => {
+    latexExpressions.push(match);
+    return `<<LATEX_${latexExpressions.length - 1}>>`;
+  });
+
+  // Step 3: Escape dollar signs that are likely currency indicators
+  content = content.replace(/\$(?=\d)/g, '\\$');
+
+  // Step 4: Restore LaTeX expressions
+  content = content.replace(/<<LATEX_(\d+)>>/g, (_, index) => latexExpressions[parseInt(index)]);
+
+  // Step 5: Restore code blocks
+  content = content.replace(/<<CODE_BLOCK_(\d+)>>/g, (_, index) => codeBlocks[parseInt(index)]);
+
+  // Step 6: Apply additional escaping functions
+  content = escapeBrackets(content);
+  content = escapeMhchem(content);
+
+  return content;
+}
+
+export default function AiMessage ({
   model,
   content,
   isLast,
@@ -19,7 +88,7 @@ export default function AiMessage({
   plain = false,
   evaluate = {},
 }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [isDark] = useDarkMode();
   const { loading } = useSingleChat(model);
   // 用于渲染一个行内的 loading
@@ -29,6 +98,8 @@ export default function AiMessage({
   const likes = (evaluate?.results || [])
     .map(item => (item.winners.includes(model) ? item.judge : ''))
     .filter(Boolean);
+
+  content = preprocessLaTeX(content);
 
   if (isLast && loading) {
     content += APPEND_MARK;
@@ -62,10 +133,11 @@ export default function AiMessage({
           )}
           <Markdown
             children={content}
-            remarkPlugins={[remarkGfm]}
+            remarkPlugins={[remarkGfm, remarkMath]}
+            rehypePlugins={[rehypeKatex]}
             className="silo-markdown prose !max-w-none prose-pre:bg-transparent prose-slate prose-red prose-sm dark:prose-invert prose-headings:text-primary dark:prose-headings:text-[#2ddaff]"
             components={{
-              code(props) {
+              code (props) {
                 let { children, className, node, ...rest } = props;
                 if (!children) return null;
                 if (children === LOADING_MATCH_TOKEN) {
@@ -144,6 +216,6 @@ export default function AiMessage({
           )}
         </div>
       ),
-    [content, likes.length, isBest, isDark]
+    [content, likes.length, isBest, isDark, i18n.language]
   );
 }

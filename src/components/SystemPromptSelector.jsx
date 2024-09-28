@@ -4,15 +4,36 @@ import { Popup, Button, Drawer, Input, Textarea, Form } from 'tdesign-react';
 import Tooltip from './MobileCompatible/Tooltip';
 import { useTranslation } from 'react-i18next';
 import { useIsMobile } from '@src/utils/use';
+import { useImperativeHandle } from 'react';
+import { forwardRef } from 'react';
 const FormItem = Form.FormItem;
 
-function SystemPromptSelector() {
+function SystemPromptSelector({}, ref) {
   const { t } = useTranslation();
   const { active, setActive, all, save, remove } = useSystemPrompts();
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [editingPrompt, setEditingPrompt] = useState(null);
   const [editingIcon, setEditingIcon] = useState('');
   const isMobile = useIsMobile();
+
+  useImperativeHandle(ref, () => ({
+    next: () => {
+      const index = all.findIndex(prompt => prompt.id === active.id);
+      if (index < all.length - 1) {
+        setActive(all[index + 1]);
+      } else {
+        setActive(all[0]);
+      }
+    },
+    pre: () => {
+      const index = all.findIndex(prompt => prompt.id === active.id);
+      if (index > 0) {
+        setActive(all[index - 1]);
+      } else {
+        setActive(all[all.length - 1]);
+      }
+    },
+  }));
 
   const onEdit = prompt => {
     setEditingPrompt(prompt);
@@ -219,4 +240,4 @@ function SystemPromptSelector() {
   );
 }
 
-export default SystemPromptSelector;
+export default forwardRef(SystemPromptSelector);
