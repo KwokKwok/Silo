@@ -47,6 +47,10 @@
 1. 聊天页面参考 [Vercel AI Playground](https://sdk.vercel.ai/playground)、分栏参考 [ChatHub](https://chathub.gg/)
 1. 翻译使用了 [沉浸式翻译](https://immersivetranslate.com/zh-Hans/) 的默认 Prompt，很有效，感谢！
 
+## 许可证
+
+本项目采用 MIT 许可证。详情请见[LICENSE](LICENSE)文件。
+
 ## 更多
 
 <details>
