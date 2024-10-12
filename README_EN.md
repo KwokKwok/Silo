@@ -48,6 +48,25 @@
 
 When the version of this project changes, it will be automatically packaged and submitted to the Chrome App Store and Edge Addons, and the generated zip file will be uploaded to [GitHub Releases](https://github.com/KwokKwok/SiloChat/releases). You can also download it directly and install it in the browser.
 
+## Docker deployment
+
+``` yaml
+version: '3.8'
+
+services:
+  frontend:
+    image: ghcr.io/KwokKwok/silo:latest
+    ports:
+      - "3000:3000"
+    environment:
+      # Set the default SiliconFlow API key.
+      # - VITE_DEFAULT_SK=
+      # Is it allowed to use a trial key for the paid model?
+      - VITE_ALLOW_TRIAL_KEY_PAID=false
+      # Default activated model
+      - VITE_DEFAULT_ACTIVE_MODELS=Qwen/Qwen2.5-7B-Instruct,THUDM/glm-4-9b-chat,01-ai/Yi-1.5-9B-Chat-16K
+```
+
 ## Acknowledgments
 
 1. Thanks to [SiliconCloud](https://siliconflow.cn/zh-cn/siliconcloud).

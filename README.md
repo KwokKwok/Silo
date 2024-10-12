@@ -46,6 +46,25 @@
 
 当本项目发生版本变更时，会自动打包提交到 Chrome 应用商店和 Edge Addons。并将产生的 zip 文件上传到 [GitHub Releases](https://github.com/KwokKwok/SiloChat/releases)，您也可以直接下载并在浏览器中安装。
 
+## docker部署
+
+``` yaml
+version: '3.8'
+
+services:
+  frontend:
+    image: ghcr.io/KwokKwok/silo:latest
+    ports:
+      - "3000:3000"
+    environment:
+      # 设置默认的硅基流动 API 密钥
+      # - VITE_DEFAULT_SK=
+      # 是否允许试用key使用付费模型
+      - VITE_ALLOW_TRIAL_KEY_PAID=false
+      # 默认激活的模型
+      - VITE_DEFAULT_ACTIVE_MODELS=Qwen/Qwen2.5-7B-Instruct,THUDM/glm-4-9b-chat,01-ai/Yi-1.5-9B-Chat-16K
+```
+
 ## 致谢
 
 1. 感谢 [SiliconCloud](https://siliconflow.cn/zh-cn/siliconcloud)。
