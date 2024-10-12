@@ -5,7 +5,7 @@ import { LOCAL_STORAGE_KEY } from '../utils/types';
 
 const activeModelsFromEnv = import.meta.env.VITE_DEFAULT_ACTIVE_MODELS
   ? import.meta.env.VITE_DEFAULT_ACTIVE_MODELS.split(',').map(model => model.trim())
-  : []
+  : ["Qwen/Qwen2.5-7B-Instruct", "THUDM/glm-4-9b-chat", "01-ai/Yi-1.5-9B-Chat-16K"]
 
 const activeModels = atom(
   getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, activeModelsFromEnv)
