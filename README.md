@@ -1,5 +1,10 @@
 [English Version](https://github.com/KwokKwok/Silo/blob/main/README_EN.md)
 
+> [!NOTE]
+> 请注意：体验密钥是开放的，但请不要滥用体验密钥。如您需要修改代码自行部署该项目，请修改默认的体验密钥，至少不要移除体验密钥相关限制。
+> 
+> 我可以停掉当前的体验密钥，但更希望大家能不要辜负信任，谢谢。
+
 <p align="center"><a href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
 <h1 align="center">Silo - 纯前端多模型对话、文生图</h1>
 

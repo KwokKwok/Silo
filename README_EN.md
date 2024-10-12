@@ -1,5 +1,10 @@
 [简体中文](https://github.com/KwokKwok/Silo)
 
+> [!NOTE]
+> Please note: The experience key is public, but please do not abuse the experience key. If you need to modify the code for self-deployment of this project, please modify the default experience key, and at least do not remove the experience key-related restrictions.
+> 
+> I can disable the current experience key, but I would prefer that everyone not let the trust be disappointed, thank you.
+
 <p align="center"><a target="_blank" href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
 <h1 align="center">Silo - Pure front-end multi-model chat, text-to-image generation</h1>
 
