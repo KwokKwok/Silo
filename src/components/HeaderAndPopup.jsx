@@ -1,6 +1,6 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
-import { useActiveModels, useIsRowMode } from '../store/app';
+import { useActiveModels, useIsRowMode, useSetDefaultActiveModels } from '../store/app';
 import { isExperienceSK, useSecretKey, useZenMode } from '../store/storage';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/api';
@@ -48,6 +48,7 @@ export default function () {
   const navigate = useNavigate();
   const [isRowMode, setIsRowMode] = useIsRowMode();
   const [isZenMode, setIsZenMode] = useZenMode();
+  const setDefaultActiveModels = useSetDefaultActiveModels();
 
   const [showInZen, setShowInZen] = useState(false);
   useEffect(() => {
@@ -152,6 +153,17 @@ export default function () {
               onClick: () => setIsZenMode(!isZenMode),
               hidden: isMobile,
               title: t(isZenMode ? '退出禅模式' : '禅模式'),
+            },
+            {
+              // 恢复默认布局
+              icon: 'iconify mingcute--refresh-1-line',
+              onClick: () => {
+                setIsZenMode(false);
+                setIsRowMode(false);
+                setDefaultActiveModels();
+              },
+              hidden: isMobile || isImageMode,
+              title: t('恢复默认布局'),
             },
             {
               icon: 'i-ri-key-line',

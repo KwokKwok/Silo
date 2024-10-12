@@ -54,3 +54,15 @@ export function useIsRowMode() {
   }
   return [value, setIsRows]
 }
+
+export function useSetDefaultActiveModels() {
+  const setDefaultActiveModels = () => {
+    // 更新本地存储
+    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.USER_SORT_SETTINGS, [activeModelsFromEnv]);
+    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, activeModelsFromEnv);
+    // 刷新浏览器
+    window.location.reload();
+  }
+
+  return setDefaultActiveModels;
+}
