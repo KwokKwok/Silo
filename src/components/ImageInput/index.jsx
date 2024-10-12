@@ -7,8 +7,11 @@ import { Tag } from 'tdesign-react';
 import { useIsMobile } from '../../utils/use';
 import DrawPlaceholder from '../../assets/img/draw.svg';
 import { LOCAL_STORAGE_KEY } from '@src/utils/types';
+import { getImageModels } from '@src/utils/models';
 
-function ImageInput({
+const availableImageModelIds = getImageModels().map(item => item.id);
+
+function ImageInput ({
   className,
   startGenerate,
   loading,
@@ -18,8 +21,11 @@ function ImageInput({
 }) {
   const [prompts, setPrompts] = useState(['']);
   const [isUserInputComplete, setIsUserInputComplete] = useState(false);
-  const [activeImageModels] = useLocalStorageJSONAtom(
+  const [_activeImageModels] = useLocalStorageJSONAtom(
     LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS
+  );
+  const activeImageModels = _activeImageModels.filter(
+    item => availableImageModelIds.includes(item)
   );
   const isMobile = useIsMobile();
   const [showModelChoose, setShowModelChoose] = useState(false);

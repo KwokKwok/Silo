@@ -12,16 +12,21 @@ let customModels = null;
 let normalizedCustomModel = null;
 
 // 辅助函数：解析模型ID，提取 series、name 和 isPro 标志
-function parseModelId(id) {
+function parseModelId (id) {
   let isPro = false;
+  let isVendorA = false;
   let fullName = id;
   if (id.startsWith('Pro/')) {
     isPro = true;
     fullName = id.replace('Pro/', '');
   }
+  if (id.startsWith('Vendor-A/')) {
+    isVendorA = true;
+    fullName = id.replace('Vendor-A/', '');
+  }
   const [series, ...nameParts] = fullName.split('/');
   const name = nameParts.join('/');
-  return { series, name, isPro };
+  return { series, name, isPro, isVendorA };
 }
 
 const keywordsMap = {
@@ -37,14 +42,14 @@ const keywordsMap = {
 
 // 修改后的 textModelOf 函数，统一处理 "Pro/" 前缀
 const textModelOf = (id, price, length, needVerify) => {
-  const { series, name, isPro } = parseModelId(id);
+  const { series, name, isPro, isVendorA } = parseModelId(id);
   const icon = getModelIcon(id); // 使用原始id获取图标
   const keywords = keywordsMap[series];
-  const displayName = isPro ? `Pro/${name}` : name; // 根据 isPro 添加前缀
-  return { id, name: displayName, series, price, length, icon, keywords, needVerify, isPro };
+  const displayName = isPro ? `Pro/${name}` : isVendorA ? `Vendor-A/${name}` : name; // 根据 isPro 添加前缀
+  return { id, name: displayName, series, price, length, icon, keywords, needVerify, isPro, isVendorA };
 };
 
-export function getCustomModels() {
+export function getCustomModels () {
   if (!customModels) {
     customModels = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, []);
     normalizedCustomModel = customModels.map(item => {
@@ -75,13 +80,13 @@ export function getCustomModels() {
   return { raw: customModels, normalized: normalizedCustomModel };
 }
 
-export function setCustomModels(models) {
+export function setCustomModels (models) {
   setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, models);
   getCustomModels();
 }
 
 // 修改 getModelIcon 函数，确保使用正确的 fullName 获取图标
-export function getModelIcon(model) {
+export function getModelIcon (model) {
   if (!_iconCache[model]) {
     const { series } = parseModelId(model);
     _iconCache[model] = modules[Object.keys(modules).find(i => i.includes(series))]?.default;
@@ -93,7 +98,37 @@ export function getModelIcon(model) {
 }
 
 const SILICON_MODELS = [
+  // 免费模型
+  textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32, false),
+  textModelOf("Qwen/Qwen2.5-Coder-7B-Instruct", 0, 32, false),
+  textModelOf("THUDM/glm-4-9b-chat", 0, 128, false),
+  textModelOf("THUDM/chatglm3-6b", 0, 32, false),
+  textModelOf("internlm/internlm2_5-7b-chat", 0, 32, false),
+  textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 32, true),
+  textModelOf("Qwen/Qwen2-7B-Instruct", 0, 32, false),
+  textModelOf("Qwen/Qwen2-1.5B-Instruct", 0, 32, false),
+  textModelOf("01-ai/Yi-1.5-9B-Chat-16K", 0, 16, false),
+  textModelOf("01-ai/Yi-1.5-6B-Chat", 0, 4, false),
+  textModelOf("google/gemma-2-9b-it", 0, 8, true),
+  textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8, true),
+  textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 0, 32, false),
   // 付费模型
+  textModelOf("Qwen/Qwen2.5-72B-Instruct-128K", 4.13, 128, false),
+  textModelOf("Qwen/Qwen2.5-72B-Instruct", 4.13, 32, false),
+  textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32, false),
+  textModelOf("Qwen/Qwen2.5-32B-Instruct", 1.26, 32, false),
+  textModelOf("Qwen/Qwen2.5-14B-Instruct", 1.26, 32, false),
+  textModelOf("Qwen/Qwen2.5-Math-72B-Instruct", 4.13, 4, false),
+  textModelOf("Qwen/Qwen2-57B-A14B-Instruct", 1.33, 32, false),
+  textModelOf("deepseek-ai/DeepSeek-V2.5", 1.33, 32, false),
+  textModelOf("deepseek-ai/DeepSeek-Coder-V2-Instruct", 1.33, 32, false),
+  textModelOf("deepseek-ai/DeepSeek-V2-Chat", 1.33, 32, false),
+  textModelOf("TeleAI/TeleChat2", 1.33, 8, false),
+  textModelOf("internlm/internlm2_5-20b-chat", 1.33, 32, false),
+  textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 8, false),
+  textModelOf("meta-llama/Meta-Llama-3-70B-Instruct", 4.13, 8, false),
+  textModelOf("meta-llama/Meta-Llama-3.1-405B-Instruct", 21.00, 32, false),
+  textModelOf("google/gemma-2-27b-it", 1.00, 8, false),
   textModelOf("Pro/Qwen/Qwen2.5-7B-Instruct", 0.35, 32, false),
   textModelOf("Pro/Qwen/Qwen2-7B-Instruct", 0.35, 32, false),
   textModelOf("Pro/Qwen/Qwen2-1.5B-Instruct", 0.35, 32, false),
@@ -105,42 +140,12 @@ const SILICON_MODELS = [
   textModelOf("Pro/google/gemma-2-9b-it", 0.42, 8, false),
   textModelOf("Pro/meta-llama/Meta-Llama-3.1-8B-Instruct", 0.42, 8, false),
   textModelOf("Pro/meta-llama/Meta-Llama-3-8B-Instruct", 0.42, 8, false),
-  textModelOf("Qwen/Qwen2.5-72B-Instruct-128K", 4.13, 128, false),
-  textModelOf("Qwen/Qwen2.5-72B-Instruct", 4.13, 32, false),
-  textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32, false),
-  textModelOf("Qwen/Qwen2.5-32B-Instruct", 1.26, 32, false),
-  textModelOf("Qwen/Qwen2.5-14B-Instruct", 1.26, 32, false),
-  textModelOf("Qwen/Qwen2.5-Math-72B-Instruct", 4.13, 4, false),
-  textModelOf("Qwen/Qwen2-57B-A14B-Instruct", 1.33, 32, false),
-  textModelOf("deepseek-ai/DeepSeek-V2.5", 1.33, 32, false),
-  textModelOf("deepseek-ai/DeepSeek-Coder-V2-Instruct", 1.33, 32, false),
-  textModelOf("deepseek-ai/DeepSeek-V2-Chat", 1.33, 32, false),
-  textModelOf("TeleAI/TeleChat2", 1.33, 8, true),
-  textModelOf("internlm/internlm2_5-20b-chat", 1.33, 32, false),
-  textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 8, false),
-  textModelOf("meta-llama/Meta-Llama-3-70B-Instruct", 4.13, 8, false),
-  textModelOf("meta-llama/Meta-Llama-3.1-405B-Instruct", 21.00, 32, false),
-  textModelOf("google/gemma-2-27b-it", 1.00, 8, false),
 
-  // 免费模型
-  textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32, false),
-  textModelOf("Qwen/Qwen2.5-Coder-7B-Instruct", 0, 32, false),
-  textModelOf("internlm/internlm2_5-7b-chat", 0, 32, false),
-  textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 32, true),
-  textModelOf("Qwen/Qwen2-7B-Instruct", 0, 32, false),
-  textModelOf("Qwen/Qwen2-1.5B-Instruct", 0, 32, false),
-  textModelOf("THUDM/glm-4-9b-chat", 0, 128, false),
-  textModelOf("THUDM/chatglm3-6b", 0, 32, false),
-  textModelOf("01-ai/Yi-1.5-9B-Chat-16K", 0, 16, false),
-  textModelOf("01-ai/Yi-1.5-6B-Chat", 0, 4, false),
-  textModelOf("google/gemma-2-9b-it", 0, 8, true),
-  textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8, true),
-  textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 0, 32, false)
 ];
 
 export const SILICON_MODELS_IDS = SILICON_MODELS.map(i => i.id);
 
-export function getAllTextModels() {
+export function getAllTextModels () {
   return [
     ...getCustomModels().normalized,
     ...SILICON_MODELS
@@ -155,7 +160,7 @@ const customResolveFns = getAllTextModels().filter(item => item.resolveFn).reduc
 /**
  * 获取聊天解析器，根据模型ID选择合适的解析函数
  */
-export function getChatResolver(modelId) {
+export function getChatResolver (modelId) {
   if (customResolveFns[modelId]) return customResolveFns[modelId];
   return (...args) => {
     // 硅基模型校验模型限制
@@ -177,21 +182,22 @@ const IMAGE_MODELS = [
   imageModelOf("stabilityai/stable-diffusion-3-medium", -1),
   imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", -1),
   imageModelOf("stabilityai/stable-diffusion-2-1", -1),
-  imageModelOf("stabilityai/sd-turbo", -1),
-  imageModelOf("stabilityai/sdxl-turbo", -1),
-  imageModelOf("ByteDance/SDXL-Lightning", -1),
+  // 已弃模型
+  // imageModelOf("stabilityai/sd-turbo", -1),
+  // imageModelOf("stabilityai/sdxl-turbo", -1),
+  // imageModelOf("ByteDance/SDXL-Lightning", -1),
   imageModelOf('Pro/black-forest-labs/FLUX.1-schnell', 1)
 ];
 
 /**
  * 判断体验密钥是否可用
  */
-export function isLimitedModel(modelId) {
+export function isLimitedModel (modelId) {
   const IMAGE_LIMITED_MODELS = IMAGE_MODELS.filter(item => item.price > 0).map(item => item.id);
   const TEXT_LIMITED_MODELS = SILICON_MODELS.filter(item => item.price > 0).map(item => item.id);
   return IMAGE_LIMITED_MODELS.includes(modelId) || TEXT_LIMITED_MODELS.includes(modelId);
 }
 
-export function getImageModels() {
+export function getImageModels () {
   return [...IMAGE_MODELS];
 }

@@ -201,6 +201,12 @@ export default function ({ model, plain = false }) {
                         {t('需实名')}
                       </Tag>
                     )}
+                    {option.isVendorA && <Tag size="small" variant="outline" theme="success" className="ml-2">
+                      国产算力
+                    </Tag>}
+                    {option.isPro && <Tag size="small" variant='outline' theme="warning" className="ml-2">
+                      Pro
+                    </Tag>}
                   </div>
                 </div>
               </Select.Option>
@@ -227,7 +233,7 @@ export default function ({ model, plain = false }) {
               {
                 icon:
                   !modelDetail.link ||
-                  modelDetail.link.startsWith('https://huggingface.co/')
+                    modelDetail.link.startsWith('https://huggingface.co/')
                     ? 'i-logos-hugging-face-icon'
                     : 'i-mingcute-external-link-line',
                 onClick: () => {
