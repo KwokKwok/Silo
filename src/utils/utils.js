@@ -2,7 +2,7 @@ import { getChatRequestOptions } from "./options/chat-options"
 import { getChatResolver, isLimitedModel } from './models';
 import { fmtBaseUrl } from "./format";
 import { isExperienceSK } from "@src/store/storage";
-export function createOpenAICompatibleRequestOptions (sk, model, messages, options = {}) {
+export function createOpenAICompatibleRequestOptions(sk, model, messages, options = {}) {
   return {
     method: 'POST',
     headers: {
@@ -33,7 +33,7 @@ const defaultModelIdResolver = modelId => {
   return rest.join('/');
 }
 
-export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messages, chatOptions, controller, onChunk, onEnd, onError) {
+export function openAiCompatibleChat(baseUrl, sk, modelIdResolver, model, messages, chatOptions, controller, onChunk, onEnd, onError) {
   const modelId = (modelIdResolver || defaultModelIdResolver)(model) // 取出模型ID
   if (!sk) {
     return onError(new Error('API Key未配置'))
@@ -55,7 +55,7 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
       const decoder = new TextDecoder(); // 创建文本解码器
 
       // 读取流中的数据
-      function read () {
+      function read() {
         reader.read().then(({ done, value }) => {
           if (!controller.current) return;
           if (done) {
@@ -79,7 +79,7 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
     })
 }
 
-export async function streamChat (model, messages, controller, onChunk, onEnd, onError) {
+export async function streamChat(model, messages, controller, onChunk, onEnd, onError) {
   const modelChatOptions = getChatRequestOptions(model)
   try {
     const resolver = getChatResolver(model);
@@ -92,9 +92,9 @@ export async function streamChat (model, messages, controller, onChunk, onEnd, o
 
 export const isBrowserExtension = !!import.meta.env.BROWSER
 
-export function checkModelLimit (modelId) {
+export function checkModelLimit(modelId) {
   if (isExperienceSK()) {
-    if (isLimitedModel(modelId)) {
+    if (isLimitedModel(modelId) && import.meta.env.VITE_ALLOW_TRIAL_KEY_PAID !== 'true') {
       throw new Error('为了长久的提供基础服务，体验密钥暂不支持该模型，请见谅')
     }
   }
