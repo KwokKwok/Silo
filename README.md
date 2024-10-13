@@ -1,7 +1,7 @@
 [English Version](https://github.com/KwokKwok/Silo/blob/main/README_EN.md)
 
 > [!NOTE]
-> 请注意：体验密钥是开放的，但请不要滥用体验密钥。如您需要修改代码自行部署该项目，请修改默认的体验密钥，至少不要移除体验密钥相关限制。
+> 请注意：体验密钥是公开的，但请不要滥用体验密钥。如您需要修改代码自行部署该项目，请同时修改默认的体验密钥，或者至少不要移除体验密钥相关限制。
 > 
 > 我可以停掉当前的体验密钥，但更希望大家能不要辜负信任，谢谢。
 
@@ -46,7 +46,7 @@
 
 当本项目发生版本变更时，会自动打包提交到 Chrome 应用商店和 Edge Addons。并将产生的 zip 文件上传到 [GitHub Releases](https://github.com/KwokKwok/SiloChat/releases)，您也可以直接下载并在浏览器中安装。
 
-## docker部署
+## Docker 部署
 
 ``` yaml
 version: '3.8'
@@ -58,9 +58,7 @@ services:
       - "3000:3000"
     environment:
       # 设置默认的硅基流动 API 密钥
-      # - VITE_DEFAULT_SK=
-      # 是否允许试用key使用付费模型
-      - VITE_ALLOW_TRIAL_KEY_PAID=false
+      - VITE_DEFAULT_SK=
       # 默认激活的模型
       - VITE_DEFAULT_ACTIVE_MODELS=Qwen/Qwen2.5-7B-Instruct,THUDM/glm-4-9b-chat,01-ai/Yi-1.5-9B-Chat-16K
 ```

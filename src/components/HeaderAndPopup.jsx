@@ -75,9 +75,9 @@ export default function () {
           'h-12 w-full filter backdrop-blur text-xl flex items-center px-4 ' +
           (isZenMode
             ? 'fixed top-0 left-0 right-0 z-50 transform transition-visible duration-300 delay-150 ' +
-              (showInZen
-                ? 'translate-y-0 opacity-100'
-                : '-translate-y-full opacity-0')
+            (showInZen
+              ? 'translate-y-0 opacity-100'
+              : '-translate-y-full opacity-0')
             : ' ')
         }
       >
@@ -288,7 +288,7 @@ export default function () {
           onClick={() => data && setShowPopup(false)}
           className="fixed z-50 top-0 left-0 w-full h-full bg-black  filter backdrop-blur-sm bg-opacity-50 flex justify-center items-center"
         >
-          <div className="relative w-10/12 lg:w-[600px] h-[400px] bg-white dark:bg-gray-900 rounded-lg p-4 text-center leading-4">
+          <div className="relative w-10/12 lg:w-[600px] min-h-[400px] bg-white dark:bg-gray-900 rounded-lg p-4 text-center leading-4">
             {!!data && (
               <i
                 className="i-mingcute-close-line opacity-70 text-2xl absolute top-4 right-4 cursor-pointer"
@@ -344,6 +344,7 @@ export default function () {
               <span className="mt-4 text-sm text-gray-500">
                 {t('您的密钥将仅在浏览器中存储，请仅在安全的设备上使用本应用')}
               </span>
+
               <span
                 className="text-blue-400 cursor-pointer mt-4 text-sm"
                 onClick={() => {
@@ -352,6 +353,9 @@ export default function () {
                 }}
               >
                 🤖 {t('先不注册，用用你的')} 🤖
+              </span>
+              <span className="mt-2 text-xs text-gray-600">
+                {t('体验密钥不适用于付费模型。且可能因为其公开性而被人滥用而进一步被停用')}
               </span>
             </div>
           </div>
