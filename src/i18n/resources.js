@@ -45,6 +45,10 @@ const resources = [
     en: 'Zen mode'
   },
   {
+    zh: '恢复默认布局',
+    en: 'Restore default layout'
+  },
+  {
     zh: '修改密钥',
     en: 'Modify key'
   },
@@ -413,8 +417,8 @@ const resources = [
     en: 'Okay'
   },
   {
-    zh:'体验密钥不适用于付费模型。且可能因为其公开性而被人滥用而进一步被停用',
-    en:'The experience key is not applicable to the paid model. It may also be further disabled due to the risk of abuse arising from its public nature.'
+    zh: '体验密钥不适用于付费模型。且可能因为其公开性而被人滥用而进一步被停用',
+    en: 'The experience key is not applicable to the paid model. It may also be further disabled due to the risk of abuse arising from its public nature.'
   }
 ]
 

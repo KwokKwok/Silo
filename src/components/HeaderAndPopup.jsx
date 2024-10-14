@@ -28,19 +28,30 @@ export default function () {
     debounceWait: 300,
     manual: true,
   });
+  const handleClick = () => {
+    setShowPopup(true);
+  };
   useEffect(() => {
-    if (isExperienceSK()) {
-      notification.info({
-        title: t('您正在使用体验密钥'),
-        content: t(
-          '体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥'
-        ),
-        closeBtn: true,
-        duration: 1000 * 6,
-        placement: 'bottom-right',
-        offset: [-20, -20],
-      });
-    }
+    // if (isExperienceSK()) {
+    notification.info({
+      title: t('您正在使用体验密钥'),
+      content: (
+        <>
+          <span
+            onClick={handleClick}
+            style={{ color: '#1890ff', cursor: 'pointer' }}
+          >
+            {t('体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥')}
+          </span>
+
+        </>
+      ),
+      closeBtn: true,
+      duration: 1000 * 6,
+      placement: 'bottom-right',
+      offset: [-20, -20],
+    });
+    // }
     runAsync().then(() => {
       setShowPopup(false);
     });
@@ -77,9 +88,9 @@ export default function () {
           'h-12 w-full filter backdrop-blur text-xl flex items-center px-4 ' +
           (isZenMode
             ? 'fixed top-0 left-0 right-0 z-50 transform transition-visible duration-300 delay-150 ' +
-              (showInZen
-                ? 'translate-y-0 opacity-100'
-                : '-translate-y-full opacity-0')
+            (showInZen
+              ? 'translate-y-0 opacity-100'
+              : '-translate-y-full opacity-0')
             : ' ')
         }
       >
@@ -317,7 +328,7 @@ export default function () {
                 <img src={ScLogo} alt="硅基流动" className="h-16 rounded-md" />
               </div>
               <input
-                type="text"
+                type="password"
                 value={secretKey}
                 autoFocus={!secretKey}
                 onChange={e => setSecretKey(e.target.value)}
