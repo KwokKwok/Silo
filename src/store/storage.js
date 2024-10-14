@@ -18,7 +18,9 @@ export function getSecretKey (forceUpdate = false) {
 }
 
 export function isExperienceSK () {
-  return getSecretKey() === EXPERIENCE_SK
+  const sk = getSecretKey();
+
+  return sk && sk === EXPERIENCE_SK
 }
 
 const secretKeyAtom = atom(getSecretKey(true))
