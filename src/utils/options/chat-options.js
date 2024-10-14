@@ -23,7 +23,7 @@ function getDefaultChatOptions () {
       '生成的最大 token 数',
       50,
       4096,
-      512
+      2048
     ),
     optionOf(
       'Temperature',

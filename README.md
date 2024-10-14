@@ -1,11 +1,16 @@
 [English Version](https://github.com/KwokKwok/Silo/blob/main/README_EN.md)
 
+> [!NOTE]
+> 请注意：体验密钥是公开的，但请不要滥用体验密钥。如您需要修改代码自行部署该项目，请同时修改默认的体验密钥，或者至少不要移除体验密钥相关限制。
+>
+> 我可以停掉当前的体验密钥，但更希望大家能不要辜负信任，谢谢。
+
 <p align="center"><a href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
 <h1 align="center">Silo - 纯前端多模型对话、文生图</h1>
 
 <p align="center"><a target="_blank" rel="noreferrer noopener" href="https://chat.kwok.ink"><img alt="在线体验" src="https://img.shields.io/badge/在线体验-112418.svg?&style=for-the-badge&logo=safari&logoColor=white"></a></p>
 <p align="center"><a rel="noreferrer noopener" target="_blank" href="https://chromewebstore.google.com/detail/nakohnjaacfmjiodegibhnepfmioejln"><img alt="Chrome Web Store" src="https://img.shields.io/badge/安装 Chrome 扩展-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a> <a rel="noreferrer noopener" target="_blank" href="https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod"><img alt="Chrome Web Store" src="https://img.shields.io/badge/安装 Edge 扩展-141e24.svg?&style=for-the-badge&logo=microsoft-edge&logoColor=white"></a> 
-<a target="_blank" rel="noreferrer noopener" href="https://vercel.com/new/clone?repository-url=https://github.com/KwokKwok/SiloChat.git&project-name=silo-chat&repository-name=SiloChat"><img alt="Deploy" src="https://img.shields.io/badge/部署到 Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a></p>
+<a target="_blank" rel="noreferrer noopener" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FKwokKwok%2FSilo.git&project-name=silo&repository-name=silo&env=SILO_EXPERIENCE_SK&envDescription=%E8%BE%93%E5%85%A5%200%20%E8%A1%A8%E7%A4%BA%E4%B8%8D%E6%8F%90%E4%BE%9B%E4%BD%93%E9%AA%8C%E5%AF%86%E9%92%A5%E6%96%B9%E5%BC%8F%E8%AE%BF%E9%97%AE%EF%BC%8C%E6%9B%B4%E5%A4%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8F%AF%E6%9F%A5%E7%9C%8B%20GitHub%20README%20%E8%AF%B4%E6%98%8E&envLink=https%3A%2F%2Fgithub.com%2FKwokKwok%2FSilo%3Ftab%3Dreadme-ov-file%23%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8F%8A%E8%AF%B4%E6%98%8E"><img alt="Deploy" src="https://img.shields.io/badge/部署到 Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a></p>
 
 <br/>
 <p align="center">Silo 是一个主要基于  <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a>  API 的应用，目前已支持多个大模型同时<b>对话、文生图</b>，响应极快。支持模型参数调整、余额自动刷新等功能。</p>
@@ -41,23 +46,37 @@
 
 当本项目发生版本变更时，会自动打包提交到 Chrome 应用商店和 Edge Addons。并将产生的 zip 文件上传到 [GitHub Releases](https://github.com/KwokKwok/SiloChat/releases)，您也可以直接下载并在浏览器中安装。
 
-## docker部署
+## Docker 部署
 
-``` yaml
+```yaml
 version: '3.8'
 
 services:
   frontend:
     image: ghcr.io/KwokKwok/silo:latest
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
-      # 设置默认的硅基流动 API 密钥
-      # - VITE_DEFAULT_SK=
-      # 是否允许试用key使用付费模型
-      - VITE_ALLOW_TRIAL_KEY_PAID=false
-      # 默认激活的模型
-      - VITE_DEFAULT_ACTIVE_MODELS=Qwen/Qwen2.5-7B-Instruct,THUDM/glm-4-9b-chat,01-ai/Yi-1.5-9B-Chat-16K
+      # 设置硅基流动体验 API 密钥
+      - SILO_EXPERIENCE_SK=
+      # 默认激活的对话模型
+      - SILO_DEFAULT_ACTIVE_CHAT_MODELS=Qwen/Qwen2.5-7B-Instruct,THUDM/glm-4-9b-chat,01-ai/Yi-1.5-9B-Chat-16K
+```
+
+## 环境变量及说明
+
+> [!NOTE]
+> 本部分普通用户无需关心，仅自行部署者可能需要了解。
+
+> [!NOTE]
+> 再次提醒，本项目是纯前端的，配置的密钥可能会被恶意使用，请谨慎配置。
+
+```js
+- SILO_EXPERIENCE_SK: 硅基流动体验 API 密钥。可输入 0 代表不提供该方式
+- SILO_PAID_SK: 硅基流动付费 API 密钥，设置之后不会有体验密钥提示及限制
+- SILO_AFF_LINK: 硅基流动密钥弹框处注册链接
+- SILO_DEFAULT_ACTIVE_CHAT_MODELS: 默认激活的对话模型，多个模型以英文逗号分隔
+- SILO_DEFAULT_ACTIVE_IMAGE_MODELS: 默认激活的文生图模型，多个模型以英文逗号分隔
 ```
 
 ## 致谢

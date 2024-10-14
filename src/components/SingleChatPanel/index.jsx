@@ -201,11 +201,11 @@ export default function ({ model, plain = false }) {
                         {t('需实名')}
                       </Tag>
                     )}
+                    {option.isPro && <Tag size="small" variant='outline' theme="primary" className="ml-2">
+                      Pro
+                    </Tag>}
                     {option.isVendorA && <Tag size="small" variant="outline" theme="success" className="ml-2">
                       国产算力
-                    </Tag>}
-                    {option.isPro && <Tag size="small" variant='outline' theme="warning" className="ml-2">
-                      Pro
                     </Tag>}
                   </div>
                 </div>

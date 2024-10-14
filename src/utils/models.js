@@ -97,26 +97,28 @@ export function getModelIcon (model) {
   return _iconCache[model];
 }
 
+/**
+ * 关于模型顺序：
+ * 1. 免费模型在前
+ * 2. 免费模型中，尽量根据模型能力排序，最新最强的在前
+ * 3. 中文模型应排在英文模型前面
+ * 4. Pro 开头的模型为免费模型的付费版本，优先级最低
+ * 5. 新增模型请参考上述规则
+ */
 const SILICON_MODELS = [
+  textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32, false),
   textModelOf("THUDM/glm-4-9b-chat", 0, 128, false),
   textModelOf("01-ai/Yi-1.5-9B-Chat-16K", 0, 16, false),
-  textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32, false),
   textModelOf("internlm/internlm2_5-7b-chat", 0, 32, false),
   textModelOf("Qwen/Qwen2.5-Coder-7B-Instruct", 0, 32, false),
   textModelOf("Qwen/Qwen2-7B-Instruct", 0, 32, false),
   textModelOf("01-ai/Yi-1.5-6B-Chat", 0, 4, false),
   textModelOf("THUDM/chatglm3-6b", 0, 32, false),
   textModelOf("Qwen/Qwen2-1.5B-Instruct", 0, 32, false),
-  textModelOf("Pro/Qwen/Qwen2-1.5B-Instruct", 0.14, 32, false),
-  textModelOf("Pro/Qwen/Qwen2.5-7B-Instruct", 0.35, 32, false),
-  textModelOf("Pro/internlm/internlm2_5-7b-chat", 0.35, 32, false),
-  textModelOf("Pro/Qwen/Qwen2-7B-Instruct", 0.35, 32, false),
-  textModelOf("Pro/01-ai/Yi-1.5-6B-Chat", 0.35, 4, false),
-  textModelOf("Pro/THUDM/chatglm3-6b", 0.35, 32, false),
-  textModelOf("Pro/01-ai/Yi-1.5-9B-Chat-16K", 0.42, 16, false),
-  textModelOf("Pro/THUDM/glm-4-9b-chat", 0.6, 128, false),
+  textModelOf("google/gemma-2-9b-it", 0, 8, true),
+  textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 32, true),
+  textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8, true),
   textModelOf("Qwen/Qwen2.5-14B-Instruct", 0.7, 32, false),
-  textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 1, 32, false),
   textModelOf("internlm/internlm2_5-20b-chat", 1, 32, false),
   textModelOf("01-ai/Yi-1.5-34B-Chat-16K", 1.26, 16, false),
   textModelOf("Qwen/Qwen2.5-32B-Instruct", 1.26, 32, false),
@@ -129,16 +131,22 @@ const SILICON_MODELS = [
   textModelOf("Qwen/Qwen2.5-72B-Instruct-128K", 4.13, 128, false),
   textModelOf("Qwen/Qwen2.5-72B-Instruct", 4.13, 32, false),
   textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32, false),
-  textModelOf("google/gemma-2-9b-it", 0, 8, true),
-  textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 32, true),
-  textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8, true),
-  textModelOf("Pro/meta-llama/Meta-Llama-3.1-8B-Instruct", 0.42, 32, true),
-  textModelOf("Pro/meta-llama/Meta-Llama-3-8B-Instruct", 0.42, 8, true),
-  textModelOf("Pro/google/gemma-2-9b-it", 0.6, 8, true),
+  textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 1, 32, false),
   textModelOf("google/gemma-2-27b-it", 1.26, 8, true),
   textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 8, true),
   textModelOf("meta-llama/Meta-Llama-3-70B-Instruct", 4.13, 8, true),
   textModelOf("meta-llama/Meta-Llama-3.1-405B-Instruct", 21, 32, true),
+  textModelOf("Pro/Qwen/Qwen2-1.5B-Instruct", 0.14, 32, false),
+  textModelOf("Pro/Qwen/Qwen2.5-7B-Instruct", 0.35, 32, false),
+  textModelOf("Pro/internlm/internlm2_5-7b-chat", 0.35, 32, false),
+  textModelOf("Pro/Qwen/Qwen2-7B-Instruct", 0.35, 32, false),
+  textModelOf("Pro/01-ai/Yi-1.5-6B-Chat", 0.35, 4, false),
+  textModelOf("Pro/THUDM/chatglm3-6b", 0.35, 32, false),
+  textModelOf("Pro/01-ai/Yi-1.5-9B-Chat-16K", 0.42, 16, false),
+  textModelOf("Pro/THUDM/glm-4-9b-chat", 0.6, 128, false),
+  textModelOf("Pro/meta-llama/Meta-Llama-3.1-8B-Instruct", 0.42, 32, true),
+  textModelOf("Pro/meta-llama/Meta-Llama-3-8B-Instruct", 0.42, 8, true),
+  textModelOf("Pro/google/gemma-2-9b-it", 0.6, 8, true),
 ];
 
 export const SILICON_MODELS_IDS = SILICON_MODELS.map(i => i.id);

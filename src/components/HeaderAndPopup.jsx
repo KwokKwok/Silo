@@ -12,6 +12,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Tooltip from './MobileCompatible/Tooltip';
 import { useTranslation } from 'react-i18next';
+import { SILO_ENV } from '@src/utils/env';
 
 export default function () {
   const [showPopup, setShowPopup] = useState();
@@ -300,7 +301,7 @@ export default function () {
           onClick={() => data && setShowPopup(false)}
           className="fixed z-50 top-0 left-0 w-full h-full bg-black  filter backdrop-blur-sm bg-opacity-50 flex justify-center items-center"
         >
-          <div className="relative w-10/12 lg:w-[600px] h-[400px] bg-white dark:bg-gray-900 rounded-lg p-4 text-center leading-4">
+          <div className="relative w-10/12 lg:w-[600px] min-h-[400px] bg-white dark:bg-gray-900 rounded-lg p-4 text-center leading-4">
             {!!data && (
               <i
                 className="i-mingcute-close-line opacity-70 text-2xl absolute top-4 right-4 cursor-pointer"
@@ -332,11 +333,7 @@ export default function () {
               <span className="mt-6 text-sm text-gray-500">
                 {t('intro1')}
                 <br />
-                <a
-                  className="mx-1"
-                  target="_blank"
-                  href="https://cloud.siliconflow.cn?referrer=clzs72zzb02jqmp5vn9s5tj15"
-                >
+                <a className="mx-1" target="_blank" href={SILO_ENV.AFF_LINK}>
                   {t('现在注册 SiliconCloud')}
                 </a>
                 {t('官方也会赠送 14 元额度可用于体验付费模型')}
@@ -356,6 +353,7 @@ export default function () {
               <span className="mt-4 text-sm text-gray-500">
                 {t('您的密钥将仅在浏览器中存储，请仅在安全的设备上使用本应用')}
               </span>
+
               <span
                 className="text-blue-400 cursor-pointer mt-4 text-sm"
                 onClick={() => {
@@ -364,6 +362,11 @@ export default function () {
                 }}
               >
                 🤖 {t('先不注册，用用你的')} 🤖
+              </span>
+              <span className="mt-2 text-xs text-gray-600">
+                {t(
+                  '体验密钥不适用于付费模型。且可能因为其公开性而被人滥用而进一步被停用'
+                )}
               </span>
             </div>
           </div>
