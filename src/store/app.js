@@ -8,6 +8,8 @@ const activeModels = atom(
   getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, SILO_ENV.DEFAULT_ACTIVE_CHAT_MODELS)
 )
 
+const activeModelsFromEnv = SILO_ENV.DEFAULT_ACTIVE_CHAT_MODELS;
+
 export const useActiveModels = () => {
   const [value, setValue] = useAtom(activeModels);
   const setActiveModels = (models) => {
