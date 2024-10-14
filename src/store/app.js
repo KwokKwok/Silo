@@ -2,13 +2,10 @@ import { atom, useAtom } from 'jotai'
 import { getAllTextModels } from '../utils/models';
 import { getJsonDataFromLocalStorage, getLocalStorage, setJsonDataToLocalStorage, setLocalStorage } from '../utils/helpers';
 import { LOCAL_STORAGE_KEY } from '../utils/types';
-
-const activeModelsFromEnv = import.meta.env.VITE_DEFAULT_ACTIVE_MODELS
-  ? import.meta.env.VITE_DEFAULT_ACTIVE_MODELS.split(',').map(model => model.trim())
-  : ["Qwen/Qwen2.5-7B-Instruct", "THUDM/glm-4-9b-chat", "01-ai/Yi-1.5-9B-Chat-16K"]
+import { SILO_ENV } from '@src/utils/env';
 
 const activeModels = atom(
-  getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, activeModelsFromEnv)
+  getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, SILO_ENV.DEFAULT_ACTIVE_CHAT_MODELS)
 )
 
 export const useActiveModels = () => {
@@ -46,7 +43,7 @@ export const useActiveModels = () => {
 
 const isRowMode = atom(getLocalStorage(LOCAL_STORAGE_KEY.ROW_MODE, 'false') === 'true')
 
-export function useIsRowMode() {
+export function useIsRowMode () {
   const [value, setValue] = useAtom(isRowMode);
   const setIsRows = (isRows) => {
     setLocalStorage(LOCAL_STORAGE_KEY.ROW_MODE, isRows);

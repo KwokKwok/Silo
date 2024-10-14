@@ -6,6 +6,7 @@
         "./src/*"
       ]
     },
-    "jsx": "react"
+    "jsx": "react",
+    "module": "ESNext"
   }
 }

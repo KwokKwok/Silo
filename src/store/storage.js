@@ -5,15 +5,16 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { message } from 'tdesign-react';
 import i18next from 'i18next';
+import { SILO_ENV } from '@src/utils/env';
 
-export const EXPERIENCE_SK = import.meta.env.VITE_DEFAULT_SK;
+export const EXPERIENCE_SK = SILO_ENV.EXPERIENCE_SK;
 
 let _cacheKey = ''
 export function getSecretKey (forceUpdate = false) {
   if (!_cacheKey || forceUpdate) {
-    _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, EXPERIENCE_SK)
+    _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, SILO_ENV.PAID_SK || SILO_ENV.EXPERIENCE_SK)
   }
-  return _cacheKey || EXPERIENCE_SK
+  return _cacheKey
 }
 
 export function isExperienceSK () {
@@ -31,7 +32,7 @@ const activeSystemPromptIdAtom = atom(
   )
 );
 
-const activeImageModels = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS, ['black-forest-labs/FLUX.1-schnell', 'stabilityai/stable-diffusion-3-medium']))
+const activeImageModels = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS, SILO_ENV.DEFAULT_ACTIVE_IMAGE_MODELS))
 
 const allCustomSystemPromptsAtom = atom(
   getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.SYSTEM_PROMPTS, [])

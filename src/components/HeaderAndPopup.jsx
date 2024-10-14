@@ -12,6 +12,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Tooltip from './MobileCompatible/Tooltip';
 import { useTranslation } from 'react-i18next';
+import { SILO_ENV } from '@src/utils/env';
 
 export default function () {
   const [showPopup, setShowPopup] = useState();
@@ -75,9 +76,9 @@ export default function () {
           'h-12 w-full filter backdrop-blur text-xl flex items-center px-4 ' +
           (isZenMode
             ? 'fixed top-0 left-0 right-0 z-50 transform transition-visible duration-300 delay-150 ' +
-            (showInZen
-              ? 'translate-y-0 opacity-100'
-              : '-translate-y-full opacity-0')
+              (showInZen
+                ? 'translate-y-0 opacity-100'
+                : '-translate-y-full opacity-0')
             : ' ')
         }
       >
@@ -320,11 +321,7 @@ export default function () {
               <span className="mt-6 text-sm text-gray-500">
                 {t('intro1')}
                 <br />
-                <a
-                  className="mx-1"
-                  target="_blank"
-                  href="https://cloud.siliconflow.cn?referrer=clzs72zzb02jqmp5vn9s5tj15"
-                >
+                <a className="mx-1" target="_blank" href={SILO_ENV.AFF_LINK}>
                   {t('现在注册 SiliconCloud')}
                 </a>
                 {t('官方也会赠送 14 元额度可用于体验付费模型')}
@@ -355,7 +352,9 @@ export default function () {
                 🤖 {t('先不注册，用用你的')} 🤖
               </span>
               <span className="mt-2 text-xs text-gray-600">
-                {t('体验密钥不适用于付费模型。且可能因为其公开性而被人滥用而进一步被停用')}
+                {t(
+                  '体验密钥不适用于付费模型。且可能因为其公开性而被人滥用而进一步被停用'
+                )}
               </span>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 > [!NOTE]
 > Please note: The experience key is public, but please do not abuse it. If you need to modify the code for self-deployment of this project, please modify the default experience key at the same time, or at least do not remove the related restrictions.
-> 
+>
 > I can disable the current experience key at any time, but I would prefer that everyone not let the trust be disappointed, thank you.
 
 <p align="center"><a target="_blank" href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
@@ -12,7 +12,7 @@
 
 <p align="center"><a target="_blank" rel="noreferrer noopener" href="https://chromewebstore.google.com/detail/nakohnjaacfmjiodegibhnepfmioejln"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Chrome Web STORE-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a> 
 <a rel="noreferrer noopener" target="_blank" href="https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Edge Addons-141e24.svg?&style=for-the-badge&logo=microsoft-edge&logoColor=white"></a> 
-<a target="_blank" rel="noreferrer noopener" href="https://vercel.com/new/clone?repository-url=https://github.com/KwokKwok/SiloChat.git&project-name=silo-chat&repository-name=SiloChat"><img alt="Deploy" src="https://img.shields.io/badge/Deploy To Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a></p>
+<a target="_blank" rel="noreferrer noopener" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FKwokKwok%2FSilo.git&project-name=silo&repository-name=silo&env=SILO_EXPERIENCE_SK&envDescription=You%20can%20input%200%20indicate%20not%20providing%20trial%20way%EF%BC%8Ccheck%20GitHub%20README%20for%20more%20environment%20variables&envLink=https%3A%2F%2Fgithub.com%2FKwokKwok%2FSilo%2Fblob%2Fmain%2FREADME_EN.md%23environment-variables"><img alt="Deploy" src="https://img.shields.io/badge/Deploy To Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a></p>
 
 <br/>
 <p align="center">Silo is an application mainly based on the <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a> API, which currently supports multiple large models for simultaneous <b>chat、text to image</b>, with extremely fast response times. It supports model parameter adjustments and automatic balance refresh functions.</p>
@@ -50,19 +50,35 @@ When the version of this project changes, it will be automatically packaged and 
 
 ## Docker deployment
 
-``` yaml
+```yaml
 version: '3.8'
 
 services:
   frontend:
     image: ghcr.io/KwokKwok/silo:latest
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
-      # Set the default SiliconFlow API key.
-      - VITE_DEFAULT_SK=
-      # Default activated model
-      - VITE_DEFAULT_ACTIVE_MODELS=Qwen/Qwen2.5-7B-Instruct,THUDM/glm-4-9b-chat,01-ai/Yi-1.5-9B-Chat-16K
+      # Set the default experience SiliconFlow API key.
+      - SILO_EXPERIENCE_SK=
+      # Default activated chat model
+      - SILO_DEFAULT_ACTIVE_CHAT_MODELS=Qwen/Qwen2.5-7B-Instruct,THUDM/glm-4-9b-chat,01-ai/Yi-1.5-9B-Chat-16K
+```
+
+## Environment Variables
+
+> [!NOTE]
+> This section is not of concern to regular users, only those who are deploying the project themselves may need to understand it.
+
+> [!NOTE]
+> As a reminder, this project is purely frontend-based, and the configured keys may be maliciously used, so please configure with caution.
+
+```js
+- SILO_EXPERIENCE_SK: SiliconFlow experience API key; you can enter '0' indicate not providing this option
+- SILO_PAID_SK: SiliconFlow paid API key; when set, there will be no experience key notification or restrictions
+- SILO_AFF_LINK: Registration link in the SiliconFlow key popup
+- SILO_DEFAULT_ACTIVE_CHAT_MODELS: Default activated chat models, multiple models separated by commas
+- SILO_DEFAULT_ACTIVE_IMAGE_MODELS: Default activated text-to-image models, multiple models separated by commas
 ```
 
 ## Acknowledgments
