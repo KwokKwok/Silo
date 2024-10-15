@@ -134,6 +134,10 @@ const resources = [
     en: 'Enter SiliconCloud API key here'
   },
   {
+    zh: '鉴权密码和密钥二选一填写即可',
+    en: 'Choose one of authentication password and key to fill in'
+  },
+  {
     zh: '输入鉴权密码',
     en: 'Enter authentication password'
   },
