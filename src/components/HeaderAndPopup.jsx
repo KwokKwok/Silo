@@ -33,9 +33,7 @@ export default function () {
     if (isExperienceSK()) {
       notification.info({
         title: t('您正在使用体验密钥'),
-        content: t(
-          '体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥'
-        ),
+        content: t('体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥'),
         closeBtn: true,
         duration: 1000 * 6,
         placement: 'bottom-right',
@@ -306,8 +304,6 @@ export default function () {
                 <img src={ScLogo} alt="硅基流动" className="h-16 rounded-md" />
               </div>
 
-              {/* 提示下面二选一填写即可 */}
-            
               <span className="text-lg text-gray-600 mb-4">
                 {t('鉴权密码和密钥二选一填写即可')}
               </span>
@@ -331,6 +327,29 @@ export default function () {
                 placeholder={t('在这里输入 SiliconCloud API 密钥')}
                 className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4"
               />
+
+              <button
+                className="mt-4 w-full h-12 bg-primary text-white rounded-xl"
+                onClick={() => {
+                  runAsync()
+                    .then(() => {
+                      setShowPopup(false);
+                    })
+                    .catch(err => {
+                      notification.error({
+                        title: t('验证失败'),
+                        content: err.message,
+                        closeBtn: true,
+                        duration: 0,
+                        placement: 'top-right',
+                        offset: [-20, 20],
+                        });
+                    });
+                }}
+              >
+                {t('验证')}
+              </button>
+
 
               {!!secretKey && !!error && (
                 <span className="mt-4 text-sm text-red-400">
