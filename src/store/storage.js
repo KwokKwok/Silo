@@ -6,15 +6,28 @@ import { useState } from 'react';
 import { message } from 'tdesign-react';
 import i18next from 'i18next';
 import { SILO_ENV } from '@src/utils/env';
+import { decryptKey } from "../utils/decrypt";
 
 export const EXPERIENCE_SK = SILO_ENV.EXPERIENCE_SK;
 
 let _cacheKey = ''
 export function getSecretKey (forceUpdate = false) {
   if (!_cacheKey || forceUpdate) {
-    _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, SILO_ENV.PAID_SK || SILO_ENV.EXPERIENCE_SK)
+    _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, SILO_ENV.PAID_SK_ENCRYPTION || SILO_ENV.EXPERIENCE_SK)
   }
+
+  if (_cacheKey && !_cacheKey.startsWith('sk-')) {
+    const password = getPassword();
+    if (password) {
+      _cacheKey = decryptKey(_cacheKey, password);
+    }
+  }
+
   return _cacheKey
+}
+
+export function getPassword () {
+  return getLocalStorage(LOCAL_STORAGE_KEY.PASSWORD, '')
 }
 
 export function isExperienceSK () {
@@ -23,7 +36,14 @@ export function isExperienceSK () {
   return sk && sk === EXPERIENCE_SK
 }
 
+// 判断是否使用付费秘钥
+export function isPaidSK () {
+  return !!SILO_ENV.PAID_SK_ENCRYPTION;
+}
+
 const secretKeyAtom = atom(getSecretKey(true))
+
+const passwordAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.PASSWORD, ''))
 
 const isZenModeAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.ZEN_MODE, 'false') === 'true')
 
@@ -46,6 +66,7 @@ const atomMap = {
   [LOCAL_STORAGE_KEY.ACTIVE_SYSTEM_PROMPT]: activeSystemPromptIdAtom,
   [LOCAL_STORAGE_KEY.ZEN_MODE]: isZenModeAtom,
   [LOCAL_STORAGE_KEY.SECRET_KEY]: secretKeyAtom,
+  [LOCAL_STORAGE_KEY.PASSWORD]: passwordAtom,
 }
 
 /**
@@ -73,7 +94,22 @@ export const useSecretKey = () => {
     setValue(_key);
     _cacheKey = _key;
   }
+
+  if (value == SILO_ENV.PAID_SK_ENCRYPTION) {
+    return ['', setSecretKey]
+  }
+
   return [value, setSecretKey]
+}
+
+export const usePassword = () => {
+  const [value, setValue] = useLocalStorageAtom(LOCAL_STORAGE_KEY.PASSWORD)
+  const [secretKey, setSecretKey] = useSecretKey();
+  const setPassword = (password) => {
+    setValue(password);
+    setSecretKey(getSecretKey());
+  }
+  return [value, setPassword]
 }
 
 export function useActiveSystemPromptId () {

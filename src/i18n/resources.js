@@ -134,6 +134,10 @@ const resources = [
     en: 'Enter SiliconCloud API key here'
   },
   {
+    zh: '输入鉴权密码',
+    en: 'Enter authentication password'
+  },
+  {
     _key: 'intro1',
     zh: '本站主要基于 SiliconCloud API 来提供开箱即用的多模型对话和文生图能力，需要您先注册一个 SiliconCloud 账号',
     en: 'This site provides multi-model chat and text-to-image capabilities mainly based on SiliconCloud API, you need to register a SiliconCloud account first'

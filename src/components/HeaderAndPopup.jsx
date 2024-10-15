@@ -1,7 +1,7 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import { useActiveModels, useIsRowMode } from '../store/app';
-import { isExperienceSK, useSecretKey, useZenMode } from '../store/storage';
+import { isExperienceSK, useSecretKey, useZenMode, isPaidSK, usePassword } from '../store/storage';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/api';
 import { useDarkMode, useIsMobile } from '../utils/use';
@@ -17,6 +17,7 @@ import { SILO_ENV } from '@src/utils/env';
 export default function () {
   const [showPopup, setShowPopup] = useState();
   const [secretKey, setSecretKey] = useSecretKey();
+  const [password, setPassword] = usePassword();
   const [isDark, setDarkMode] = useDarkMode();
   const { i18n, t } = useTranslation();
 
@@ -76,9 +77,9 @@ export default function () {
           'h-12 w-full filter backdrop-blur text-xl flex items-center px-4 ' +
           (isZenMode
             ? 'fixed top-0 left-0 right-0 z-50 transform transition-visible duration-300 delay-150 ' +
-              (showInZen
-                ? 'translate-y-0 opacity-100'
-                : '-translate-y-full opacity-0')
+            (showInZen
+              ? 'translate-y-0 opacity-100'
+              : '-translate-y-full opacity-0')
             : ' ')
         }
       >
@@ -304,10 +305,28 @@ export default function () {
                 <img src="/logo.svg" alt="SiloChat" className="h-16 mr-8" />
                 <img src={ScLogo} alt="硅基流动" className="h-16 rounded-md" />
               </div>
+
+              {/* 提示下面二选一填写即可 */}
+            
+              <span className="text-lg text-gray-600 mb-4">
+                {t('鉴权密码和密钥二选一填写即可')}
+              </span>
+
+              {isPaidSK() && (
+                <input
+                  type="text"
+                  value={password}
+                  autoFocus={!password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder={t('输入鉴权密码')}
+                  className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4 mb-4"
+                />
+              )}
+
               <input
                 type="text"
                 value={secretKey}
-                autoFocus={!secretKey}
+                // autoFocus={!secretKey}
                 onChange={e => setSecretKey(e.target.value)}
                 placeholder={t('在这里输入 SiliconCloud API 密钥')}
                 className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4"
