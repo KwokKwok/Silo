@@ -4,8 +4,8 @@
   "version": "1.5.4",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "npm run encrypt && vite build",
+    "dev": "node run.js vite",
+    "build": "node run.js vite build",
     "lint": "eslint .",
     "preview": "vite preview",
     "dev:ext": "wxt",
