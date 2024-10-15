@@ -1,6 +1,6 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
-import { useActiveModels, useIsRowMode } from '../store/app';
+import { useActiveModels, useIsRowMode, useSetDefaultActiveModels } from '../store/app';
 import { isExperienceSK, useSecretKey, useZenMode, isPaidSK, usePassword } from '../store/storage';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/api';
@@ -29,26 +29,39 @@ export default function () {
     debounceWait: 300,
     manual: true,
   });
-
+  
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [isRowMode, setIsRowMode] = useIsRowMode();
   const [isZenMode, setIsZenMode] = useZenMode();
-
+  const setDefaultActiveModels = useSetDefaultActiveModels();
+  
   const [showInZen, setShowInZen] = useState(false);
-
-  // Notification when using experience key
+  
+  const handleClick = () => {
+    setShowPopup(true);
+  };
   useEffect(() => {
-    if (isExperienceSK()) {
-      notification.info({
-        title: t('您正在使用体验密钥'),
-        content: t('体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥'),
-        closeBtn: true,
-        duration: 1000 * 6,
-        placement: 'bottom-right',
-        offset: [-20, -20],
-      });
-    }
+    // if (isExperienceSK()) {
+    notification.info({
+      title: t('您正在使用体验密钥'),
+      content: (
+        <>
+          <span
+            onClick={handleClick}
+            style={{ color: '#1890ff', cursor: 'pointer' }}
+          >
+            {t('体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥')}
+          </span>
+
+        </>
+      ),
+      closeBtn: true,
+      duration: 1000 * 6,
+      placement: 'bottom-right',
+      offset: [-20, -20],
+    });
+    // }
   }, [secretKey, t]);
 
   // Fetch user info on component mount
@@ -93,9 +106,9 @@ export default function () {
           'h-12 w-full filter backdrop-blur text-xl flex items-center px-4 ' +
           (isZenMode
             ? 'fixed top-0 left-0 right-0 z-50 transform transition-visible duration-300 delay-150 ' +
-              (showInZen
-                ? 'translate-y-0 opacity-100'
-                : '-translate-y-full opacity-0')
+            (showInZen
+              ? 'translate-y-0 opacity-100'
+              : '-translate-y-full opacity-0')
             : ' ')
         }
       >
@@ -170,6 +183,17 @@ export default function () {
               onClick: () => setIsZenMode(!isZenMode),
               hidden: isMobile,
               title: t(isZenMode ? '退出禅模式' : '禅模式'),
+            },
+            {
+              // 恢复默认布局
+              icon: 'iconify mingcute--refresh-1-line',
+              onClick: () => {
+                setIsZenMode(false);
+                setIsRowMode(false);
+                setDefaultActiveModels();
+              },
+              hidden: isMobile || isImageMode,
+              title: t('恢复默认布局'),
             },
             {
               icon: 'i-ri-key-line',
@@ -338,7 +362,7 @@ export default function () {
               )}
 
               <input
-                type="text"
+                type="password"
                 value={secretKey}
                 onChange={e => setSecretKey(e.target.value)}
                 placeholder={t('在这里输入 SiliconCloud API 密钥')}

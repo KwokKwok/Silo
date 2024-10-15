@@ -8,6 +8,8 @@ const activeModels = atom(
   getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, SILO_ENV.DEFAULT_ACTIVE_CHAT_MODELS)
 )
 
+const activeModelsFromEnv = SILO_ENV.DEFAULT_ACTIVE_CHAT_MODELS;
+
 export const useActiveModels = () => {
   const [value, setValue] = useAtom(activeModels);
   const setActiveModels = (models) => {
@@ -50,4 +52,16 @@ export function useIsRowMode () {
     setValue(isRows);
   }
   return [value, setIsRows]
+}
+
+export function useSetDefaultActiveModels() {
+  const setDefaultActiveModels = () => {
+    // 更新本地存储
+    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.USER_SORT_SETTINGS, [activeModelsFromEnv]);
+    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, activeModelsFromEnv);
+    // 刷新浏览器
+    window.location.reload();
+  }
+
+  return setDefaultActiveModels;
 }
