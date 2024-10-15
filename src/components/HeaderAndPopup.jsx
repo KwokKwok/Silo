@@ -393,7 +393,25 @@ export default function () {
                   </span>
 
                   <span className="mt-4 text-sm text-gray-500">
-                    {t('如您已有账号，请')}
+                    {t('如您已有账号，您可以使用')}<a
+                      className="mx-1 cursor-pointer"
+                      target="_blank"
+                      onClick={()=>{
+                        const clientId = 'SFaJLLq0y6CAMoyDm81aMu';
+                        const ACCOUNT_ENDPOINT = 'https://account.siliconflow.cn';
+                        const authUrl = `${ACCOUNT_ENDPOINT}/oauth?client_id=${clientId}`;
+                        const popup = window.open(authUrl, 'oauthPopup', 'width=600,height=600');
+                        window.addEventListener('message', (event) => {
+                            if (event.data.length > 0 && event.data[0]['secretKey'] !== undefined) {
+                                setSecretKey(event.data[0]['secretKey']);
+                            }
+                            popup.close();
+                        });
+                        window.postMessage
+                      }}  
+                    >
+                      {t('硅基流动统一登录')}
+                    </a>, {t('或者')}
                     <a
                       className="mx-1"
                       href="https://cloud.siliconflow.cn/account/ak"

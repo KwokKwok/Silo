@@ -155,8 +155,8 @@ const resources = [
     en: 'and the official will also gift a 14 yuan credit for experiencing the paid model.'
   },
   {
-    zh: '如您已有账号，请',
-    en: 'If you already have an account, please'
+    zh: '如您已有账号，您可以使用',
+    en: 'If you already have an account, you can use'
   },
   {
     zh: '点击这里获取 SiliconCloud 密钥',
@@ -423,6 +423,14 @@ const resources = [
   {
     zh: '密码错误',
     en: 'Password error'
+  },
+  {
+    zh: '或者',
+    en: 'or you can'
+  },
+  {
+    zh: '硅基流动统一登录',
+    en: 'SiliconFlow OAuth Login'
   }
 ]
 
