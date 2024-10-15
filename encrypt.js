@@ -26,16 +26,27 @@ const encryptedPaidKey = encryptKey(paidSecretKey, secretPassword);
 
 // 定义函数来解析和更新 .env 文件内容
 function updateEnvFile(envFilePath, updates) {
+    // 如果 .env 文件不存在，先创建一个空文件
+    if (!fs.existsSync(envFilePath)) {
+        fs.writeFileSync(envFilePath, '');
+        console.log(`Created new .env file at ${envFilePath}`);
+    }
+
     // 读取现有的 .env 文件内容
-    let envFileContent = fs.existsSync(envFilePath) ? fs.readFileSync(envFilePath, 'utf-8') : '';
+    let envFileContent = fs.readFileSync(envFilePath, 'utf-8');
 
     // 解析 .env 文件内容为对象
     const envLines = envFileContent.split('\n');
     const envVars = {};
     envLines.forEach(line => {
-        const [key, value] = line.split('=');
-        if (key) {
-            envVars[key.trim()] = value ? value.trim() : '';
+        const trimmedLine = line.trim();
+        // 忽略空行和注释
+        if (trimmedLine && !trimmedLine.startsWith('#')) {
+            const [key, ...rest] = trimmedLine.split('=');
+            const value = rest.join('=');
+            if (key) {
+                envVars[key.trim()] = value ? value.trim() : '';
+            }
         }
     });
 
@@ -45,10 +56,13 @@ function updateEnvFile(envFilePath, updates) {
     }
 
     // 重新生成 .env 文件的内容
-    const newEnvContent = Object.entries(envVars).map(([key, value]) => `${key}=${value}`).join('\n');
+    const newEnvContent = Object.entries(envVars)
+        .map(([key, value]) => `${key}=${value}`)
+        .join('\n') + '\n'; // 添加换行符结尾
 
     // 写回 .env 文件
     fs.writeFileSync(envFilePath, newEnvContent);
+    console.log(`Updated .env file at ${envFilePath}`);
 }
 
 // 准备要更新的 key 和加密后的值
