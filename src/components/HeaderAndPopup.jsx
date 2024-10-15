@@ -15,7 +15,7 @@ import { useTranslation } from 'react-i18next';
 import { SILO_ENV } from '@src/utils/env';
 
 export default function () {
-  const [showPopup, setShowPopup] = useState();
+  const [showPopup, setShowPopup] = useState(false);
   const [secretKey, setSecretKey] = useSecretKey();
   const [password, setPassword] = usePassword();
   const [isDark, setDarkMode] = useDarkMode();
@@ -29,6 +29,15 @@ export default function () {
     debounceWait: 300,
     manual: true,
   });
+
+  const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const [isRowMode, setIsRowMode] = useIsRowMode();
+  const [isZenMode, setIsZenMode] = useZenMode();
+
+  const [showInZen, setShowInZen] = useState(false);
+
+  // Notification when using experience key
   useEffect(() => {
     if (isExperienceSK()) {
       notification.info({
@@ -40,25 +49,34 @@ export default function () {
         offset: [-20, -20],
       });
     }
-    runAsync().then(() => {
-      setShowPopup(false);
-    });
-  }, [secretKey]);
-  const isMobile = useIsMobile();
-  const navigate = useNavigate();
-  const [isRowMode, setIsRowMode] = useIsRowMode();
-  const [isZenMode, setIsZenMode] = useZenMode();
+  }, [secretKey, t]);
 
-  const [showInZen, setShowInZen] = useState(false);
+  // Fetch user info on component mount
+  useEffect(() => {
+    runAsync()
+      .then(() => {
+        setShowPopup(false);
+      })
+      .catch(err => {
+        setShowPopup(true);
+        // Optionally handle the error here
+      });
+  }, [runAsync]);
+
+  // Handle Zen mode visibility
   useEffect(() => {
     if (isZenMode) {
       setShowInZen(false);
     }
   }, [isZenMode]);
 
+  // Show popup when there's an error
   useEffect(() => {
-    setShowPopup(error);
+    if (error) {
+      setShowPopup(true);
+    }
   }, [error]);
+
   const { addMoreModel, activeModels } = useActiveModels();
 
   return (
@@ -75,9 +93,9 @@ export default function () {
           'h-12 w-full filter backdrop-blur text-xl flex items-center px-4 ' +
           (isZenMode
             ? 'fixed top-0 left-0 right-0 z-50 transform transition-visible duration-300 delay-150 ' +
-            (showInZen
-              ? 'translate-y-0 opacity-100'
-              : '-translate-y-full opacity-0')
+              (showInZen
+                ? 'translate-y-0 opacity-100'
+                : '-translate-y-full opacity-0')
             : ' ')
         }
       >
@@ -322,7 +340,6 @@ export default function () {
               <input
                 type="text"
                 value={secretKey}
-                // autoFocus={!secretKey}
                 onChange={e => setSecretKey(e.target.value)}
                 placeholder={t('在这里输入 SiliconCloud API 密钥')}
                 className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4"
@@ -343,13 +360,12 @@ export default function () {
                         duration: 0,
                         placement: 'top-right',
                         offset: [-20, 20],
-                        });
+                      });
                     });
                 }}
               >
                 {t('验证')}
               </button>
-
 
               {!!secretKey && !!error && (
                 <span className="mt-4 text-sm text-red-400">
