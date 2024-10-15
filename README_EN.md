@@ -75,7 +75,8 @@ services:
 
 ```js
 - SILO_EXPERIENCE_SK: SiliconFlow experience API key; you can enter '0' indicate not providing this option
-- SILO_PAID_SK: SiliconFlow paid API key; when set, there will be no experience key notification or restrictions
+- SECRET_SILO_PAID_SK: SiliconFlow paid API key; when set, there will be no experience key notification or restrictions
+- SECRET_PASSWORD：Password for encrypting SECRET_SILO_PAID_SK (strong password is recommended)
 - SILO_AFF_LINK: Registration link in the SiliconFlow key popup
 - SILO_DEFAULT_ACTIVE_CHAT_MODELS: Default activated chat models, multiple models separated by commas
 - SILO_DEFAULT_ACTIVE_IMAGE_MODELS: Default activated text-to-image models, multiple models separated by commas

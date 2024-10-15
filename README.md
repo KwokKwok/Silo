@@ -73,7 +73,8 @@ services:
 
 ```js
 - SILO_EXPERIENCE_SK: 硅基流动体验 API 密钥。可输入 0 代表不提供该方式
-- SILO_PAID_SK: 硅基流动付费 API 密钥，设置之后不会有体验密钥提示及限制
+- SECRET_SILO_PAID_SK: 硅基流动付费 API 密钥，设置之后不会有体验密钥提示及限制
+- SECRET_PASSWORD：用于加密SECRET_SILO_PAID_SK的密码（建议使用强密码）
 - SILO_AFF_LINK: 硅基流动密钥弹框处注册链接
 - SILO_DEFAULT_ACTIVE_CHAT_MODELS: 默认激活的对话模型，多个模型以英文逗号分隔
 - SILO_DEFAULT_ACTIVE_IMAGE_MODELS: 默认激活的文生图模型，多个模型以英文逗号分隔

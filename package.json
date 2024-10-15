@@ -12,8 +12,7 @@
     "build:chrome": "wxt build -b chrome",
     "zip:chrome": "wxt zip -b chrome",
     "build:edge": "wxt build -b edge",
-    "zip:edge": "wxt zip -b edge",
-    "encrypt": "node encrypt.js"
+    "zip:edge": "wxt zip -b edge"
   },
   "dependencies": {
     "ahooks": "^3.8.1",
