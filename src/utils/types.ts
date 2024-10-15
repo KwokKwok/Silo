@@ -47,6 +47,10 @@ export enum LOCAL_STORAGE_KEY {
    */
   SECRET_KEY = 'sc_key',
   /**
+   * 付费密钥密码
+   */
+  PAID_SK_PASSWORD = 'paid_sk_password',
+  /**
    * 当前已选择的模型
    */
   ACTIVE_MODELS = 'active_models',

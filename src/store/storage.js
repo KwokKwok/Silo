@@ -6,13 +6,25 @@ import { useState } from 'react';
 import { message } from 'tdesign-react';
 import i18next from 'i18next';
 import { SILO_ENV } from '@src/utils/env';
+import { decrypt } from '@src/utils/encryption';
 
 export const EXPERIENCE_SK = SILO_ENV.EXPERIENCE_SK;
 
 let _cacheKey = ''
 export function getSecretKey (forceUpdate = false) {
   if (!_cacheKey || forceUpdate) {
-    _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, SILO_ENV.PAID_SK || SILO_ENV.EXPERIENCE_SK)
+    if (SILO_ENV.IS_PAID_SK_ENCRYPTED) {
+      // 付费密钥加密，需要通过密码解密
+      const password = getLocalStorage(LOCAL_STORAGE_KEY.PAID_SK_PASSWORD, '')
+      if (password) {
+        _cacheKey = decrypt(SILO_ENV.PAID_SK, password)
+      } else {
+        _cacheKey = ''
+      }
+    } else {
+      // 未加密，直接获取
+      _cacheKey = getLocalStorage(LOCAL_STORAGE_KEY.SECRET_KEY, SILO_ENV.PAID_SK || SILO_ENV.EXPERIENCE_SK)
+    }
   }
   return _cacheKey
 }
@@ -40,12 +52,15 @@ const allCustomSystemPromptsAtom = atom(
   getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.SYSTEM_PROMPTS, [])
 );
 
+const paidSkPasswordAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.PAID_SK_PASSWORD, ''))
+
 const atomMap = {
   [LOCAL_STORAGE_KEY.SYSTEM_PROMPTS]: allCustomSystemPromptsAtom,
   [LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS]: activeImageModels,
   [LOCAL_STORAGE_KEY.ACTIVE_SYSTEM_PROMPT]: activeSystemPromptIdAtom,
   [LOCAL_STORAGE_KEY.ZEN_MODE]: isZenModeAtom,
   [LOCAL_STORAGE_KEY.SECRET_KEY]: secretKeyAtom,
+  [LOCAL_STORAGE_KEY.PAID_SK_PASSWORD]: paidSkPasswordAtom,
 }
 
 /**
@@ -74,6 +89,27 @@ export const useSecretKey = () => {
     _cacheKey = _key;
   }
   return [value, setSecretKey]
+}
+
+export const usePaidSkPassword = () => {
+  const [value, setValue] = useLocalStorageAtom(LOCAL_STORAGE_KEY.PAID_SK_PASSWORD)
+  const [error, setError] = useState('');
+  const setPaidSkPassword = (password) => {
+    try {
+      const _key = decrypt(SILO_ENV.PAID_SK, password)
+      if (!_key) {
+        throw new Error('密码错误')
+      }
+      setValue(password)
+      setError('')
+    } catch (error) {
+      setValue('')
+      setError('密码错误')
+    }
+    getSecretKey(true)
+  }
+
+  return [value, setPaidSkPassword, error]
 }
 
 export function useActiveSystemPromptId () {

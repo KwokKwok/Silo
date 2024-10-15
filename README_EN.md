@@ -68,7 +68,7 @@ services:
 ## Environment Variables
 
 > [!NOTE]
-> This section is not of concern to regular users, only those who are deploying the project themselves may need to understand it.
+> This section is not of concern to regular users, only those who are deploying the project themselves may need to understand it. Environment variables configured may need to be restarted or re-deployed. Please verify whether it is effective.
 
 > [!NOTE]
 > As a reminder, this project is purely frontend-based, and the configured keys may be maliciously used, so please configure with caution.
@@ -76,6 +76,7 @@ services:
 ```js
 - SILO_EXPERIENCE_SK: SiliconFlow experience API key; you can enter '0' indicate not providing this option
 - SILO_PAID_SK: SiliconFlow paid API key; when set, there will be no experience key notification or restrictions
+- PAID_SK_PASSWORD: Password to protect the paid key, after setting, users can automatically use the paid key by entering the password in the user interface. It is strongly recommended to set this variable at the same time as SILO_PAID_SK. Please note that this variable does not start with SILO_
 - SILO_AFF_LINK: Registration link in the SiliconFlow key popup
 - SILO_DEFAULT_ACTIVE_CHAT_MODELS: Default activated chat models, multiple models separated by commas
 - SILO_DEFAULT_ACTIVE_IMAGE_MODELS: Default activated text-to-image models, multiple models separated by commas

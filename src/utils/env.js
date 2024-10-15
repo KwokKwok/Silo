@@ -11,6 +11,7 @@ function modelStrToIds (str, defaultValue) {
 const _EXPERIENCE_SK = (import.meta.env.SILO_EXPERIENCE_SK || '').trim();
 
 export const SILO_ENV = {
+  IS_PAID_SK_ENCRYPTED: import.meta.env.SILO_IS_PAID_SK_ENCRYPTED === 'true',
   EXPERIENCE_SK: _EXPERIENCE_SK == '0' ? '' : _EXPERIENCE_SK,
   PAID_SK: (import.meta.env.SILO_PAID_SK || '').trim(),
   AFF_LINK: (import.meta.env.SILO_AFF_LINK || 'https://cloud.siliconflow.cn/i/Vry8ZUHq').trim(),

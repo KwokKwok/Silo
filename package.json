@@ -18,6 +18,7 @@
     "ahooks": "^3.8.1",
     "ai": "^3.3.7",
     "axios": "^1.7.4",
+    "crypto-js": "^4.2.0",
     "i18next": "^23.15.1",
     "i18next-browser-languagedetector": "^8.0.0",
     "jotai": "^2.9.3",

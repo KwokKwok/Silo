@@ -1,7 +1,12 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import { useActiveModels, useIsRowMode } from '../store/app';
-import { isExperienceSK, useSecretKey, useZenMode } from '../store/storage';
+import {
+  isExperienceSK,
+  usePaidSkPassword,
+  useSecretKey,
+  useZenMode,
+} from '../store/storage';
 import ScLogo from '../assets/img/sc-logo.png';
 import { fetchUserInfo } from '../services/api';
 import { useDarkMode, useIsMobile } from '../utils/use';
@@ -17,6 +22,12 @@ import { SILO_ENV } from '@src/utils/env';
 export default function () {
   const [showPopup, setShowPopup] = useState();
   const [secretKey, setSecretKey] = useSecretKey();
+  const [paidSkPassword, setPaidSkPassword, paidKeyError] = usePaidSkPassword();
+  const [paidSkInput, setPaidSkInput] = useState('');
+  const onSubmitPaidSkPassword = () => {
+    setPaidSkPassword(paidSkInput);
+  };
+
   const [isDark, setDarkMode] = useDarkMode();
   const { i18n, t } = useTranslation();
 
@@ -45,6 +56,13 @@ export default function () {
       setShowPopup(false);
     });
   }, [secretKey]);
+  useEffect(() => {
+    runAsync().then(() => {
+      setShowPopup(false);
+    });
+  }, [paidSkPassword]);
+
+  const isCurrentKeyValid = !error && !!data;
   const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [isRowMode, setIsRowMode] = useIsRowMode();
@@ -90,7 +108,7 @@ export default function () {
         />
 
         <span className="mr-auto"></span>
-        {!!data && (
+        {isCurrentKeyValid && (
           <>
             <i
               className="i-ri-money-dollar-circle-line cursor-pointer"
@@ -289,73 +307,124 @@ export default function () {
           onClick={() => data && setShowPopup(false)}
           className="fixed z-50 top-0 left-0 w-full h-full bg-black  filter backdrop-blur-sm bg-opacity-50 flex justify-center items-center"
         >
-          <div className="relative w-10/12 lg:w-[600px] min-h-[400px] bg-white dark:bg-gray-900 rounded-lg p-4 text-center leading-4">
-            {!!data && (
+          <div className="relative w-10/12 lg:w-[600px] py-8 flex flex-col bg-white dark:bg-gray-900 rounded-lg p-4 text-center leading-4">
+            {isCurrentKeyValid && (
               <i
                 className="i-mingcute-close-line opacity-70 text-2xl absolute top-4 right-4 cursor-pointer"
                 onClick={() => setShowPopup(false)}
               ></i>
             )}
             <div
-              className="w-full h-full flex flex-col justify-center items-center"
+              className="w-full flex-1 flex flex-col justify-center items-center"
               onClick={e => e.stopPropagation()}
             >
-              <div className="flex items-center justify-center mb-6">
-                <img src="/logo.svg" alt="SiloChat" className="h-16 mr-8" />
-                <img src={ScLogo} alt="硅基流动" className="h-16 rounded-md" />
-              </div>
-              <input
-                type="text"
-                value={secretKey}
-                autoFocus={!secretKey}
-                onChange={e => setSecretKey(e.target.value)}
-                placeholder={t('在这里输入 SiliconCloud API 密钥')}
-                className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4"
-              />
+              {!!SILO_ENV.IS_PAID_SK_ENCRYPTED ? (
+                <>
+                  <div className="flex items-center justify-center mb-6">
+                    <img src="/logo.svg" alt="SiloChat" className="h-16" />
+                  </div>
+                  <input
+                    type="password"
+                    value={paidSkInput}
+                    autoFocus={!paidSkInput}
+                    onChange={e => setPaidSkInput(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') {
+                        onSubmitPaidSkPassword();
+                      }
+                    }}
+                    placeholder={t('在这里输入密钥密码')}
+                    className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4"
+                  />
+                  {!!paidKeyError && (
+                    <span className="mt-4 text-sm text-red-400">
+                      {t(paidKeyError)}
+                    </span>
+                  )}
+                  {!!secretKey && !!error && (
+                    <span className="mt-4 text-sm text-red-400">
+                      {error.message}
+                    </span>
+                  )}
+                  <Button
+                    className="mt-4"
+                    theme="primary"
+                    variant="text"
+                    onClick={onSubmitPaidSkPassword}
+                  >
+                    {t('确定')}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <div className="flex items-center justify-center mb-6">
+                    <img src="/logo.svg" alt="SiloChat" className="h-16 mr-8" />
+                    <img
+                      src={ScLogo}
+                      alt="硅基流动"
+                      className="h-16 rounded-md"
+                    />
+                  </div>
+                  <input
+                    type="text"
+                    value={secretKey}
+                    autoFocus={!secretKey}
+                    onChange={e => setSecretKey(e.target.value)}
+                    placeholder={t('在这里输入 SiliconCloud API 密钥')}
+                    className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4"
+                  />
 
-              {!!secretKey && !!error && (
-                <span className="mt-4 text-sm text-red-400">
-                  {error.message}
-                </span>
+                  {!!secretKey && !!error && (
+                    <span className="mt-4 text-sm text-red-400">
+                      {error.message}
+                    </span>
+                  )}
+                  <span className="mt-6 text-sm text-gray-500">
+                    {t('intro1')}
+                    <br />
+                    <a
+                      className="mx-1"
+                      target="_blank"
+                      href={SILO_ENV.AFF_LINK}
+                    >
+                      {t('现在注册 SiliconCloud')}
+                    </a>
+                    {t('官方也会赠送 14 元额度可用于体验付费模型')}
+                  </span>
+
+                  <span className="mt-4 text-sm text-gray-500">
+                    {t('如您已有账号，请')}
+                    <a
+                      className="mx-1"
+                      href="https://cloud.siliconflow.cn/account/ak"
+                      target="_blank"
+                    >
+                      {t('点击这里获取 SiliconCloud 密钥')}
+                    </a>
+                  </span>
+
+                  <span className="mt-4 text-sm text-gray-500">
+                    {t(
+                      '您的密钥将仅在浏览器中存储，请仅在安全的设备上使用本应用'
+                    )}
+                  </span>
+
+                  <span
+                    className="text-blue-400 cursor-pointer mt-4 text-sm"
+                    onClick={() => {
+                      setSecretKey();
+                      setShowPopup(false);
+                    }}
+                  >
+                    🤖 {t('先不注册，用用你的')} 🤖
+                  </span>
+                  <span className="mt-2 text-xs text-gray-600">
+                    {t(
+                      '体验密钥不适用于付费模型。且可能因为其公开性而被人滥用而进一步被停用'
+                    )}
+                  </span>
+                </>
               )}
-              <span className="mt-6 text-sm text-gray-500">
-                {t('intro1')}
-                <br />
-                <a className="mx-1" target="_blank" href={SILO_ENV.AFF_LINK}>
-                  {t('现在注册 SiliconCloud')}
-                </a>
-                {t('官方也会赠送 14 元额度可用于体验付费模型')}
-              </span>
-
-              <span className="mt-4 text-sm text-gray-500">
-                {t('如您已有账号，请')}
-                <a
-                  className="mx-1"
-                  href="https://cloud.siliconflow.cn/account/ak"
-                  target="_blank"
-                >
-                  {t('点击这里获取 SiliconCloud 密钥')}
-                </a>
-              </span>
-
-              <span className="mt-4 text-sm text-gray-500">
-                {t('您的密钥将仅在浏览器中存储，请仅在安全的设备上使用本应用')}
-              </span>
-
-              <span
-                className="text-blue-400 cursor-pointer mt-4 text-sm"
-                onClick={() => {
-                  setSecretKey();
-                  setShowPopup(false);
-                }}
-              >
-                🤖 {t('先不注册，用用你的')} 🤖
-              </span>
-              <span className="mt-2 text-xs text-gray-600">
-                {t(
-                  '体验密钥不适用于付费模型。且可能因为其公开性而被人滥用而进一步被停用'
-                )}
-              </span>
             </div>
           </div>
         </div>
