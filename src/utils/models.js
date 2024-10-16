@@ -131,6 +131,7 @@ const SILICON_MODELS = [
   textModelOf("Qwen/Qwen2.5-72B-Instruct-128K", 4.13, 128, false),
   textModelOf("Qwen/Qwen2.5-72B-Instruct", 4.13, 32, false),
   textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32, false),
+  textModelOf("Vendor-A/Qwen/Qwen2.5-72B-Instruct", 1, 32, false),
   textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 1, 32, false),
   textModelOf("google/gemma-2-27b-it", 1.26, 8, true),
   textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 8, true),
