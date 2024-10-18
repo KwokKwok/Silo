@@ -204,6 +204,9 @@ export default function ({ model, plain = false }) {
                     {option.isPro && <Tag size="small" variant='outline' theme="primary" className="ml-2">
                       Pro
                     </Tag>}
+                    {option.vision && <Tag size="small" variant='outline' theme="warning" className="ml-2">
+                      Vision
+                    </Tag>}
                     {option.isVendorA && <Tag size="small" variant="outline" theme="success" className="ml-2">
                       国产算力
                     </Tag>}

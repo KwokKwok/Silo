@@ -41,12 +41,18 @@ const keywordsMap = {
 };
 
 // 修改后的 textModelOf 函数，统一处理 "Pro/" 前缀
-const textModelOf = (id, price, length, needVerify) => {
+const textModelOf = (id, price, length, needVerify, vision) => {
   const { series, name, isPro, isVendorA } = parseModelId(id);
   const icon = getModelIcon(id); // 使用原始id获取图标
-  const keywords = keywordsMap[series];
+  let keywords = keywordsMap[series];
+  if (vision) {
+    keywords += ',多模态,视觉,图像,VL,vision,image'
+  }
+  if (isVendorA) {
+    keywords += ',Vendor-A,国产算力芯片'
+  }
   const displayName = isPro ? `Pro/${name}` : isVendorA ? `Vendor-A/${name}` : name; // 根据 isPro 添加前缀
-  return { id, name: displayName, series, price, length, icon, keywords, needVerify, isPro, isVendorA };
+  return { id, name: displayName, series, price, length, icon, keywords, needVerify, isPro, isVendorA, vision };
 };
 
 export function getCustomModels () {
@@ -137,6 +143,11 @@ const SILICON_MODELS = [
   textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 8, true),
   textModelOf("meta-llama/Meta-Llama-3-70B-Instruct", 4.13, 8, true),
   textModelOf("meta-llama/Meta-Llama-3.1-405B-Instruct", 21, 32, true),
+  textModelOf("Qwen/Qwen2-VL-72B-Instruct", 4.13, 32, false, true),
+  textModelOf("OpenGVLab/InternVL2-26B", 1, 32, false, true),
+  textModelOf("Pro/OpenGVLab/InternVL2-8B", 0.35, 32, false, true),
+  textModelOf("Pro/Qwen/Qwen2-VL-7B-Instruct", 0.35, 32, false, true),
+  textModelOf("OpenGVLab/InternVL2-Llama3-76B", 4.13, 8, false, true),
   textModelOf("Pro/Qwen/Qwen2-1.5B-Instruct", 0.14, 32, false),
   textModelOf("Pro/Qwen/Qwen2.5-7B-Instruct", 0.35, 32, false),
   textModelOf("Pro/internlm/internlm2_5-7b-chat", 0.35, 32, false),
