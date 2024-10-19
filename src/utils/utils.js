@@ -116,6 +116,11 @@ export function resizeBase64Image (base64Image, width, requiredHeight = 0) {
     const img = new Image();
     img.crossOrigin = 'anonymous';
     img.onload = () => {
+      // 如果原图尺寸小于需要的宽度，则直接返回原图
+      if (img.width <= width) {
+        resolve(base64Image);
+        return;
+      }
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       const aspectRatio = img.width / img.height;
