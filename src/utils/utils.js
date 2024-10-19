@@ -1,4 +1,4 @@
-import { getChatRequestOptions } from "./options/chat-options"
+import { getChatOptions } from "./options/chat-options"
 import { getChatResolver, isLimitedModel } from './models';
 import { fmtBaseUrl } from "./format";
 import { isExperienceSK } from "@src/store/storage";
@@ -38,6 +38,7 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
   if (!sk) {
     return onError(new Error('API Key未配置'))
   }
+  const startTime = Date.now()
   fetch(`${fmtBaseUrl(baseUrl)}/chat/completions`, { ...createOpenAICompatibleRequestOptions(sk, modelId, messages, chatOptions), signal: controller.current.signal })
     .then(async response => {
       if (!response.body) {
@@ -53,17 +54,22 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
     .then(stream => {
       const reader = stream.getReader(); // 创建一个读取器
       const decoder = new TextDecoder(); // 创建文本解码器
-
+      let info = {};
       // 读取流中的数据
       function read () {
         reader.read().then(({ done, value }) => {
           if (!controller.current) return;
           if (done) {
-            onEnd()
+            info.costTime = Date.now() - startTime
+            onEnd(info)
             return;
           }
           const decodedData = decoder.decode(value); // 解码数据
-          const content = decodedData.split('data: ').filter(item => item.trim() && item.startsWith('{')).map(item => JSON.parse(item).choices[0].delta.content).join("");
+          const content = decodedData.split('data: ').filter(item => item.trim() && item.startsWith('{')).map(item => {
+            const { choices, ...rest } = JSON.parse(item)
+            info = rest
+            return choices[0].delta.content
+          }).join("");
           if (content) {
             // 将本次拿到的 content 拼接到 streamingMessage 中
             onChunk(content);
@@ -80,7 +86,7 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
 }
 
 export async function streamChat (model, messages, controller, onChunk, onEnd, onError) {
-  const modelChatOptions = getChatRequestOptions(model)
+  const modelChatOptions = getChatOptions(model, true)
   try {
     const resolver = getChatResolver(model);
     return resolver(model, messages, modelChatOptions, controller, onChunk, onEnd, onError)
@@ -100,3 +106,28 @@ export function checkModelLimit (modelId) {
   }
 }
 
+/**
+ * 调整 base64 图片的尺寸
+ */
+export function resizeBase64Image (base64Image, width, requiredHeight = 0) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      const aspectRatio = img.width / img.height;
+      const height = requiredHeight || Math.round(width / aspectRatio);
+
+      canvas.width = width;
+      canvas.height = height;
+
+      ctx.drawImage(img, 0, 0, width, height);
+
+      const resizedBase64 = canvas.toDataURL('image/jpeg');
+      resolve(resizedBase64);
+    };
+    img.onerror = (error) => reject(error);
+    img.src = base64Image;
+  });
+}

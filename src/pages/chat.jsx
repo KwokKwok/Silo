@@ -5,9 +5,11 @@ import { useSiloChat } from '../utils/chat';
 import InputControl from '../components/InputControl';
 import { useSystemPrompts } from '@src/utils/system-prompt';
 
-function Chat() {
+function Chat () {
   const { active } = useSystemPrompts();
-  const { loading, onSubmit, onStop } = useSiloChat(active.content);
+  const { loading, onSubmit, onStop, hasVisionModel } = useSiloChat(
+    active.content
+  );
   const isMobile = useIsMobile();
   return (
     <>
@@ -15,7 +17,12 @@ function Chat() {
         {isMobile ? <GroupMessages /> : <MultiPanelMessages />}
       </div>
       <div className="flex-shrink-0 w-full relative">
-        <InputControl onStop={onStop} onSubmit={onSubmit} loading={loading} />
+        <InputControl
+          onStop={onStop}
+          onSubmit={onSubmit}
+          loading={loading}
+          hasVisionModel={hasVisionModel}
+        />
       </div>
     </>
   );

@@ -5,7 +5,11 @@ import ChatHolder from '../ChatHolder';
 import { Select, Tag, Popup } from 'tdesign-react';
 import { getAllTextModels, SILICON_MODELS_IDS } from '../../utils/models';
 import { useActiveModels } from '../../store/app';
-import { useChatMessages, useSingleChat } from '../../utils/chat';
+import {
+  getChatMessageInfo,
+  useChatMessages,
+  useSingleChat,
+} from '../../utils/chat';
 import ChatOptionAdjust from '../ChatOptionAdjust';
 import { useAutoScrollToBottomRef, useRefresh } from '../../utils/use';
 import ScLogo from '../../assets/img/sc-logo.png';
@@ -68,12 +72,13 @@ export default function ({ model, plain = false }) {
   };
   const iconClassName = 'cursor-pointer text-lg opacity-70 ml-2 flex-shrink-0 ';
   const { scrollRef, scrollToBottom } = useAutoScrollToBottomRef();
-  const lastAiMessage = messages[messages.length - 1]?.ai;
+
+  const lastAiMessage = messages[messages.length - 1];
   useEffect(() => {
     if (!plain && mouseOverRef.current) return;
     if (messages.length > 0);
     {
-      scrollToBottom();
+      requestAnimationFrame(scrollToBottom)
     }
   }, [lastAiMessage]);
   return (
@@ -201,12 +206,36 @@ export default function ({ model, plain = false }) {
                         {t('需实名')}
                       </Tag>
                     )}
-                    {option.isPro && <Tag size="small" variant='outline' theme="primary" className="ml-2">
-                      Pro
-                    </Tag>}
-                    {option.isVendorA && <Tag size="small" variant="outline" theme="success" className="ml-2">
-                      国产算力
-                    </Tag>}
+                    {option.isPro && (
+                      <Tag
+                        size="small"
+                        variant="outline"
+                        theme="primary"
+                        className="ml-2"
+                      >
+                        Pro
+                      </Tag>
+                    )}
+                    {option.vision && (
+                      <Tag
+                        size="small"
+                        variant="outline"
+                        theme="warning"
+                        className="ml-2"
+                      >
+                        Vision
+                      </Tag>
+                    )}
+                    {option.isVendorA && (
+                      <Tag
+                        size="small"
+                        variant="outline"
+                        theme="success"
+                        className="ml-2"
+                      >
+                        国产算力
+                      </Tag>
+                    )}
                   </div>
                 </div>
               </Select.Option>
@@ -288,10 +317,12 @@ export default function ({ model, plain = false }) {
               <UserMessage
                 content={message.user}
                 evaluate={!!message.evaluate}
+                image={message.image}
               />
               <AiMessage
                 plain={plain}
                 model={model}
+                info={getChatMessageInfo(model, message.chatId)}
                 isLast={index === messages.length - 1}
                 content={message.ai}
                 evaluate={message.evaluate}

@@ -2,18 +2,19 @@ import { debounce } from "lodash-es";
 import { LOCAL_STORAGE_KEY } from "../types";
 import { useState } from "react";
 import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "../helpers";
-import { getAllTextModels } from "../models";
+import { getAllTextModels, isVisionModel } from "../models";
 
 //#region 工具类
-const optionOf = (name, prop, tooltip, min, max, defaultValue) => ({
+const optionOf = (name, prop, tooltip, min, max, defaultValue, vision = false, step = 0) => ({
   name,
   prop,
   tooltip,
   min,
   max,
-  step: ['n', 'max_tokens'].includes(prop) ? 1 : 0.1,
+  step: step || (['n', 'max_tokens'].includes(prop) ? 1 : 0.1),
   defaultValue,
   value: defaultValue,
+  vision
 });
 function getDefaultChatOptions () {
   return [
@@ -58,6 +59,7 @@ function getDefaultChatOptions () {
       0
     ),
     // optionOf('N', 'n', 'Number of generations to return', 1, 100, 1),
+    optionOf('i18n.chat_options.image_width', 'image_width', 'i18n.chat_options.image_width_desc', 448, 5600, 448, true, 28),
   ];
 }
 //#endregion
@@ -99,11 +101,25 @@ const _defaultChatOptions = _optionsToObj(getDefaultChatOptions());
 /**
  * 请求模型参数，用户参数不全时会以默认参数补全
  */
-export function getChatRequestOptions (model) {
+export function getChatOptions (model, isRequest = false) {
   // 后续可能会加参数，当前用户的参数可能是不全的，需要以默认参数补全
   const userOptions = _optionObjMap[model] || {};
-  return Object.assign({}, _defaultChatOptions, userOptions);
+  const result = Object.assign({}, _defaultChatOptions, userOptions);
+  if (isRequest) {
+    // 该参数仅在本应用有效，不应该传入请求
+    delete result.image_width
+  }
+  return result
 }
+
+/**
+ * 获取多模态模型的图片宽度
+ */
+export function getVisionModelOptionWidth (model) {
+  const options = getChatOptions(model);
+  return options.image_width;
+}
+
 
 export const useChatOptions = (model) => {
   const options = _allModelChatOptions[model] || getDefaultChatOptions();
