@@ -18,6 +18,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Tooltip from './MobileCompatible/Tooltip';
 import { useTranslation } from 'react-i18next';
 import { SILO_ENV } from '@src/utils/env';
+import ConfigImportModal from './ConfigImportModal';
+import { exportConfig, importConfig } from '@src/utils/utils';
 
 export default function () {
   const [showPopup, setShowPopup] = useState();
@@ -26,6 +28,11 @@ export default function () {
   const [paidSkInput, setPaidSkInput] = useState('');
   const onSubmitPaidSkPassword = () => {
     setPaidSkPassword(paidSkInput);
+  };
+
+  const configModalRef = useRef(null);
+  const openConfigModal = () => {
+    configModalRef.current.open();
   };
 
   const [isDark, setDarkMode] = useDarkMode();
@@ -88,6 +95,7 @@ export default function () {
           onMouseOver={() => setShowInZen(true)}
         ></div>
       )}
+      <ConfigImportModal ref={configModalRef} />
       <div
         onMouseLeave={() => setShowInZen(false)}
         className={
@@ -202,6 +210,12 @@ export default function () {
               title: t('更多'),
               divider: true,
               children: [
+                { icon: 'i-mingcute-file-export-fill', onClick: exportConfig, title: t('导出配置') },
+                {
+                  icon: 'iconify mingcute--file-import-fill',
+                  onClick: openConfigModal,
+                  title: t('导入配置'),
+                },
                 {
                   icon: 'i-ri-github-fill',
                   onClick: () => {
@@ -424,6 +438,17 @@ export default function () {
                     {t(
                       '您的密钥将仅在浏览器中存储，请仅在安全的设备上使用本应用'
                     )}
+                  </span>
+
+                  <span className="mt-4 text-sm text-gray-500">
+                    {t('已有配置文件？')}
+                    <a
+                      className="mx-1 cursor-pointer"
+                      target="_blank"
+                      onClick={openConfigModal}
+                    >
+                      {t('点此导入')}
+                    </a>
                   </span>
 
                   <span

@@ -446,6 +446,42 @@ const resources = [
     _key: 'i18n.chat_options.image_width_desc',
     zh: '设置多模态模型图片的宽度，高度自动调整。清晰度越高，越耗时，也会消耗更多的 tokens',
     en: 'Set the width of vision model images, height adjusts automatically. Higher clarity takes more time and consumes more tokens'
+  },
+  {
+    zh: '导出配置',
+    en: 'Export Configuration'
+  },
+  {
+    zh: '导入配置',
+    en: 'Import Configuration'
+  },
+  {
+    zh: '取消',
+    en: 'Cancel'
+  },
+  {
+    zh: '导入并刷新页面',
+    en: 'Import and Refresh Page'
+  },
+  {
+    zh: '选择 JSON 文件',
+    en: 'Select JSON File'
+  },
+  {
+    zh: '文件解析成功，确认导入后将刷新页面',
+    en: 'File parsed successfully. Page will refresh after confirming import.'
+  },
+  {
+    zh: '无效的 JSON 文件',
+    en: 'Invalid JSON file'
+  },
+  {
+    zh: '已有配置文件？',
+    en: 'Already have a configuration file?'
+  },
+  {
+    zh: '点此导入',
+    en: 'Click here to import'
   }
 ]
 
