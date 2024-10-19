@@ -51,7 +51,7 @@ export default function ({ model }) {
           size="small"
           onClick={onApplyToAll}
         >
-          {t('应用到全部')}
+          {t('common.apply_to_all')}
         </Button>
       </div>
     </div>

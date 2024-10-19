@@ -16,7 +16,7 @@ export default function UserMessage ({ content, evaluate, image }) {
         }
       >
         {image && <SingleImageViewer image={image} className="mb-1" />}
-        <Tooltip content={evaluate ? t('该问题的响应将由 AI 进行评估') : ''}>
+        <Tooltip content={evaluate ? t('chat.evaluate_prompt') : ''}>
           {content}
         </Tooltip>
       </div>

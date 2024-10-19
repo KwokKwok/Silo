@@ -51,8 +51,8 @@ function SystemPromptSelector({}, ref) {
   const [form] = Form.useForm();
 
   const rules = {
-    name: [{ required: true, message: '必填', type: 'error' }],
-    content: [{ required: true, message: '必填', type: 'error' }],
+    name: [{ required: true, message: t('common.required'), type: 'error' }],
+    content: [{ required: true, message: t('common.required'), type: 'error' }],
     desc: [],
     icon: [],
   };
@@ -64,7 +64,7 @@ function SystemPromptSelector({}, ref) {
         save({ ...(editingPrompt || {}), ...prompt });
         setDrawerVisible(false);
       } else {
-        console.log('表单校验失败');
+        console.log(t('common.form_validation_failed'));
       }
     });
   };
@@ -108,7 +108,7 @@ function SystemPromptSelector({}, ref) {
                           );
                         }}
                       >
-                        {t('复制')}
+                        {t('common.copy')}
                       </Button>
                       {!prompt?.isPreset && (
                         <>
@@ -122,7 +122,7 @@ function SystemPromptSelector({}, ref) {
                               onEdit(prompt);
                             }}
                           >
-                            {t('编辑')}
+                            {t('common.edit')}
                           </Button>
                           <Button
                             size="small"
@@ -134,7 +134,7 @@ function SystemPromptSelector({}, ref) {
                               remove(prompt);
                             }}
                           >
-                            {t('删除')}
+                            {t('common.delete')}
                           </Button>
                         </>
                       )}
@@ -153,7 +153,7 @@ function SystemPromptSelector({}, ref) {
                 />
               </Popup>
             ))}
-            <Tooltip content={t('新增系统提示词')}>
+            <Tooltip content={t('system_prompt.add_new')}>
               <div
                 className="text-primary w-6 h-6 rounded-full border-2 flex items-center justify-center border-primary cursor-pointer p-1 font-semibold"
                 onClick={() => onEdit()}
@@ -176,7 +176,7 @@ function SystemPromptSelector({}, ref) {
         size={isMobile ? '100%' : 'large'}
         onClose={() => setDrawerVisible(false)}
         onConfirm={onFormConfirm}
-        header={t(editingPrompt ? '编辑系统提示词' : '新增系统提示词')}
+        header={t(editingPrompt ? 'system_prompt.edit' : 'system_prompt.add_new')}
       >
         <Form
           rules={rules}
@@ -212,10 +212,10 @@ function SystemPromptSelector({}, ref) {
             }
           }}
         >
-          <FormItem label={t('名称')} name="name">
+          <FormItem label={t('common.name')} name="name">
             <Input />
           </FormItem>
-          <FormItem help={t('avatar-help')} label={t('图标')} name="icon">
+          <FormItem help={t('system_prompt.avatar_help')} label={t('common.icon')} name="icon">
             <Input
               suffixIcon={
                 editingIcon && (
@@ -228,10 +228,10 @@ function SystemPromptSelector({}, ref) {
               }
             />
           </FormItem>
-          <FormItem label={t('描述')} name="desc">
+          <FormItem label={t('common.description')} name="desc">
             <Textarea rows={3} />
           </FormItem>
-          <FormItem label={t('内容')} name="content">
+          <FormItem label={t('common.content')} name="content">
             <Textarea rows={5} />
           </FormItem>
         </Form>

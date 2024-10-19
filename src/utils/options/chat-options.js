@@ -21,7 +21,7 @@ function getDefaultChatOptions () {
     optionOf(
       'Max Tokens',
       'max_tokens',
-      '生成的最大 token 数',
+      'chat.options.max_tokens_desc',
       50,
       4096,
       2048
@@ -29,7 +29,7 @@ function getDefaultChatOptions () {
     optionOf(
       'Temperature',
       'temperature',
-      '确定响应的随机程度，较高的值意味着更多的随机性',
+      'chat.options.temperature_desc',
       0,
       2,
       1
@@ -37,7 +37,7 @@ function getDefaultChatOptions () {
     optionOf(
       'Top P',
       'top_p',
-      '类似 Temperature 的另一种采样方式。例如 0.1 意味着仅考虑概率质量最高的 10% 的 tokens。不建议同时修改 Temperature 和 Top P',
+      'chat.options.top_p_desc',
       0.1,
       1,
       0.7
@@ -53,13 +53,13 @@ function getDefaultChatOptions () {
     optionOf(
       'Frequency Penalty',
       'frequency_penalty',
-      '影响模型重复使用相同单词或短语的可能性，较高的数值意味着越不鼓励重复，0 表示对模型的行为没有影响',
+      'chat.options.frequency_penalty_desc',
       -2,
       2,
       0
     ),
     // optionOf('N', 'n', 'Number of generations to return', 1, 100, 1),
-    optionOf('i18n.chat_options.image_width', 'image_width', 'i18n.chat_options.image_width_desc', 448, 5600, 448, true, 28),
+    optionOf('chat.options.image_width', 'image_width', 'chat.options.image_width_desc', 448, 5600, 448, true, 28),
   ];
 }
 //#endregion

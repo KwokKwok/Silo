@@ -43,9 +43,9 @@ const CUSTOM_MODEL_PRESET = [
       {
         type: 'input',
         rules: [
-          { required: true, message: '必填', type: 'error' }
+          { required: true, message: 'common.required', type: 'error' }
         ],
-        label: '密钥',
+        label: 'custom_model.secret_key',
         prop: 'apiKey',
       }
     ],
@@ -66,25 +66,25 @@ const CUSTOM_MODEL_PRESET = [
       {
         type: 'input',
         rules: [
-          { required: true, message: '必填', type: 'error' }
+          { required: true, message: 'common.required', type: 'error' }
         ],
-        label: '密钥',
+        label: 'custom_model.secret_key',
         prop: 'apiKey',
       },
       {
         type: 'input',
         rules: [
-          { required: true, message: '必填', type: 'error' }
+          { required: true, message: 'common.required', type: 'error' }
         ],
-        label: '请求地址',
+        label: 'custom_model.base_url',
         prop: 'baseUrl',
       },
       {
         type: 'input',
         rules: [
-          { required: true, message: '必填', type: 'error' }
+          { required: true, message: 'common.required', type: 'error' }
         ],
-        label: 'API 版本',
+        label: 'custom_model.api_version',
         prop: 'apiVersion',
       },
     ],
@@ -102,9 +102,9 @@ const CUSTOM_MODEL_PRESET = [
       {
         type: 'input',
         rules: [
-          { required: true, message: '必填', type: 'error' }
+          { required: true, message: 'common.required', type: 'error' }
         ],
-        label: '密钥',
+        label: 'custom_model.secret_key',
         prop: 'apiKey',
         url: 'https://platform.deepseek.com/api_keys'
       }
@@ -123,9 +123,9 @@ const CUSTOM_MODEL_PRESET = [
       {
         type: 'input',
         rules: [
-          { required: true, message: '必填', type: 'error' }
+          { required: true, message: 'common.required', type: 'error' }
         ],
-        label: '密钥',
+        label: 'custom_model.secret_key',
         prop: 'apiKey',
         url: 'https://bigmodel.cn/usercenter/apikeys'
       }

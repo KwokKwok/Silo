@@ -203,7 +203,7 @@ export default function ({ model, plain = false }) {
                         size="small"
                         theme="primary"
                       >
-                        {t('需实名')}
+                        {t('common.auth_required')}
                       </Tag>
                     )}
                     {option.isPro && (
@@ -213,7 +213,7 @@ export default function ({ model, plain = false }) {
                         theme="primary"
                         className="ml-2"
                       >
-                        Pro
+                        {t('common.pro')}
                       </Tag>
                     )}
                     {option.vision && (
@@ -223,7 +223,7 @@ export default function ({ model, plain = false }) {
                         theme="warning"
                         className="ml-2"
                       >
-                        Vision
+                        {t('common.vision')}
                       </Tag>
                     )}
                     {option.isVendorA && (
@@ -233,7 +233,7 @@ export default function ({ model, plain = false }) {
                         theme="success"
                         className="ml-2"
                       >
-                        国产算力
+                        {t('common.china_vendor')}
                       </Tag>
                     )}
                   </div>
@@ -272,20 +272,20 @@ export default function ({ model, plain = false }) {
                   }
                   window.open('https://huggingface.co/' + model, '_blank');
                 },
-                text: t('详情'),
+                text: t('common.details'),
                 hidden: modelDetail?.isCustom && !modelDetail.link,
               },
               {
                 icon: 'i-mingcute-broom-line',
                 onClick: () => onStop(true),
-                text: t('清空'),
+                text: t('common.clear'),
               },
               {
                 icon: 'i-mingcute-close-line',
                 danger: true,
                 disabled: activeModels.length === 1,
                 onClick: onClose,
-                text: t('关闭'),
+                text: t('common.close'),
               },
             ]
               .filter(item => !item.hidden)
@@ -303,7 +303,7 @@ export default function ({ model, plain = false }) {
       )}
 
       {messages.length == 0 ? (
-        <ChatHolder />
+        <ChatHolder model={model} />
       ) : (
         <div
           className={

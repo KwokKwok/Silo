@@ -19,7 +19,7 @@ export default function ({ copyText, placement, children }: { placement: PopupPl
           <div className="flex h-6 items-center justify-end">
             <CopyToClipboard
               text={copyText}
-              onCopy={() => message.success(t('已复制'))}
+              onCopy={() => message.success(t('common.copied'))}
             >
               <i className="opacity-60 hover:opacity-100 transition-opacity duration-300 text-base  i-ri-file-copy-line cursor-pointer"></i>
             </CopyToClipboard>

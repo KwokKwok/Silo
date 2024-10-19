@@ -132,9 +132,9 @@ export const useZenMode = () => {
     setValue(value);
     if (value && !hideNotify) {
       message.info({
-        content: i18next.t('zenModeTip'),
+        content: i18next.t('header.zen_mode_tip.content'),
         duration: 0,
-        closeBtn: i18next.t('不再提示'),
+        closeBtn: i18next.t('header.zen_mode_tip.do_not_show_again'),
         onClose: () => {
           setHideNotify(true)
         }

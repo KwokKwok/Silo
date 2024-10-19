@@ -25,7 +25,7 @@ const ConfigImportModal = forwardRef((props, ref) => {
         const jsonContent = JSON.parse(event.target.result);
         setFileContent(jsonContent);
       } catch (error) {
-        MessagePlugin.error('无效的 JSON 文件');
+        MessagePlugin.error(t('config_import.invalid_json'));
       }
     };
     reader.readAsText(file.raw);
@@ -42,14 +42,14 @@ const ConfigImportModal = forwardRef((props, ref) => {
     <Dialog
       visible={visible}
       onClose={handleClose}
-      header={t('导入配置')}
+      header={t('config_import.title')}
       footer={
         <>
           <Button variant="outline" onClick={handleClose}>
-            {t('取消')}
+            {t('common.cancel')}
           </Button>
           <Button theme="primary" onClick={handleConfirm} disabled={!fileContent}>
-            {t('导入并刷新页面')}
+            {t('config_import.import_and_refresh')}
           </Button>
         </>
       }
@@ -61,9 +61,9 @@ const ConfigImportModal = forwardRef((props, ref) => {
         beforeUpload={handleUpload}
         max={1}
       >
-        <Button theme="primary">{t('选择 JSON 文件')}</Button>
+        <Button theme="primary">{t('config_import.select_json')}</Button>
       </Upload>
-      {fileContent && <p className='mt-2'>{t('文件解析成功，确认导入后将刷新页面')}</p>}
+      {fileContent && <p className='mt-2'>{t('config_import.file_parsed')}</p>}
     </Dialog>
   );
 });

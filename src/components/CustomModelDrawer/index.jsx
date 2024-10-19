@@ -25,7 +25,7 @@ export default forwardRef(({}, ref) => {
   };
   return (
     <Drawer
-      header={t('自定义模型')}
+      header={t('header.custom_model')}
       size="large"
       visible={visible}
       confirmOnEnter

@@ -43,7 +43,7 @@ const ModelChoose = ({ onGenerate, onBack }) => {
                     alt={option.name}
                   />
                 </div>
-                <Tooltip content={t('调整配置')}>
+                <Tooltip content={t('image.config_options')}>
                   <i
                     className="i-mingcute-settings-2-line text-xl text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary-light transition-colors"
                     onClick={e => {
@@ -100,7 +100,7 @@ const ModelChoose = ({ onGenerate, onBack }) => {
       <ConfigOptions ref={configModelRef} />
       <div className="flex items-center justify-center pb-12 mt-8">
         <Button variant="outline" onClick={onBack}>
-          {t('返回')}
+          {t('common.back')}
         </Button>
         <Button
           variant="outline"
@@ -108,7 +108,7 @@ const ModelChoose = ({ onGenerate, onBack }) => {
           className="ml-4"
           onClick={onGenerate}
         >
-          {t('开始生成')}
+          {t('image.start_generate')}
         </Button>
       </div>
     </div>

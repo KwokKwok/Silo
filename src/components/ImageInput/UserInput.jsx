@@ -114,7 +114,7 @@ const SingleInput = ({
       />
       <div className="absolute flex items-center top-0 h-12 right-4 z-20 ">
         {
-          <Tooltip content={t('翻译为英文')}>
+          <Tooltip content={t('common.translate_to_english')}>
             <i
               onClick={
                 translateLoading || !isNotEnglish ? null : onTranslateToEnglish
@@ -130,7 +130,7 @@ const SingleInput = ({
           </Tooltip>
         }
         {main && (
-          <Tooltip content={generateGpt?.advise || t('生成优化版 Prompt')}>
+          <Tooltip content={generateGpt?.advise || t('chat.generate_optimized_prompt')}>
             <i
               onClick={
                 generateLoading || !value.length ? null : onGeneratePrompt
@@ -203,7 +203,7 @@ export default function ({ inputs, setInputs, onStop, onSubmit, onGenerate }) {
           disabled={validInputs.length === 0}
           onClick={onSubmit}
         >
-          {t('调整模型或参数')}
+          {t('chat.adjust_model_or_parameters')}
         </Button>
         <Button
           variant="outline"
@@ -212,7 +212,7 @@ export default function ({ inputs, setInputs, onStop, onSubmit, onGenerate }) {
           disabled={validInputs.length === 0}
           onClick={onGenerate}
         >
-          {t('开始生成')}
+          {t('chat.start_generation')}
         </Button>
       </div>
     </div>

@@ -72,7 +72,7 @@ function ImageGenerations({ generations }) {
                     }}
                   >
                     <p className="text-gray-500 dark:text-gray-400">
-                      {t('正在生成...')}
+                      {t('image_generations.generating')}
                     </p>
                   </div>
                 ) : generation.error ? (
@@ -88,10 +88,10 @@ function ImageGenerations({ generations }) {
                       <img
                         src={FailedImg}
                         className="flex-1 h-0 mb-4"
-                        alt={t('生成失败')}
+                        alt={t('image_generations.generation_failed')}
                       />
                       <span className="text-sm flex-shrink-0 mb-2">
-                        {t('生成失败')}
+                        {t('image_generations.generation_failed')}
                       </span>
                       <span className="px-4 text-xs flex-shrink-0">
                         {t(generation.error)}
@@ -117,7 +117,7 @@ function ImageGenerations({ generations }) {
                         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <span className="text-white text-lg flex flex-col items-center">
                             <i className="iconify mingcute--eye-2-line w-6 h-6 mb-2" />
-                            <span>{t('点击预览')}</span>
+                            <span>{t('image_generations.click_to_preview')}</span>
                           </span>
                         </div>
                       </>

@@ -14,8 +14,8 @@ const inputNumberOptionOf = (
 ) => {
   return {
     prop,
-    tooltip,
-    label,
+    tooltip: `image_options.${prop}_tooltip`,
+    label: `image_options.${prop}_label`,
     type: 'input_number',
     step,
     defaultValue,
@@ -27,8 +27,8 @@ const inputNumberOptionOf = (
 const imageSizeOf = options => ({
   prop: 'image_size',
   type: 'rect_select',
-  tooltip: '生成图像的宽度和高度（像素）',
-  label: '图像尺寸',
+  tooltip: 'image_options.image_size_tooltip',
+  label: 'image_options.image_size_label',
   options,
   defaultValue: options[0].value
 });
@@ -71,8 +71,8 @@ const fluxOf = id => {
       ]),
       inputNumberOptionOf(
         'num_inference_steps',
-        '推理步骤',
-        '生成图像的迭代次数。更多步骤通常会产生更好的结果，但需要更长的处理时间',
+        'image_options.num_inference_steps_label',
+        'image_options.num_inference_steps_tooltip',
         20,
         1,
         1,
@@ -149,8 +149,8 @@ const sdOf = (id, smaller = false, maxInferenceStep = 50) => {
 
   const inferenceStepOption = inputNumberOptionOf(
     'num_inference_steps',
-    '推理步骤',
-    '生成图像的迭代次数。更多步骤通常会产生更好的结果，但需要更长的处理时间',
+    'image_options.num_inference_steps_label',
+    'image_options.num_inference_steps_tooltip',
     Math.min(20, maxInferenceStep),
     1,
     1,
@@ -162,8 +162,8 @@ const sdOf = (id, smaller = false, maxInferenceStep = 50) => {
       imageSizeOf(options),
       inputNumberOptionOf(
         'batch_size',
-        '生成图像数量',
-        '一次生成的图像数量',
+        'image_options.batch_size_label',
+        'image_options.batch_size_tooltip',
         1,
         1,
         1,
@@ -171,8 +171,8 @@ const sdOf = (id, smaller = false, maxInferenceStep = 50) => {
       ),
       inputNumberOptionOf(
         'guidance_scale',
-        '指导比例',
-        '控制生成图像与提示的相似程度。较高的值会产生更接近提示的图像，但可能降低整体质量',
+        'image_options.guidance_scale_label',
+        'image_options.guidance_scale_tooltip',
         1,
         0.1,
         0,
@@ -275,7 +275,6 @@ export function useImageModelOptions (modelId) {
 
   return { options, setOption, configItems, applyToAll };
 }
-
 
 export function getImageGenerateOptions () {
   return _finalOptions;
