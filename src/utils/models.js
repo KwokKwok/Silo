@@ -161,6 +161,12 @@ const SILICON_MODELS = [
   textModelOf("Pro/google/gemma-2-9b-it", 0.6, 8, true),
 ];
 
+const _visionModelIds = SILICON_MODELS.filter(item => item.vision).map(item => item.id);
+
+export function isVisionModel (modelId) {
+  return _visionModelIds.includes(modelId)
+}
+
 export const SILICON_MODELS_IDS = SILICON_MODELS.map(i => i.id);
 
 export function getAllTextModels () {

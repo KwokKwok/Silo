@@ -21,7 +21,7 @@ export default function () {
     >
       {messages.map((item, index) => (
         <React.Fragment key={item.chatId}>
-          <UserMessage content={item.user} />
+          <UserMessage content={item.user} image={item.image} />
           {Object.keys(item.ai).map(key => (
             <AiMessage
               key={`${item.chatId}-${key}`}

@@ -1,35 +1,45 @@
 import { useEffect } from "react";
 import { useActiveModels } from "../store/app";
-import { getModelIcon } from "./models";
+import { getModelIcon, isVisionModel } from "./models";
 import { ERROR_PREFIX } from "./types";
 import { useMultiRows, useRefresh } from "./use";
-import { streamChat } from "./utils";
+import { resizeBase64Image, streamChat } from "./utils";
 import { getQuestionEvaluation, getResponseEvaluationResults } from "../services/api";
+import { getVisionModelOptionWidth } from "./options/chat-options";
 
 /**
  * 用于存放用户信息，key 为时间戳
  */
 let userMessages = {};
+/**
+ * 用于存放对话图片信息，key 为时间戳
+ */
+let messageImages = {};
 let lastMessage = null;
 /**
  * 评估信息
  */
 let evaluationInput = {};
 
-function _addUserMessage (message, systemPrompt) {
+function _addUserMessage (message, systemPrompt, image) {
   const chatId = Date.now();
   const newMessage = { content: message, chatId };
-  getQuestionEvaluation(message, systemPrompt).then(isEvaluate => {
-    if (isEvaluate) {
-      evaluationInput[chatId] = {
-        done: false,
-        message: newMessage,
-        results: [],
-        best: [],
+  // 可仅评估第一个问题：&& Object.keys(userMessages).length < 1
+  // 多模态问题不做评估
+  if (!image) {
+    getQuestionEvaluation(message, systemPrompt).then(isEvaluate => {
+      if (isEvaluate) {
+        evaluationInput[chatId] = {
+          done: false,
+          message: newMessage,
+          results: [],
+          best: [],
+        }
       }
-    }
-  })
+    })
+  }
   userMessages[chatId] = message;
+  messageImages[chatId] = image;
   lastMessage = newMessage;
   return newMessage;
 }
@@ -38,6 +48,7 @@ function _evaluateResponse (activeChats, refreshController, systemPrompt) {
   if (!lastMessage) return;
   const { chatId, content } = lastMessage
   if (!evaluationInput[chatId] || evaluationInput[chatId].done) return
+  // 多模态模型不参与评估
   const responses = activeChats.map(item => ({ model: item.model, content: item.messages[chatId] })).filter(item => item.content);
   const promises = getResponseEvaluationResults(content, systemPrompt, responses);
   const evaluate = evaluationInput[chatId];
@@ -79,7 +90,7 @@ export function getUserMessages () {
 }
 
 
-function _streamChat (chat, newMessage, systemPrompt) {
+async function _streamChat (chat, newMessage, systemPrompt) {
   const { chatId, content } = newMessage;
   chat.controller.current = new AbortController();
   chat.loading = true;
@@ -87,8 +98,9 @@ function _streamChat (chat, newMessage, systemPrompt) {
   const _onChunk = (content) => {
     chat.messages[chatId] += content;
   }
-  const _onEnd = () => {
+  const _onEnd = (info) => {
     chat.loading = false;
+    chat.infos[chatId] = info;
     chat.controller.current = null;
   }
 
@@ -100,17 +112,53 @@ function _streamChat (chat, newMessage, systemPrompt) {
   // 构建对话历史
   const chatMessage = Object.keys(chat.messages).reduce((arr, curTime) => {
     const userMessage = userMessages[curTime];
+    const image = chat.images[curTime];
     const aiMessage = chat.messages[curTime];
-    return [...arr, { role: 'user', content: userMessage }, { role: 'assistant', content: aiMessage }].filter(item => item.role != 'assistant' || !item.content.startsWith(ERROR_PREFIX))
+    if (aiMessage.startsWith(ERROR_PREFIX)) {
+      return arr;
+    }
+    return [...arr, { role: 'user', content: userMessage, image }, { role: 'assistant', content: aiMessage }]
   }, [])
-  chatMessage.push({ role: 'user', content })
+  const messageImage = messageImages[chatId];
+  let image = messageImage;
+  const isVision = isVisionModel(model);
+  if (image) {
+    if (isVision) {
+      image = await resizeBase64Image(messageImage, getVisionModelOptionWidth(model))
+    }
+    chat.images[chatId] = image;
+  }
+
+  chatMessage.push({ role: 'user', content, image })
   if (systemPrompt) {
     chatMessage.unshift({ role: 'system', content: systemPrompt })
   }
 
+
+  // 格式化消息，兼容多模态
+  const finalMessages = chatMessage.map(item => {
+    const { role, content, image } = item;
+    let formattedContent = [];
+    if (isVision && image) {
+      // detail 用 high，通过配置的图片宽度调整
+      formattedContent.push({ type: 'image_url', image_url: { url: image, detail: 'high' } })
+    }
+    // 文字提示放后面对 InternVL 效果更好，其他无顺序影响
+    formattedContent.push({ type: 'text', text: content })
+    return {
+      role,
+      content: formattedContent
+    }
+  })
+
   // 可以先展示用户消息
   chat.messages[chatId] = ''
-  streamChat(model, chatMessage, controller, _onChunk, _onEnd, _onError)
+  // 如果模型不是多模态，但是用户上传了图片，则直接报错
+  if (!isVision && image) {
+    _onError({ message: 'i18n.error.model_not_vlm' })
+    return;
+  }
+  streamChat(model, finalMessages, controller, _onChunk, _onEnd, _onError)
 }
 
 
@@ -122,7 +170,7 @@ const allChats = {}
 export function useActiveChatsMessages () {
   const { activeModels } = useActiveModels()
   const messages = Object.keys(userMessages).map(chatId => {
-    const result = { chatId, user: userMessages[chatId], ai: {} }
+    const result = { chatId, user: userMessages[chatId], image: messageImages[chatId], ai: {} }
     activeModels.forEach(model => {
       result.ai[model] = allChats[model]?.messages[chatId] || '';
     })
@@ -149,15 +197,24 @@ export function useLastGptResponse () {
 }
 
 /**
+ * 获取单次对话的对话信息，token 使用情况，耗时等
+ */
+export function getChatMessageInfo (model, chatId) {
+  return allChats[model]?.infos[chatId] || {}
+}
+
+/**
  * 获取用户与模型完整的消息交互（用户消息和模型消息是分开存放的）
  * @param {string} model 模型 id 
  */
 export function useChatMessages (model) {
   const chatMessages = allChats[model]?.messages || {};
+  const images = allChats[model]?.images || {};
   return Object.keys(chatMessages).map(chatId => ({
     chatId,
     evaluate: evaluationInput[chatId],
     user: userMessages[chatId],
+    image: images[chatId],
     ai: chatMessages[chatId],
   }))
 }
@@ -171,12 +228,21 @@ export function useSingleChat (model) {
 
 export function useSiloChat (systemPrompt) {
   const { activeModels } = useActiveModels();
+  const hasVisionModel = activeModels.some(item => isVisionModel(item));
   const refreshController = useRefresh(48);
   const activeChats = activeModels.map(item => {
     if (!allChats[item]) {
       allChats[item] = {
         loading: false,
         messages: {},
+        /**
+         * 用于存放 token 使用情况，耗时等
+         */
+        infos: {},
+        /**
+         * 用于存放实际使用的图片（不同的模型可能使用不同的清晰度设置）
+         */
+        images: {},
         controller: {},
         model: item,
         stop (clear) {
@@ -202,9 +268,9 @@ export function useSiloChat (systemPrompt) {
       _evaluateResponse(activeChats, refreshController, systemPrompt);
     }
   }, [loading])
-  const onSubmit = (message) => {
+  const onSubmit = (message, image) => {
     refreshController.start();
-    const newMessage = _addUserMessage(message, systemPrompt);
+    const newMessage = _addUserMessage(message, systemPrompt, image);
     activeChats.forEach(chat => {
       _streamChat(chat, newMessage, systemPrompt);
     })
@@ -218,5 +284,5 @@ export function useSiloChat (systemPrompt) {
     }
     refreshController.refresh();
   }
-  return { loading, onSubmit, onStop }
+  return { loading, onSubmit, onStop, hasVisionModel }
 }

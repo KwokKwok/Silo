@@ -4,10 +4,13 @@ import { useChatOptions } from '../utils/options/chat-options';
 import Tooltip from './MobileCompatible/Tooltip';
 import { Button } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
+import { isVisionModel } from '@src/utils/models';
 
 export default function ({ model }) {
   const { t } = useTranslation();
-  const { options, onPropChange, onApplyToAll } = useChatOptions(model);
+  const { options: _options, onPropChange, onApplyToAll } = useChatOptions(model);
+  const isVision = isVisionModel(model);
+  const options = isVision ? _options : _options.filter(option => !option.vision);
   return (
     <div className="flex flex-col !w-64 p-1">
       {options.map(option => (

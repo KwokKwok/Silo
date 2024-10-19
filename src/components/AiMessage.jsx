@@ -6,12 +6,12 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { message } from 'tdesign-react';
 import remarkGfm from 'remark-gfm';
 import remarkMath from 'remark-math';
-import rehypeKatex from 'rehype-katex'
-import 'katex/dist/katex.min.css'
+import rehypeKatex from 'rehype-katex';
+import 'katex/dist/katex.min.css';
 import '../assets/styles/markdown.scss';
 import { useDarkMode } from '../utils/use';
 import { useSingleChat } from '../utils/chat';
-import { getModelIcon } from '../utils/models';
+import { getModelIcon, isVisionModel } from '../utils/models';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -19,24 +19,16 @@ import { useTranslation } from 'react-i18next';
 
 export function escapeBrackets (text) {
   const pattern = /(```[\S\s]*?```|`.*?`)|\\\[([\S\s]*?[^\\])\\]|\\\((.*?)\\\)/g;
-  return text.replace(
-    pattern,
-    (
-      match,
-      codeBlock,
-      squareBracket,
-      roundBracket
-    ) => {
-      if (codeBlock != null) {
-        return codeBlock;
-      } else if (squareBracket != null) {
-        return `$$${squareBracket}$$`;
-      } else if (roundBracket != null) {
-        return `$${roundBracket}$`;
-      }
-      return match;
-    },
-  );
+  return text.replace(pattern, (match, codeBlock, squareBracket, roundBracket) => {
+    if (codeBlock != null) {
+      return codeBlock;
+    } else if (squareBracket != null) {
+      return `$$${squareBracket}$$`;
+    } else if (roundBracket != null) {
+      return `$${roundBracket}$`;
+    }
+    return match;
+  });
 }
 
 export function escapeMhchem (text) {
@@ -59,7 +51,7 @@ export function preprocessLaTeX (content) {
 
   // Step 2: Protect existing LaTeX expressions
   const latexExpressions = [];
-  content = content.replace(/(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\(.*?\\\))/g, (match) => {
+  content = content.replace(/(\$\$[\s\S]*?\$\$|\\\[[\s\S]*?\\\]|\\\(.*?\\\))/g, match => {
     latexExpressions.push(match);
     return `<<LATEX_${latexExpressions.length - 1}>>`;
   });
@@ -87,12 +79,16 @@ export default function AiMessage ({
   showModelName = false,
   plain = false,
   evaluate = {},
+  info = {},
 }) {
   const { t, i18n } = useTranslation();
   const [isDark] = useDarkMode();
   const { loading } = useSingleChat(model);
   // 用于渲染一个行内的 loading
   const APPEND_MARK = ` \`${LOADING_MATCH_TOKEN}\``;
+
+  const tokenUsage = info.usage?.total_tokens || 0;
+  const formattedInfo = (tokenUsage ? `${tokenUsage} tokens used, ` : '') + (info?.costTime ? `${info.costTime / 1000} s` : '')
 
   const isBest = (evaluate?.best || []).some(item => item.model === model);
   const likes = (evaluate?.results || [])
@@ -110,25 +106,18 @@ export default function AiMessage ({
     () =>
       content.startsWith(ERROR_PREFIX) ? (
         <span className="w-full text-center dark:text-red-300 text-red-700 mb-2">
-          {content.replace(ERROR_PREFIX, '')}
+          {t(content.replace(ERROR_PREFIX, ''))}
         </span>
       ) : (
         <div
           className={
             ' relative flex-shrink-0 max-w-full leading-6 ' +
-            (plain
-              ? ''
-              : 'mb-2 px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md')
+            (plain ? '' : 'mb-2 px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md')
           }
         >
           {showModelName && (
             <span className="text-xs mb-1 flex items-center text-gray-500 dark:text-gray-400">
-              <img
-                src={getModelIcon(model)}
-                alt=""
-                className="w-3 h-3 mr-1 rounded-sm"
-              />{' '}
-              {model}
+              <img src={getModelIcon(model)} alt="" className="w-3 h-3 mr-1 rounded-sm" /> {model}
             </span>
           )}
           <Markdown
@@ -153,11 +142,7 @@ export default function AiMessage ({
                 return (
                   <>
                     {match ? (
-                      <div
-                        className={
-                          'not-prose relative group rounded overflow-hidden'
-                        }
-                      >
+                      <div className={'not-prose relative group rounded overflow-hidden'}>
                         <CopyToClipboard
                           text={children}
                           onCopy={() => message.success(t('已复制'))}
@@ -209,13 +194,16 @@ export default function AiMessage ({
                   />
                 ))}
               </div>
-              {isBest ? (
-                <span className="ml-4">{t('已由 AI 票选为最佳回复')} </span>
-              ) : null}
+              {isBest ? <span className="ml-4">{t('已由 AI 票选为最佳回复')} </span> : null}
+            </div>
+          )}
+          {formattedInfo && (
+            <div className="mt-1 text-xs opacity-25">
+              {formattedInfo}
             </div>
           )}
         </div>
       ),
-    [content, likes.length, isBest, isDark, i18n.language]
+    [content, likes.length, isBest, isDark, i18n.language, formattedInfo]
   );
 }

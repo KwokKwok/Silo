@@ -431,6 +431,21 @@ const resources = [
   {
     zh: '硅基流动统一登录',
     en: 'SiliconFlow OAuth Login'
+  },
+  {
+    _key: 'i18n.error.model_not_vlm',
+    zh: '该模型不是视觉语言模型，请仅使用文本提示',
+    en: 'The model is not a VLM (Vision Language Model). Please use text-only prompts.'
+  },
+  {
+    _key: 'i18n.chat_options.image_width',
+    zh: '图片宽度',
+    en: 'Image Width',
+  },
+  {
+    _key: 'i18n.chat_options.image_width_desc',
+    zh: '设置多模态模型图片的宽度，高度自动调整。清晰度越高，越耗时，也会消耗更多的 tokens',
+    en: 'Set the width of vision model images, height adjusts automatically. Higher clarity takes more time and consumes more tokens'
   }
 ]
 
