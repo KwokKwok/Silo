@@ -111,7 +111,7 @@ export default function ({
   const imageUploaderRef = useRef()
   useEffect(() => {
     if (!image) {
-      imageUploaderRef.current.clear();
+      imageUploaderRef.current?.clear();
     }
   }, [image])
   const imageUploader = useMemo(() => {

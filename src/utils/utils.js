@@ -2,6 +2,8 @@ import { getChatOptions } from "./options/chat-options"
 import { getChatResolver, isLimitedModel } from './models';
 import { fmtBaseUrl } from "./format";
 import { isExperienceSK } from "@src/store/storage";
+import { LOCAL_STORAGE_KEY } from "./types";
+import { getLocalStorage } from "./helpers";
 export function createOpenAICompatibleRequestOptions (sk, model, messages, options = {}) {
   return {
     method: 'POST',
@@ -130,4 +132,38 @@ export function resizeBase64Image (base64Image, width, requiredHeight = 0) {
     img.onerror = (error) => reject(error);
     img.src = base64Image;
   });
+}
+
+
+export function exportConfig () {
+  const keys = Object.values(LOCAL_STORAGE_KEY);
+  const config = keys.reduce((result, curKey) => {
+    const value = localStorage.getItem(curKey);
+    if (value !== null) {
+      result[curKey] = value;
+    }
+    return result;
+  }, {});
+
+  const jsonString = JSON.stringify(config, null, 2);
+  const blob = new Blob([jsonString], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'silo.config.json';
+  document.body.appendChild(a);
+  a.click();
+
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+export function importConfig (config) {
+  const keys = Object.values(LOCAL_STORAGE_KEY);
+  Object.keys(config).forEach(item => {
+    if (keys.includes(item)) {
+      localStorage.setItem(item, config[item])
+    }
+  })
 }
