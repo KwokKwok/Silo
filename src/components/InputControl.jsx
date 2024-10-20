@@ -167,7 +167,7 @@ export default function ({
               onClick={() => onStop(false)}
             ></i>
             <Popconfirm
-              content={t('确定清空所有对话吗？')}
+              content={t('common.confirm_clear_all_dialog')}
               cancelBtn={null}
               placement="right-bottom"
               onConfirm={() => onStop(true)}

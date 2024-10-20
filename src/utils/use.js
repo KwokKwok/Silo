@@ -169,7 +169,7 @@ export function useMultiRows () {
 export function useI18nSideEffect () {
   useEffect(() => {
     const handleLanguageChange = () => {
-      document.title = i18next.t('title');
+      document.title = i18next.t('common.title');
       document.querySelector('html').lang = i18next.language;
     };
     handleLanguageChange();

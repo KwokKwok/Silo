@@ -150,12 +150,10 @@ const ConfigOptions = forwardRef(({}, ref) => {
       footer={
         <div className="flex justify-end">
           <Tooltip
-            content={t(
-              '不同模型支持的参数或有效区间可能存在不同，将尽可能将当前配置应用到其他的模型'
-            )}
+            content={t('common.apply_to_all_tooltip')}
           >
             <Button theme="default" variant="text" onClick={applyToAll}>
-              {t('应用到全部')}
+              {t('common.apply_to_all')}
             </Button>
           </Tooltip>
           <Button
@@ -164,7 +162,7 @@ const ConfigOptions = forwardRef(({}, ref) => {
             variant="outline"
             onClick={onHide}
           >
-            {t('确定')}
+            {t('common.confirm')}
           </Button>
         </div>
       }

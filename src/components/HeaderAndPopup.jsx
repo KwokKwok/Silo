@@ -49,10 +49,8 @@ export default function () {
   useEffect(() => {
     if (isExperienceSK()) {
       notification.info({
-        title: t('您正在使用体验密钥'),
-        content: t(
-          '体验密钥因为多人使用可能会触发限速，建议您及时更换为自己的密钥'
-        ),
+        title: t('common.experience_key_title'),
+        content: t('common.experience_key_content'),
         closeBtn: true,
         duration: 1000 * 6,
         placement: 'bottom-right',
@@ -132,7 +130,7 @@ export default function () {
         )}
 
         {!isImageMode && (
-          <Tooltip placement="bottom" content={t('新增模型')}>
+          <Tooltip placement="bottom" content={t('header.add_model')}>
             <i
               className="block i-ri-apps-2-add-line cursor-pointer mr-4"
               onClick={addMoreModel}
@@ -141,7 +139,7 @@ export default function () {
         )}
         <Tooltip
           placement="bottom"
-          content={t(isImageMode ? '切换对话模式' : '切换文生图模式')}
+          content={t(isImageMode ? 'header.switch_to_chat' : 'header.switch_to_image')}
         >
           <i
             onClick={() => navigate(isImageMode ? '/chat' : '/image')}
@@ -172,28 +170,28 @@ export default function () {
               onClick: () => setIsRowMode(!isRowMode),
               hidden: isMobile || isImageMode,
               disabled: activeModels.length <= 1,
-              title: t(isRowMode ? '多列模式' : '双行模式'),
+              title: t(isRowMode ? 'header.multi_column_mode' : 'header.dual_line_mode'),
             },
             {
               icon: 'iconify mingcute--radiobox-line',
               onClick: () => setIsZenMode(!isZenMode),
               hidden: isMobile,
-              title: t(isZenMode ? '退出禅模式' : '禅模式'),
+              title: t(isZenMode ? 'header.exit_zen_mode' : 'header.zen_mode'),
             },
             {
               icon: 'i-ri-key-line',
-              title: t('修改密钥'),
+              title: t('header.modify_key'),
               onClick: () => setShowPopup(true),
             },
             {
               icon: 'i-mingcute-plugin-2-fill',
               onClick: () => customModelRef.current.open(),
               hidden: isMobile || isImageMode,
-              title: t('自定义模型'),
+              title: t('header.custom_model'),
             },
             {
               icon: 'iconify mingcute--translate-2-line',
-              title: t('选择语言'),
+              title: t('header.select_language'),
               children: [
                 {
                   content: '简体中文',
@@ -207,14 +205,14 @@ export default function () {
             },
             {
               icon: 'iconify mingcute--more-3-fill',
-              title: t('更多'),
+              title: t('header.more'),
               divider: true,
               children: [
-                { icon: 'i-mingcute-file-export-fill', onClick: exportConfig, title: t('导出配置') },
+                { icon: 'i-mingcute-file-export-fill', onClick: exportConfig, title: t('header.export_config') },
                 {
                   icon: 'iconify mingcute--file-import-fill',
                   onClick: openConfigModal,
-                  title: t('导入配置'),
+                  title: t('header.import_config'),
                 },
                 {
                   icon: 'i-ri-github-fill',
@@ -229,8 +227,8 @@ export default function () {
                     const notify = await notification.info({
                       placement: 'bottom-right',
                       offset: [-20, -20],
-                      title: t('联系开发者'),
-                      content: t('您可以通过邮箱或是微信直接联系开发者'),
+                      title: t('header.contact_developer'),
+                      content: t('header.contact_developer_content'),
                       closeBtn: true,
                       duration: 0,
                       footer: (
@@ -248,13 +246,13 @@ export default function () {
                               theme="default"
                               variant="text"
                             >
-                              {t('发邮件')}
+                              {t('header.send_email')}
                             </Button>
                           </a>
                           <CopyToClipboard
                             text="17681890733"
                             onCopy={() => {
-                              message.success(t('已复制'));
+                              message.success(t('common.copied'));
                               notify.close();
                             }}
                           >
@@ -263,14 +261,14 @@ export default function () {
                               theme="primary"
                               variant="text"
                             >
-                              {t('使用微信')}
+                              {t('header.use_wechat')}
                             </Button>
                           </CopyToClipboard>
                         </>
                       ),
                     });
                   },
-                  title: t('联系开发者'),
+                  title: t('header.contact_developer'),
                 },
                 {
                   icon: 'i-logos-chrome',
@@ -280,7 +278,7 @@ export default function () {
                       '_blank'
                     );
                   },
-                  title: t('Chrome 扩展'),
+                  title: t('header.chrome_extension'),
                 },
                 {
                   icon: 'i-logos-microsoft-edge',
@@ -290,7 +288,7 @@ export default function () {
                       '_blank'
                     );
                   },
-                  title: 'Edge Addons',
+                  title: t('header.edge_addons'),
                 },
               ].map(item => ({
                 prefixIcon: <i className={item.icon + ' mr-0'} />,
@@ -347,7 +345,7 @@ export default function () {
                         onSubmitPaidSkPassword();
                       }
                     }}
-                    placeholder={t('在这里输入密钥密码')}
+                    placeholder={t('header.popup.enter_key_password')}
                     className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4"
                   />
                   {!!paidKeyError && (
@@ -366,7 +364,7 @@ export default function () {
                     variant="text"
                     onClick={onSubmitPaidSkPassword}
                   >
-                    {t('确定')}
+                    {t('common.confirm')}
                   </Button>
                 </>
               ) : (
@@ -384,7 +382,7 @@ export default function () {
                     value={secretKey}
                     autoFocus={!secretKey}
                     onChange={e => setSecretKey(e.target.value)}
-                    placeholder={t('在这里输入 SiliconCloud API 密钥')}
+                    placeholder={t('header.popup.enter_siliconcloud_key')}
                     className="w-full h-12 outline-none text-center bg-gray-100 dark:bg-gray-800 rounded-xl px-4"
                   />
 
@@ -394,20 +392,21 @@ export default function () {
                     </span>
                   )}
                   <span className="mt-6 text-sm text-gray-500">
-                    {t('intro1')}
+                    {t('header.popup.intro1')}
                     <br />
                     <a
                       className="mx-1"
                       target="_blank"
                       href={SILO_ENV.AFF_LINK}
                     >
-                      {t('现在注册 SiliconCloud')}
+                      {t('header.popup.register_siliconcloud')}
                     </a>
-                    {t('官方也会赠送 14 元额度可用于体验付费模型')}
+                    {t('header.popup.free_credit')}
                   </span>
 
                   <span className="mt-4 text-sm text-gray-500">
-                    {t('如您已有账号，您可以使用')}<a
+                    {t('header.popup.have_account')}
+                    <a
                       className="mx-1 cursor-pointer"
                       target="_blank"
                       onClick={() => {
@@ -423,31 +422,30 @@ export default function () {
                         });
                       }}
                     >
-                      {t('硅基流动统一登录')}
-                    </a>, {t('或者')}
+                      {t('header.popup.siliconflow_oauth')}
+                    </a>
+                    {t('header.popup.or')}
                     <a
                       className="mx-1"
                       href="https://cloud.siliconflow.cn/account/ak"
                       target="_blank"
                     >
-                      {t('点击这里获取 SiliconCloud 密钥')}
+                      {t('header.popup.get_siliconcloud_key')}
                     </a>
                   </span>
 
                   <span className="mt-4 text-sm text-gray-500">
-                    {t(
-                      '您的密钥将仅在浏览器中存储，请仅在安全的设备上使用本应用'
-                    )}
+                    {t('header.popup.key_storage_notice')}
                   </span>
 
                   <span className="mt-4 text-sm text-gray-500">
-                    {t('已有配置文件？')}
+                    {t('header.popup.have_config')}
                     <a
                       className="mx-1 cursor-pointer"
                       target="_blank"
                       onClick={openConfigModal}
                     >
-                      {t('点此导入')}
+                      {t('header.popup.click_to_import')}
                     </a>
                   </span>
 
@@ -458,12 +456,10 @@ export default function () {
                       setShowPopup(false);
                     }}
                   >
-                    🤖 {t('先不注册，用用你的')} 🤖
+                    🤖 {t('header.popup.use_experience_key')} 🤖
                   </span>
                   <span className="mt-2 text-xs text-gray-600">
-                    {t(
-                      '体验密钥不适用于付费模型。且可能因为其公开性而被人滥用而进一步被停用'
-                    )}
+                    {t('header.popup.experience_key_warning')}
                   </span>
                 </>
               )}

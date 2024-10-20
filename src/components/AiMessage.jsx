@@ -145,7 +145,7 @@ export default function AiMessage ({
                       <div className={'not-prose relative group rounded overflow-hidden'}>
                         <CopyToClipboard
                           text={children}
-                          onCopy={() => message.success(t('已复制'))}
+                          onCopy={() => message.success(t('common.copied'))}
                         >
                           <i className="absolute top-3 right-3 opacity-10 text-white group-hover:opacity-50 transition-opacity duration-300 text-base  i-ri-file-copy-line cursor-pointer"></i>
                         </CopyToClipboard>
@@ -194,7 +194,7 @@ export default function AiMessage ({
                   />
                 ))}
               </div>
-              {isBest ? <span className="ml-4">{t('已由 AI 票选为最佳回复')} </span> : null}
+              {isBest ? <span className="ml-4">{t('ai_message.best_reply')} </span> : null}
             </div>
           )}
           {formattedInfo && (

@@ -68,7 +68,7 @@ export default forwardRef((props, ref) => {
 
   const rules = {
     name: [
-      { required: true, message: t('必填'), type: 'error' },
+      { required: true, message: t('common.required'), type: 'error' },
       {
         validator: value => {
           if (!value.startsWith(CUSTOM_PRESET_PREFIX)) {
@@ -78,17 +78,17 @@ export default forwardRef((props, ref) => {
           } else {
             return Promise.resolve({
               result: false,
-              message: `Don't use preset prefix`,
+              message: t('custom_model.preset_prefix_error'),
               type: 'warning',
             });
           }
         },
       },
     ],
-    baseUrl: [{ required: true, message: t('必填'), type: 'warning' }],
-    sk: [{ required: true, message: t('必填'), type: 'warning' }],
+    baseUrl: [{ required: true, message: t('common.required'), type: 'warning' }],
+    sk: [{ required: true, message: t('common.required'), type: 'warning' }],
     ids: [
-      { required: true, message: t('必填'), type: 'warning' },
+      { required: true, message: t('common.required'), type: 'warning' },
       {
         validator: value => {
           const ids = value.split(',');
@@ -99,15 +99,13 @@ export default forwardRef((props, ref) => {
               })
             : Promise.resolve({
                 result: false,
-                message: t(
-                  'ID格式错误，请检查是否符合: {manufacturer}/{model-name}，多个需用英文逗号隔开'
-                ),
+                message: t('custom_model.id_format_error'),
                 type: 'warning',
               });
         },
       },
     ],
-    resolveFn: [{ required: true, message: t('必填'), type: 'error' }],
+    resolveFn: [{ required: true, message: t('common.required'), type: 'error' }],
   };
 
   if (selected && selected.paramsMode) {
@@ -118,9 +116,9 @@ export default forwardRef((props, ref) => {
   const idsFormItem = (
     <FormItem
       key="ids"
-      label={t('模型ID')}
+      label={t('custom_model.model_id')}
       name="ids"
-      help={t('格式：{manufacturer}/{model-name}，多个可用英文逗号隔开')}
+      help={t('custom_model.model_id_help')}
     >
       <Input placeholder="" />
     </FormItem>
@@ -137,21 +135,15 @@ export default forwardRef((props, ref) => {
         resetType="empty"
         showErrorMessage
       >
-        {/* <Alert
-          theme="info"
-          close
-          className="mb-4"
-          message=""
-        /> */}
         <div className="mb-4 opacity-60 flex items-center">
           <span>
-            {t('自定义模型调整后，会自动重载页面，请确保页面数据无需处理')}
+            {t('custom_model.reload_notice')}
           </span>
         </div>
-        <FormItem label={t('选择')} name="select">
+        <FormItem label={t('common.select')} name="select">
           <Select
             clearable
-            placeholder={t('修改已添加的模型，或是选择预设导入')}
+            placeholder={t('custom_model.select_placeholder')}
             keys={{ label: 'name', value: 'id' }}
             options={options}
             onChange={onSelectModel}
@@ -163,7 +155,7 @@ export default forwardRef((props, ref) => {
               theme="danger"
               onClick={() => removeCustomModel(selected.id)}
             >
-              {t('移除')}
+              {t('common.remove')}
             </Button>
           )}
         </FormItem>
@@ -189,8 +181,7 @@ export default forwardRef((props, ref) => {
                   <Input placeholder={item.placeholder} />
                 ) : (
                   <span>
-                    {t('不支持的类型：')}
-                    {item.type}
+                    {t('custom_model.unsupported_type', { type: item.type })}
                   </span>
                 )}
               </FormItem>
@@ -198,32 +189,32 @@ export default forwardRef((props, ref) => {
           </>
         ) : (
           <>
-            <FormItem label={t('模型名字')} name="name">
-              <Input placeholder={t('方便查看用')} />
+            <FormItem label={t('common.name')} name="name">
+              <Input placeholder={t('custom_model.name_placeholder')} />
             </FormItem>
             {idsFormItem}
             {selected?.isOpenAiCompatible ? (
               <>
-                <FormItem key="baseUrl" label={t('请求地址')} name="baseUrl">
-                  <Input placeholder={t('不需要 `/chat/completions`')} />
+                <FormItem key="baseUrl" label={t('custom_model.base_url')} name="baseUrl">
+                  <Input placeholder={t('custom_model.base_url_placeholder')} />
                 </FormItem>
-                <FormItem key="sk" label={t('密钥')} name="sk">
+                <FormItem key="sk" label={t('custom_model.secret_key')} name="sk">
                   <Input />
                 </FormItem>
                 <FormItem
                   key="idResolver"
-                  label={t('ID解析函数')}
+                  label={t('custom_model.id_resolver')}
                   name="idResolver"
                 >
-                  <Textarea rows={3} placeholder={t('id-resolver-help')} />
+                  <Textarea rows={3} placeholder={t('custom_model.id_resolver_help')} />
                 </FormItem>
               </>
             ) : (
               <FormItem
-                label={t('解析函数')}
+                label={t('custom_model.resolver')}
                 help={
                   isBrowserExtension
-                    ? t('浏览器扩展暂不支持自定义解析函数')
+                    ? t('custom_model.browser_extension_notice')
                     : ''
                 }
                 name="resolveFn"
@@ -231,16 +222,16 @@ export default forwardRef((props, ref) => {
                 <Textarea
                   disabled={isBrowserExtension}
                   rows={10}
-                  placeholder={t('建议调试好后复制过来，这里就不再做编辑器了')}
+                  placeholder={t('custom_model.resolver_placeholder')}
                 />
               </FormItem>
             )}
-            <FormItem label={t('模型图标')} name="icon">
+            <FormItem label={t('common.icon')} name="icon">
               <Input
-                placeholder={t('厂商 Icon，可不填。建议从 HuggingFace 获取')}
+                placeholder={t('custom_model.icon_placeholder')}
               />
             </FormItem>
-            <FormItem label={t('上下文长度')} name="length">
+            <FormItem label={t('custom_model.context_length')} name="length">
               <InputNumber
                 suffix="K"
                 placeholder=" "
@@ -248,7 +239,7 @@ export default forwardRef((props, ref) => {
                 theme="normal"
               />
             </FormItem>
-            <FormItem label={t('价格')} initialData={0} name="price">
+            <FormItem label={t('custom_model.price')} initialData={0} name="price">
               <InputNumber
                 label="¥"
                 placeholder=" "
@@ -257,8 +248,8 @@ export default forwardRef((props, ref) => {
                 theme="normal"
               />
             </FormItem>
-            <FormItem label={t('详情地址')} name="link">
-              <Input placeholder={t('比如 HuggingFace 的模型地址')} />
+            <FormItem label={t('custom_model.details_link')} name="link">
+              <Input placeholder={t('custom_model.details_link_placeholder')} />
             </FormItem>
           </>
         )}
