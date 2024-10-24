@@ -101,4 +101,39 @@ export enum LOCAL_STORAGE_KEY {
    * 隐藏 Zen mode 提示
    */
   FLAG_NO_ZEN_MODE_HELP = 'flag_no_zen_mode_help',
+  /**
+   * 关闭引导
+   */
+  FLAG_NO_GUIDE = 'flag_no_guide',
+}
+
+export enum GUIDE_STEP {
+  /**
+   * 输入框选择系统提示
+   */
+  INPUT_SELECT_SYSTEM_PROMPT = 'input-select-system-prompt',
+  /**
+   * 输入框快捷键
+   */
+  CHAT_INPUT_SHORTCUTS = 'chat-input-shortcuts',
+  /**
+   * 输入框
+   */
+  CHAT_INPUT = 'chat-input',
+  /**
+   * 对话参数调整弹窗
+   */
+  CHAT_OPTIONS_MODAL = 'chat-options-modal',
+  /**
+   * 对话参数调整
+   */
+  CHAT_OPTIONS_ADJUST = 'chat-options-adjust',
+  /**
+   * 模型选择Select
+   */
+  CLASS_CHAT_MODEL_SELECT = 'chat-model-select-modal',
+  /**
+   * HEADER更多功能
+   */
+  HEADER_MORE_FUNCTION = 'header-more-function',
 }

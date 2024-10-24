@@ -31,7 +31,15 @@
     "china_vendor": "China Vendor",
     "details": "Details",
     "clear": "Clear",
-    "close": "Close"
+    "close": "Close",
+    "preview": "Preview",
+    "copied_model_id": "Model ID copied",
+    "stop": "Stop",
+    "clear_all": "Clear All",
+    "copy_id": "Copy ID"
+  },
+  "error": {
+    "model_not_vlm": "This model is not a visual language model, please only use text prompts"
   },
   "image": {
     "start_generate": "Start Generate",
@@ -82,7 +90,8 @@
       "title": "Zen Mode Enabled",
       "content": "Move the mouse to the top of the page or press the Esc key to exit Zen Mode",
       "do_not_show_again": "Okay"
-    }
+    },
+    "guide": "Show Guide"
   },
   "ai_message": {
     "best_reply": "AI voted as the best reply"
@@ -117,7 +126,9 @@
     },
     "generate_optimized_prompt": "Generate Optimized Prompt",
     "adjust_model_or_parameters": "Adjust Model or Parameters",
-    "start_generation": "Start Generation"
+    "start_generation": "Start Generation",
+    "stop": "Stop Chat",
+    "resend_last": "Resend Last"
   },
   "config_import": {
     "title": "Import Configuration",
@@ -166,5 +177,17 @@
     "guidance_scale_label": "Guidance Scale",
     "apply_to_all": "Apply to all",
     "apply_to_all_tooltip": "Different models may support different parameters or valid ranges, and will try to apply the current configuration to other models as much as possible"
+  },
+  "guide": {
+    "use_system_prompt": "Use System Prompt",
+    "use_system_prompt_desc": "You can select system prompts here, and also switch between them using left/right keys while typing",
+    "shortcuts": "Input Shortcuts",
+    "shortcuts_desc": "Press / key in the input box to select and execute quick commands",
+    "model_select": "Model Selection",
+    "model_select_desc": "You can select models here and filter them by typing text",
+    "chat_options": "Chat Parameters",
+    "chat_options_desc": "Click here to adjust chat parameters like temperature, max tokens, etc.",
+    "more_functions": "More Functions",
+    "more_functions_desc": "You can add models, switch to text-to-image mode, and more here. Check the top-right button for more features. Enjoy using!"
   }
 }

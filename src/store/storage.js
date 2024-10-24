@@ -54,6 +54,7 @@ const allCustomSystemPromptsAtom = atom(
 
 const paidSkPasswordAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.PAID_SK_PASSWORD, ''))
 
+const noGuideAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.FLAG_NO_GUIDE, false))
 const atomMap = {
   [LOCAL_STORAGE_KEY.SYSTEM_PROMPTS]: allCustomSystemPromptsAtom,
   [LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS]: activeImageModels,
@@ -61,6 +62,7 @@ const atomMap = {
   [LOCAL_STORAGE_KEY.ZEN_MODE]: isZenModeAtom,
   [LOCAL_STORAGE_KEY.SECRET_KEY]: secretKeyAtom,
   [LOCAL_STORAGE_KEY.PAID_SK_PASSWORD]: paidSkPasswordAtom,
+  [LOCAL_STORAGE_KEY.FLAG_NO_GUIDE]: noGuideAtom,
 }
 
 /**

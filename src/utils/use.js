@@ -8,12 +8,12 @@ import { useActiveModels, useIsRowMode } from "../store/app";
 import i18next from "i18next";
 
 /**
- * 响应式判断是否为移动端，>=992为PC
+ * 响应式判断是否为移动端，>=768为PC
  * @see https://ahooks.js.org/zh-CN/hooks/use-responsive
  */
 export function useIsMobile () {
   const responsive = useResponsive()
-  return !responsive.lg;
+  return !responsive.md;
 }
 
 export function useDarkMode () {
