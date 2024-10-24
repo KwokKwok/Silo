@@ -1,5 +1,5 @@
 import 'tdesign-react/es/style/index.css'; // 少量公共样式
-import HeaderAndPopup from './components/HeaderAndPopup';
+import Header from './components/Header';
 import Chat from './pages/chat';
 import {
   Routes,
@@ -19,7 +19,10 @@ import { merge } from 'lodash-es';
 function App() {
   useI18nSideEffect();
   const { i18n } = useTranslation();
-  const globalConfig = merge(i18n.language === 'en' ? enConfig : zhConfig, {});
+  const globalConfig = merge(
+    i18n.language.startsWith('zh') ? zhConfig : enConfig,
+    {}
+  );
   return (
     <ConfigProvider globalConfig={globalConfig}>
       <div className="h-dvh w-full flex flex-col selection:bg-primary selection:text-white pb-2 text-sm">
@@ -30,7 +33,7 @@ function App() {
               path="/image"
               element={
                 <>
-                  <HeaderAndPopup />
+                  <Header />
                   <ImageGenerate />
                 </>
               }
@@ -39,7 +42,7 @@ function App() {
               path="/chat"
               element={
                 <>
-                  <HeaderAndPopup />
+                  <Header />
                   <Chat />
                 </>
               }

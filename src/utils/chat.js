@@ -21,7 +21,10 @@ let lastMessage = null;
  */
 let evaluationInput = {};
 
+let messageHistory = [];
+
 function _addUserMessage (message, systemPrompt, image) {
+  messageHistory.push({ message, image });
   const chatId = Date.now();
   const newMessage = { content: message, chatId };
   // 可仅评估第一个问题：&& Object.keys(userMessages).length < 1
@@ -155,7 +158,7 @@ async function _streamChat (chat, newMessage, systemPrompt) {
   chat.messages[chatId] = ''
   // 如果模型不是多模态，但是用户上传了图片，则直接报错
   if (!isVision && image) {
-    _onError({ message: 'i18n.error.model_not_vlm' })
+    _onError({ message: 'error.model_not_vlm' })
     return;
   }
   streamChat(model, finalMessages, controller, _onChunk, _onEnd, _onError)
@@ -284,5 +287,5 @@ export function useSiloChat (systemPrompt) {
     }
     refreshController.refresh();
   }
-  return { loading, onSubmit, onStop, hasVisionModel }
+  return { loading, onSubmit, onStop, hasVisionModel, messageHistory }
 }

@@ -5,10 +5,10 @@
 >
 > 我可以停掉当前的体验密钥，但更希望大家能不要辜负信任，谢谢。
 
-<p align="center"><a href="https://chat.kwok.ink" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://chat.kwok.ink/logo.svg"></a></p>
+<p align="center"><a href="https://silo-chat.vercel.app" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://silo-chat.vercel.app/logo.svg"></a></p>
 <h1 align="center">Silo - 纯前端多模型对话、文生图</h1>
 
-<p align="center"><a target="_blank" rel="noreferrer noopener" href="https://chat.kwok.ink"><img alt="在线体验" src="https://img.shields.io/badge/在线体验-112418.svg?&style=for-the-badge&logo=safari&logoColor=white"></a></p>
+<p align="center"><a target="_blank" rel="noreferrer noopener" href="https://silo-chat.vercel.app"><img alt="在线体验" src="https://img.shields.io/badge/在线体验-112418.svg?&style=for-the-badge&logo=safari&logoColor=white"></a></p>
 <p align="center"><a rel="noreferrer noopener" target="_blank" href="https://chromewebstore.google.com/detail/nakohnjaacfmjiodegibhnepfmioejln"><img alt="Chrome Web Store" src="https://img.shields.io/badge/安装 Chrome 扩展-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a> <a rel="noreferrer noopener" target="_blank" href="https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod"><img alt="Chrome Web Store" src="https://img.shields.io/badge/安装 Edge 扩展-141e24.svg?&style=for-the-badge&logo=microsoft-edge&logoColor=white"></a> 
 <a target="_blank" rel="noreferrer noopener" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FKwokKwok%2FSilo.git&project-name=silo&repository-name=silo&env=SILO_EXPERIENCE_SK&envDescription=%E8%BE%93%E5%85%A5%200%20%E8%A1%A8%E7%A4%BA%E4%B8%8D%E6%8F%90%E4%BE%9B%E4%BD%93%E9%AA%8C%E5%AF%86%E9%92%A5%E6%96%B9%E5%BC%8F%E8%AE%BF%E9%97%AE%EF%BC%8C%E6%9B%B4%E5%A4%9A%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8F%AF%E6%9F%A5%E7%9C%8B%20GitHub%20README%20%E8%AF%B4%E6%98%8E&envLink=https%3A%2F%2Fgithub.com%2FKwokKwok%2FSilo%3Ftab%3Dreadme-ov-file%23%E7%8E%AF%E5%A2%83%E5%8F%98%E9%87%8F%E5%8F%8A%E8%AF%B4%E6%98%8E"><img alt="Deploy" src="https://img.shields.io/badge/部署到 Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a></p>
 

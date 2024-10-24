@@ -4,7 +4,7 @@ import imageGenPrompt from "./prompt/image-gen.txt?raw"
 
 export const fetchUserInfo = async () => {
   const sk = getSecretKey();
-  if (!sk) throw new Error('');
+  if (!sk) throw new Error('No secret key');
   const url = 'https://api.siliconflow.cn/v1/user/info';
   const options = {
     method: 'GET',

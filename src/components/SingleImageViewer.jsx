@@ -1,7 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ImageViewer, Image, Space } from 'tdesign-react';
 
-export default function SingleImageViewer ({ image, className }) {
+export default function SingleImageViewer({
+  image,
+  className,
+  children,
+  onAction,
+}) {
+  const { t } = useTranslation();
+  // 有 onAction 则使用 onAction. 否则如果 children 为空则默认打开预览，children 不为空则认为用户可能有自定义的操作
+  const action = onAction || (children ? () => 0 : open => open());
   const trigger = ({ open }) => {
     const mask = (
       <div
@@ -14,11 +23,15 @@ export default function SingleImageViewer ({ image, className }) {
           justifyContent: 'center',
           borderRadius: 'var(--td-radius-medium)',
         }}
-        onClick={open}
+        onClick={() => action(open)}
       >
-        <span>
-          <i className="i-mingcute-eye-2-line mr-2" /> 预览
-        </span>
+        {children ? (
+          children
+        ) : (
+          <span>
+            <i className="i-mingcute-eye-2-line mr-2" /> {t('common.preview')}
+          </span>
+        )}
       </div>
     );
 

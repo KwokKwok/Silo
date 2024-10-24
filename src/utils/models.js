@@ -1,7 +1,7 @@
-import { getBuildInResolveFn } from "../components/CustomModelDrawer/preset";
-import { getSecretKey, isExperienceSK } from "../store/storage";
-import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from "./helpers";
-import { LOCAL_STORAGE_KEY } from "./types";
+import CUSTOM_MODEL_PRESET from '@src/components/Header/CustomModelDrawer/preset';
+import { getSecretKey } from '@src/store/storage';
+import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from '@src/utils/helpers';
+import { LOCAL_STORAGE_KEY } from '@src/utils/types';
 import { checkModelLimit, openAiCompatibleChat } from "./utils";
 
 const modules = import.meta.glob('../assets/img/models/*.*', { eager: true });
@@ -55,12 +55,21 @@ const textModelOf = (id, price, length, needVerify, vision) => {
   return { id, name: displayName, series, price, length, icon, keywords, needVerify, isPro, isVendorA, vision };
 };
 
+/**
+ * 获取内置的自定义模型解析函数 
+ */
+function getCustomModelResolveFn (modelConfig) {
+  const model = CUSTOM_MODEL_PRESET.find(item => modelConfig.isOpenAiCompatible ? item.isOpenAiCompatible : item.id === modelConfig.id);
+  // 在标准的函数入参之外，添加上用户配置的数据（内含 apiKey 等东西）
+  return (...args) => model.resolveFn(modelConfig, ...args);
+}
+
 export function getCustomModels () {
   if (!customModels) {
     customModels = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, []);
     normalizedCustomModel = customModels.map(item => {
       const resolveFn = (item.paramsMode || item.isOpenAiCompatible)
-        ? getBuildInResolveFn(item)
+        ? getCustomModelResolveFn(item)
         : new Function(`return ${item.resolveFn}`)();
 
       // 拆分多个模型ID，并处理每个ID
@@ -97,7 +106,7 @@ export function getModelIcon (model) {
     const { series } = parseModelId(model);
     _iconCache[model] = modules[Object.keys(modules).find(i => i.includes(series))]?.default;
     if (!_iconCache[model]) {
-      _iconCache[model] = 'https://chat.kwok.ink/logo.svg';
+      _iconCache[model] = '/logo.svg';
     }
   }
   return _iconCache[model];
@@ -139,6 +148,7 @@ const SILICON_MODELS = [
   textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32, false),
   textModelOf("Vendor-A/Qwen/Qwen2.5-72B-Instruct", 1, 32, false),
   textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 1, 32, false),
+  textModelOf("nvidia/Llama-3.1-Nemotron-70B-Instruct", 4.13, 32, true),
   textModelOf("google/gemma-2-27b-it", 1.26, 8, true),
   textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 8, true),
   textModelOf("meta-llama/Meta-Llama-3-70B-Instruct", 4.13, 8, true),
@@ -193,6 +203,7 @@ export function getChatResolver (modelId) {
   };
 }
 
+
 const imageModelOf = (id, price) => {
   const { series, name, isPro } = parseModelId(id);
   const icon = getModelIcon(id);
@@ -203,6 +214,7 @@ const imageModelOf = (id, price) => {
 const IMAGE_MODELS = [
   imageModelOf("black-forest-labs/FLUX.1-dev", 1),
   imageModelOf("black-forest-labs/FLUX.1-schnell", -1),
+  imageModelOf("stabilityai/stable-diffusion-3-5-large", -1),
   imageModelOf("stabilityai/stable-diffusion-3-medium", -1),
   imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", -1),
   imageModelOf("stabilityai/stable-diffusion-2-1", -1),
@@ -225,3 +237,4 @@ export function isLimitedModel (modelId) {
 export function getImageModels () {
   return [...IMAGE_MODELS];
 }
+
