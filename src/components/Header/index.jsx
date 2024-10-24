@@ -47,9 +47,11 @@ export default function () {
   const [noGuide, setNoGuide] = useLocalStorageAtom(
     LOCAL_STORAGE_KEY.FLAG_NO_GUIDE
   );
+  const isMobile = useIsMobile();
 
   useEffect(() => {
-    if (noGuide || isImageMode || !balance) {
+    // 不显示引导：移动端、生图模式、密钥不可用、已关闭引导
+    if (isMobile || noGuide || isImageMode || !balance) {
       setShowGuide(false);
       return;
     }
@@ -60,7 +62,6 @@ export default function () {
     }
   }, [noGuide, isImageMode, balance, secretKeyPopupRef.current?.isShow()]);
 
-  const isMobile = useIsMobile();
   const navigate = useNavigate();
   const [isRowMode, setIsRowMode] = useIsRowMode();
 
@@ -116,7 +117,7 @@ export default function () {
         )}
 
         <div id={GUIDE_STEP.HEADER_MORE_FUNCTION} className="flex items-center">
-          {!isImageMode && (
+          {!isImageMode && !isMobile && (
             <Tooltip placement="bottom" content={t('header.add_model')}>
               <i
                 className="block i-ri-apps-2-add-line cursor-pointer mr-4"
@@ -215,6 +216,7 @@ export default function () {
                     icon: 'i-mingcute-question-fill',
                     onClick: () => setNoGuide(false),
                     title: t('header.guide'),
+                    hidden: isMobile,
                   },
                   {
                     icon: 'i-mingcute-file-export-fill',
@@ -302,11 +304,13 @@ export default function () {
                     },
                     title: t('header.edge_addons'),
                   },
-                ].map(item => ({
-                  prefixIcon: <i className={item.icon + ' mr-0'} />,
-                  content: item.title,
-                  onClick: item.onClick,
-                })),
+                ]
+                  .filter(item => !item.hidden)
+                  .map(item => ({
+                    prefixIcon: <i className={item.icon + ' mr-0'} />,
+                    content: item.title,
+                    onClick: item.onClick,
+                  })),
               },
             ]
               .filter(item => !item.hidden)

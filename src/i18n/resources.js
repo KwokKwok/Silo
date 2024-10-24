@@ -10,13 +10,17 @@ import it from './locales/it.json';
 import en from './locales/en.json';
 
 const resources = {
-  zhCN: {
+  'zh-CN': {
     label: '简体中文',
     translation: zhCN,
   },
-  zhTW: {
+  'zh-TW': {
     label: '繁體中文',
     translation: zhTW,
+  },
+  en: {
+    label: 'English',
+    translation: en,
   },
   ja: {
     label: '日本語',
@@ -46,10 +50,7 @@ const resources = {
     label: 'Italiano',
     translation: it,
   },
-  en: {
-    label: 'English',
-    translation: en,
-  },
+
 };
 
 export default resources;

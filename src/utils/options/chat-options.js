@@ -59,7 +59,7 @@ function getDefaultChatOptions () {
       0
     ),
     // optionOf('N', 'n', 'Number of generations to return', 1, 100, 1),
-    optionOf('chat.options.image_width', 'image_width', 'chat.options.image_width_desc', 448, 5600, 448, true, 28),
+    optionOf('chat.options.image_width', 'image_width', 'chat.options.image_width_desc', 448, 5600, 896, true, 28),
   ];
 }
 //#endregion
