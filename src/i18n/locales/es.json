@@ -36,7 +36,8 @@
     "copied_model_id": "ID del modelo copiado",
     "stop": "Detener",
     "clear_all": "Limpiar todo",
-    "copy_id": "Copiar ID"
+    "copy_id": "Copiar ID",
+    "select_models": "Seleccionar modelo"
   },
   "error": {
     "model_not_vlm": "Este modelo no es un modelo de lenguaje visual, por favor use solo indicaciones de texto"

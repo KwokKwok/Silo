@@ -14,7 +14,6 @@ export const useActiveModels = () => {
     setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, models);
     setValue(models);
   }
-
   const removeActiveModel = (model) => {
     const newValue = value.filter(item => item !== model);
     if (newValue.length == 0) {
@@ -22,20 +21,10 @@ export const useActiveModels = () => {
       newValue.push(getAllTextModels()[0].id);
     }
     setActiveModels(newValue);
-    // if (value.length === 1) {
-    //   message.info('一个都不想留吗' + model)
-    //   return
-    // }
-    // setActiveModels(value.filter(item => item !== model))
   }
 
   const addMore = () => {
     const nonActiveModels = getAllTextModels().filter(item => !value.includes(item.id)).map(item => item.id);
-
-    // if (value.length === 6) {
-    //   message.info('6个还不够吗')
-    //   return;
-    // }
     setActiveModels(value.concat(nonActiveModels.splice(0, 1)))
   }
   return { activeModels: value, setActiveModels, addMoreModel: addMore, removeActiveModel }

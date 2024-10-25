@@ -17,6 +17,7 @@ import SecretKeyPopup from './SecretKeyPopup';
 import { GUIDE_STEP, LOCAL_STORAGE_KEY } from '@src/utils/types';
 import Guide from '@src/components/Guide';
 import { i18nOptions } from '@src/i18n/resources';
+import MobileModelSelector from './MobileModelSelector';
 
 export default function () {
   const secretKeyPopupRef = useRef(null);
@@ -74,10 +75,19 @@ export default function () {
   }, [isZenMode]);
 
   const { addMoreModel, activeModels } = useActiveModels();
+  const mobileModelSelectorRef = useRef();
 
+  const onAddMoreModel = () => {
+    if (isMobile) {
+      mobileModelSelectorRef.current.open();
+    } else {
+      addMoreModel();
+    }
+  };
   return (
     <>
       {showGuide && <Guide />}
+      {isMobile && <MobileModelSelector ref={mobileModelSelectorRef} />}
       {isZenMode && (
         <div
           className="h-3 hover:bg-primary hover:bg-opacity-10 transition-colors"
@@ -117,11 +127,11 @@ export default function () {
         )}
 
         <div id={GUIDE_STEP.HEADER_MORE_FUNCTION} className="flex items-center">
-          {!isImageMode && !isMobile && (
+          {!isImageMode && (
             <Tooltip placement="bottom" content={t('header.add_model')}>
               <i
                 className="block i-ri-apps-2-add-line cursor-pointer mr-4"
-                onClick={addMoreModel}
+                onClick={onAddMoreModel}
               ></i>
             </Tooltip>
           )}

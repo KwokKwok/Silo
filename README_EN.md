@@ -2,8 +2,6 @@
 
 > [!NOTE]
 > Please note: The experience key is public, but please do not abuse it. If you need to modify the code for self-deployment of this project, please modify the default experience key at the same time, or at least do not remove the related restrictions.
->
-> I can disable the current experience key at any time, but I would prefer that everyone not let the trust be disappointed, thank you.
 
 <p align="center"><a target="_blank" href="https://silo-chat.vercel.app" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://silo-chat.vercel.app/logo.svg"></a></p>
 <h1 align="center">Silo - Pure front-end multi-model chat, text-to-image generation</h1>

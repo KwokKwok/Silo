@@ -1,12 +1,11 @@
-import { Select, Tag } from 'tdesign-react';
+import { Select } from 'tdesign-react';
 import { getAllTextModels, SILICON_MODELS_IDS } from '@src/utils/models';
 import { useActiveModels } from '@src/store/app';
 import ScLogo from '@src/assets/img/sc-logo.png';
-import { useTranslation } from 'react-i18next';
 import { GUIDE_STEP } from '@src/utils/types';
+import ModelOption from '@src/components/ModelOption';
 
 export default function ({ model }) {
-  const { t } = useTranslation();
   const { activeModels, setActiveModels } = useActiveModels();
   const allTextModels = getAllTextModels();
   const modelOptions = allTextModels.filter(
@@ -58,103 +57,7 @@ export default function ({ model }) {
           label={option.name}
           data-keywords={(option.id + option.keywords).toLowerCase()}
         >
-          <div className="flex flex-col">
-            <div className="flex items-center">
-              <img
-                src={option.icon}
-                className="w-[14px] h-[14px] rounded-sm mr-1"
-                alt={option.name}
-              />
-              <span>{option.name}</span>
-              {option.price === -1 && (
-                <Tag className="ml-2 scale-[0.8]" size="small" theme="primary">
-                  Trial
-                </Tag>
-              )}
-              {option.price === 0 && (
-                <Tag className="ml-2 scale-[0.8]" size="small" theme="primary">
-                  Free
-                </Tag>
-              )}
-              {!!option.isCustom && (
-                <Tag
-                  className="scale-[0.8]"
-                  size="small"
-                  theme="warning"
-                  variant="light-outline"
-                >
-                  Custom
-                </Tag>
-              )}
-            </div>
-            <div className="flex items-center">
-              {!!option.series && (
-                <Tag variant="outline" size="small" theme="primary">
-                  {option.series}
-                </Tag>
-              )}
-              {!!option.length && (
-                <Tag
-                  variant="outline"
-                  size="small"
-                  theme="primary"
-                  className="ml-2"
-                >
-                  {option.length}K
-                </Tag>
-              )}
-              {option.price > 0 && (
-                <Tag
-                  className="ml-2"
-                  variant="outline"
-                  size="small"
-                  theme="primary"
-                >
-                  ¥{option.price}/1M
-                </Tag>
-              )}
-              {option.needVerify && (
-                <Tag
-                  className="ml-2"
-                  variant="outline"
-                  size="small"
-                  theme="primary"
-                >
-                  {t('common.auth_required')}
-                </Tag>
-              )}
-              {option.isPro && (
-                <Tag
-                  size="small"
-                  variant="outline"
-                  theme="primary"
-                  className="ml-2"
-                >
-                  {t('common.pro')}
-                </Tag>
-              )}
-              {option.vision && (
-                <Tag
-                  size="small"
-                  variant="outline"
-                  theme="warning"
-                  className="ml-2"
-                >
-                  {t('common.vision')}
-                </Tag>
-              )}
-              {option.isVendorA && (
-                <Tag
-                  size="small"
-                  variant="outline"
-                  theme="success"
-                  className="ml-2"
-                >
-                  {t('common.china_vendor')}
-                </Tag>
-              )}
-            </div>
-          </div>
+          <ModelOption option={option} />
         </Select.Option>
       ))}
     </Select>

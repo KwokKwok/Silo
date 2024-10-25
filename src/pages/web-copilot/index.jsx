@@ -26,7 +26,7 @@ export default function () {
       {message && (
         <WordExplainer
           context={JSON.stringify(message.context)}
-          word={message.selection}
+          word={message.selection || message.message}
         />
       )}
     </div>

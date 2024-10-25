@@ -1,0 +1,21 @@
+.mobile-model-selector {
+  .t-drawer__body {
+    padding: 0;
+  }
+  .t-checkbox {
+    display: flex; 
+    align-items: flex-start; 
+    .t-checkbox__input {
+      margin-top: 3px;
+    }
+  }
+  .t-radio-group{
+    display: flex;
+    .t-radio-button{
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

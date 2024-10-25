@@ -36,7 +36,8 @@
     "copied_model_id": "モデルIDをコピーしました",
     "stop": "停止",
     "clear_all": "すべてクリア",
-    "copy_id": "IDをコピー"
+    "copy_id": "IDをコピー",
+    "select_models": "モデルを選択してください"
   },
   "error": {
     "model_not_vlm": "このモデルは視覚言語モデルではありません。テキストプロンプトのみを使用してください"

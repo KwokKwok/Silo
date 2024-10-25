@@ -36,7 +36,8 @@
     "copied_model_id": "ID del modello copiato",
     "stop": "Ferma",
     "clear_all": "Cancella tutto",
-    "copy_id": "Copia ID"
+    "copy_id": "Copia ID",
+    "select_models": "Seleziona modello"
   },
   "error": {
     "model_not_vlm": "Questo modello non è un modello di linguaggio visivo, usa solo prompt testuali"

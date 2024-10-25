@@ -87,6 +87,7 @@ export default function ({
     onSubmit(validInput, image);
     setInput('');
     setImage(null);
+    setHistoryIndex(NO_INPUT_HISTORY_INDEX);
   };
 
   useEffect(() => {
@@ -208,6 +209,24 @@ export default function ({
     );
   }, [image]);
 
+  // 添加粘贴事件处理函数
+  const handlePaste = e => {
+    if (!hasVisionModel) return;
+
+    const items = e.clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') !== -1) {
+        const file = items[i].getAsFile();
+        const reader = new FileReader();
+        reader.onload = event => {
+          setImage(event.target.result);
+        };
+        reader.readAsDataURL(file);
+        break;
+      }
+    }
+  };
+
   return (
     <>
       <div className="h-12"></div>
@@ -251,6 +270,7 @@ export default function ({
               style={{ height: '1.5rem' }}
               onInput={onInput}
               onKeyDown={onKeyDown}
+              onPaste={handlePaste}
               placeholder={loading ? '正在思考中...' : placeholder}
               ref={inputRef}
               className="outline-none overflow-y-auto w-full bg-transparent resize-none px-2 text-base leading-6"
