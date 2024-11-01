@@ -171,11 +171,6 @@ const SILICON_MODELS = [
   textModelOf("Pro/google/gemma-2-9b-it", 0.6, 8, true),
 ];
 
-const _visionModelIds = SILICON_MODELS.filter(item => item.vision).map(item => item.id);
-
-export function isVisionModel (modelId) {
-  return _visionModelIds.includes(modelId)
-}
 
 export const SILICON_MODELS_IDS = SILICON_MODELS.map(i => i.id);
 
@@ -185,6 +180,13 @@ export function getAllTextModels () {
     ...SILICON_MODELS
   ];
 }
+
+const _visionModelIds = getAllTextModels().filter(item => item.vision).map(item => item.id);
+
+export function isVisionModel (modelId) {
+  return _visionModelIds.includes(modelId)
+}
+
 
 const customResolveFns = getAllTextModels().filter(item => item.resolveFn).reduce((acc, item) => {
   acc[item.id] = item.resolveFn;

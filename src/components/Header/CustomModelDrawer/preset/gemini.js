@@ -1,10 +1,46 @@
 export default async function geminiChat (modelConfig, modelId, messages, options, controller, onChunk, onEnd, onError) {
-  // 请填写 API_KEY ！！！
   const { apiKey = '' } = modelConfig;
   if (!apiKey) {
     onError(new Error('请填写 API_KEY'))
     return;
   }
+
+  // 转换消息格式的函数
+  const convertMessage = (message) => {
+    const { role, content } = message;
+
+    // 如果content是字符串，直接返回文本格式
+    if (typeof content === 'string') {
+      return {
+        role: role === 'user' ? 'user' : 'model',
+        parts: [{ text: content }]
+      };
+    }
+
+    // 处理多模态内容
+    const parts = content.map(item => {
+      if (item.type === 'text') {
+        return { text: item.text };
+      } else if (item.type === 'image_url') {
+        // Gemini 需要 base64 格式的图片数据
+        // 从 image_url.url 中提取 base64 数据
+        const base64Data = item.image_url.url.split(',')[1] || item.image_url.url;
+        return {
+          inline_data: {
+            mime_type: item.image_url.mime_type || 'image/jpeg',
+            data: base64Data
+          }
+        };
+      }
+      return null;
+    }).filter(Boolean);
+
+    return {
+      role: role === 'user' ? 'user' : 'model',
+      parts
+    };
+  };
+
   const model = modelId.split('/')[1];
   fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?key=${apiKey}`, {
     method: 'POST',
@@ -12,14 +48,13 @@ export default async function geminiChat (modelConfig, modelId, messages, option
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      "contents": messages.map(({ role, content }) => ({ role: role == 'user' ? 'user' : 'model', "parts": [{ "text": content }] })),
-      "generationConfig": {
-        "stopSequences": [
-        ],
-        "temperature": options.temperature,
-        "maxOutputTokens": options.max_tokens,
-        "topP": options.top_p,
-        "topK": 10
+      contents: messages.map(convertMessage),
+      generationConfig: {
+        stopSequences: [],
+        temperature: options.temperature,
+        maxOutputTokens: options.max_tokens,
+        topP: options.top_p,
+        topK: 10
       }
     }),
     signal: controller.current.signal

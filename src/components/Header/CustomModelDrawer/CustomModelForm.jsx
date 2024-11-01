@@ -12,6 +12,7 @@ import { CUSTOM_PRESET_PREFIX } from '@src/utils/types';
 import { useMemo } from 'react';
 import { isBrowserExtension } from '@src/utils/utils';
 import { useTranslation } from 'react-i18next';
+import { Switch } from 'tdesign-react';
 const { FormItem } = Form;
 
 const ID_REGEX = /^[a-zA-Z0-9_\-@\.]+\/[a-zA-Z0-9_\-@\.\/]+$/;
@@ -220,6 +221,13 @@ export default forwardRef((props, ref) => {
                     rows={3}
                     placeholder={t('custom_model.id_resolver_help')}
                   />
+                </FormItem>
+                <FormItem
+                  key="vision"
+                  label={t('custom_model.vlm')}
+                  name="vision"
+                >
+                  <Switch />
                 </FormItem>
               </>
             ) : (

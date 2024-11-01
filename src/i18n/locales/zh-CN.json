@@ -165,7 +165,8 @@
     "price": "价格",
     "details_link": "详情地址",
     "details_link_placeholder": "比如 HuggingFace 的模型地址",
-    "api_version": "API 版本"
+    "api_version": "API 版本",
+    "vlm": "视觉模型"
   },
   "image_options": {
     "image_size_tooltip": "生成图像的宽度和高度（像素）",

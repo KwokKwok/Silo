@@ -38,6 +38,7 @@ const CUSTOM_MODEL_PRESET = [
     ids: 'google/gemini-1.5-flash,google/gemini-1.5-pro',
     length: '',
     price: void 0,
+    vision: true,
     paramsMode: true,
     params: [
       {
@@ -47,6 +48,7 @@ const CUSTOM_MODEL_PRESET = [
         ],
         label: 'custom_model.secret_key',
         prop: 'apiKey',
+        url: 'https://aistudio.google.com/apikey'
       }
     ],
     resolveFn: geminiResolveFn,
@@ -62,6 +64,7 @@ const CUSTOM_MODEL_PRESET = [
     paramsMode: true,
     apiVersion: '2023-06-01', // 默认值
     baseUrl: 'https://api.anthropic.com',
+    vision: true,
     params: [
       {
         type: 'input',
@@ -116,7 +119,7 @@ const CUSTOM_MODEL_PRESET = [
     name: '智谱AI',
     id: 'preset-zhipuai',
     icon: '',
-    ids: 'THUDM/GLM-4-Flash,THUDM/GLM-4-0520',
+    ids: 'THUDM/GLM-4-Flash',
     price: void 0,
     paramsMode: true,
     params: [

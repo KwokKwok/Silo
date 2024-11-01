@@ -283,7 +283,7 @@ export default function ({
               (canSend
                 ? 'translate-y-0 opacity-100 z-10 '
                 : 'translate-y-0 opacity-20 z-0 ') +
-              (!canSend && loading ? 'rotate-180 ' : 'rotate-0 ')
+              (!canSend && loading ? 'rotate-180 !opacity-0 ' : 'rotate-0 ')
             }
             onClick={onSend}
           ></i>
@@ -291,7 +291,7 @@ export default function ({
             <i
               className={
                 (!canSend && loading
-                  ? 'opacity-100 z-10 animate-pulse '
+                  ? 'opacity-100 z-10 '
                   : 'opacity-0 z-0  ') +
                 ' i-mingcute-stop-circle-fill ' +
                 actionBaseClassName

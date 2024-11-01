@@ -1,5 +1,53 @@
 import { fmtBaseUrl } from '@src/utils/format';
 
+// 添加消息格式转换函数
+function convertMessages (messages) {
+    return messages.map(msg => {
+        // 处理多模态消息
+        if (msg.content && Array.isArray(msg.content)) {
+            const processedContent = msg.content.map(item => {
+                if (item.type === 'text') {
+                    return {
+                        type: 'text',
+                        text: item.text
+                    };
+                } else if (item.type === 'image_url') {
+                    const [type, data] = item.image_url.url.split(',');
+                    const media_type = type.split(';')[0].split(':')[1];
+                    return {
+                        type: 'image',
+                        source: {
+                            type: 'base64',
+                            media_type,
+                            data
+                        }
+                    };
+                }
+                return null;
+            }).filter(Boolean);
+
+            // 如果只有一个文本元素，直接返回文本内容
+            if (processedContent.length === 1 && typeof processedContent[0] === 'string') {
+                return {
+                    role: msg.role === 'user' ? 'user' : 'assistant',
+                    content: processedContent[0]
+                };
+            }
+
+            return {
+                role: msg.role === 'user' ? 'user' : 'assistant',
+                content: processedContent
+            };
+        }
+
+        // 处理普通文本消息
+        return {
+            role: msg.role === 'user' ? 'user' : 'assistant',
+            content: msg.content
+        };
+    });
+}
+
 export default async function claudeChat (modelConfig, modelId, messages, options, controller, onChunk, onEnd, onError) {
     let { apiKey = '', apiVersion, baseUrl } = modelConfig;
     if (!apiKey) {
@@ -8,6 +56,10 @@ export default async function claudeChat (modelConfig, modelId, messages, option
     }
     const model = modelId.split('/')[1];
     const { max_tokens, temperature, top_p, frequency_penalty } = options;
+
+    // 转换消息格式
+    const convertedMessages = convertMessages(messages);
+
     fetch(`${fmtBaseUrl(baseUrl)}/v1/messages`, {
         method: 'POST',
         headers: {
@@ -16,9 +68,11 @@ export default async function claudeChat (modelConfig, modelId, messages, option
             'anthropic-version': apiVersion
         },
         body: JSON.stringify({
-            max_tokens, temperature, top_p,
+            max_tokens,
+            temperature,
+            top_p,
             stream: true,
-            messages,
+            messages: convertedMessages, // 使用转换后的消息
             model,
         }),
         signal: controller.current.signal

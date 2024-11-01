@@ -165,7 +165,8 @@
     "price": "Price",
     "details_link": "Details Link",
     "details_link_placeholder": "For example, the model url on HuggingFace",
-    "api_version": "API Version"
+    "api_version": "API Version",
+    "vlm": "VLM"
   },
   "image_options": {
     "image_size_tooltip": "Width and Height of Generated Images (pixels)",
