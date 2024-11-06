@@ -14,7 +14,7 @@
 
 <br/>
 <p align="center">Silo is an application mainly based on the <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a> API, which currently supports multiple large models for simultaneous <b>chat、text to image</b>, with extremely fast response times. It supports model parameter adjustments and automatic balance refresh functions.</p>
-<p align="center">You can also conveniently add models such as Google Gemini, Claude, OpenAI, and others.</p>
+<p align="center">You can also conveniently add models such as Google Gemini, Claude, X-AI/Grok, OpenAI, and others.</p>
 <br/>
 <p align="center">And it does not require a backend/server.</p>
 

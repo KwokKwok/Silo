@@ -6,6 +6,7 @@ import deepseekResolveFn from "./deepseek.js"
 import { CUSTOM_PRESET_PREFIX } from '@src/utils/types';
 import { openAiCompatibleChat } from '@src/utils/utils.js';
 import { getSecretKey } from '@src/store/storage.js';
+import xAiChat from "./x-ai";
 
 const CUSTOM_MODEL_PRESET = [
   {
@@ -93,6 +94,28 @@ const CUSTOM_MODEL_PRESET = [
     ],
     resolveFn: claudeChat,
     link: 'https://claude.ai/'
+  },
+  {
+    name: 'X.AI/Grok',
+    id: 'preset-x-ai',
+    icon: '',
+    ids: 'x-ai/grok-beta',
+    price: void 0,
+    paramsMode: true,
+    vision: false,
+    params: [
+      {
+        type: 'input',
+        rules: [
+          { required: true, message: 'common.required', type: 'error' }
+        ],
+        label: 'custom_model.secret_key',
+        prop: 'apiKey',
+        url: 'https://console.x.ai/'
+      }
+    ],
+    resolveFn: xAiChat,
+    link: 'https://console.x.ai/'
   },
   {
     name: 'DeepSeek',

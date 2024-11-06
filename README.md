@@ -12,7 +12,7 @@
 
 <br/>
 <p align="center">Silo 是一个主要基于  <a target="_blank" href="https://siliconflow.cn/zh-cn/siliconcloud" target="_blank">SiliconCloud</a>  API 的应用，目前已支持多个大模型同时<b>对话、文生图</b>，响应极快。支持模型参数调整、余额自动刷新等功能。</p>
-<p align="center">你也可以方便的添加 Google Gemini、Claude、OpenAI 等模型。</p>
+<p align="center">你也可以方便的添加 Google Gemini、Claude、X-AI/Grok、OpenAI 等模型。</p>
 <p align="center">不需要服务端。</p>
 <br/>
 

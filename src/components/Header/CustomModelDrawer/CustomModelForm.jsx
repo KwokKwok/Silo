@@ -115,7 +115,11 @@ export default forwardRef((props, ref) => {
 
   if (selected && selected.paramsMode) {
     selected.params.map(item => {
-      rules[item.prop] = item.rules || [];
+      rules[item.prop] =
+        item.rules.map(rule => ({
+          ...rule,
+          message: t(rule.message),
+        })) || [];
     });
   }
   const idsFormItem = (
