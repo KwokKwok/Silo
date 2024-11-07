@@ -34,7 +34,7 @@ export default function () {
   const [showGuide, setShowGuide] = useState(false);
 
   const customModelRef = useRef();
-  const { data: balanceData, runAsync: checkBalance } = useRequest(
+  const { data: userInfoRes, runAsync: getUserData } = useRequest(
     fetchUserInfo,
     {
       pollingInterval: 60 * 1000,
@@ -43,7 +43,7 @@ export default function () {
     }
   );
 
-  const balance = balanceData?.data?.balance || '';
+  const userData = userInfoRes?.data;
 
   const [noGuide, setNoGuide] = useLocalStorageAtom(
     LOCAL_STORAGE_KEY.FLAG_NO_GUIDE
@@ -52,7 +52,7 @@ export default function () {
 
   useEffect(() => {
     // 不显示引导：移动端、生图模式、密钥不可用、已关闭引导
-    if (isMobile || noGuide || isImageMode || !balance) {
+    if (isMobile || noGuide || isImageMode || !userData) {
       setShowGuide(false);
       return;
     }
@@ -61,7 +61,7 @@ export default function () {
         setShowGuide(true);
       }, 100);
     }
-  }, [noGuide, isImageMode, balance, secretKeyPopupRef.current?.isShow()]);
+  }, [noGuide, isImageMode, userData, secretKeyPopupRef.current?.isShow()]);
 
   const navigate = useNavigate();
   const [isRowMode, setIsRowMode] = useIsRowMode();
@@ -114,15 +114,35 @@ export default function () {
           onClick={() => navigate('/chat')}
         />
 
-        {!!balance && (
+        {!!userData && (
           <span
-            className="inline-flex items-center cursor-pointer"
-            onClick={checkBalance}
+            className="flex items-center cursor-pointer select-none mr-6"
+            onClick={getUserData}
           >
-            <i className="i-ri-money-dollar-circle-line " />
-            <span className="ml-1 mr-6 font-semibold text-lg opacity-75">
-              {balance}
-            </span>
+            <i className="i-ri-coins-fill " />
+            <Tooltip
+              placement="bottom"
+              content={
+                Number(userData.chargeBalance) ? (
+                  <div>
+                    <div className="inline-flex items-center ">
+                      <i className="i-mingcute-currency-dollar-fill mr-1" />
+                      <span>{userData.chargeBalance}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <i className="i-mingcute-gift-card-fill  mr-1" />
+                      <span>{userData.balance}</span>
+                    </div>
+                  </div>
+                ) : (
+                  ''
+                )
+              }
+            >
+              <span className="ml-1 font-semibold text-lg opacity-75">
+                {userData.totalBalance}
+              </span>
+            </Tooltip>
           </span>
         )}
 
@@ -341,7 +361,7 @@ export default function () {
       <SecretKeyPopup
         ref={secretKeyPopupRef}
         onImport={openConfigModal}
-        checkKeyValid={checkBalance}
+        checkKeyValid={getUserData}
       />
       <ConfigImportModal ref={configModalRef} />
     </>
