@@ -67,19 +67,21 @@ function ImageInput({
   if (!isInputMode) {
     return (
       <div className="flex flex-col my-2 w-full px-4 ">
-        <span className="flex items-center text-xl">
-          <span className="mr-2">{prompts[0]} </span>
-          {loading ? (
-            <i
-              onClick={stop}
-              className="cursor-pointer i-mingcute-stop-circle-fill animate-pulse"
-            />
-          ) : (
-            <i
-              onClick={() => setIsInputMode(true)}
-              className=" iconify mingcute--edit-line cursor-pointer "
-            />
-          )}
+        <span className="flex items-center ">
+          <span className={'opacity-90 text-base'}>{prompts[0]} </span>
+          <span className="flex-shrink-0 ml-2 text-xl inline-flex items-center">
+            {loading ? (
+              <i
+                onClick={stop}
+                className="cursor-pointer i-mingcute-stop-circle-fill animate-pulse "
+              />
+            ) : (
+              <i
+                onClick={() => setIsInputMode(true)}
+                className=" iconify mingcute--edit-line cursor-pointer "
+              />
+            )}
+          </span>
         </span>
         <div className="flex flex-wrap items-center mb-4">
           {activeImageModels.map(item => (

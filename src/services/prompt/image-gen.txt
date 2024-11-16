@@ -30,5 +30,5 @@ Optimized Prompt: The picture depicts a young Asian girl, she is wearing a laven
 ### Please be sure to return the results in the following format, and **in user's language**:
 {
   advise: 'Here are your suggestions for the user's prompt words. If the user input is perfect, you can give appropriate praise',
-  optimized: 'Your optimized AI painting prompt words',
+  optimized: 'Your optimized AI painting prompt words, in user's language',
 }

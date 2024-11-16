@@ -20,7 +20,7 @@
     "content": "内容",
     "select": "選択",
     "remove": "削除",
-    "translate_to_english": "英語に翻訳",
+    "translate_to_english": "バイリンガル翻訳",
     "back": "戻る",
     "trial": "トライアル",
     "free": "無料",
@@ -129,7 +129,8 @@
     "adjust_model_or_parameters": "モデルまたはパラメータを調整",
     "start_generation": "生成開始",
     "stop": "チャットを停止",
-    "resend_last": "最後のメッセージを再送信"
+    "resend_last": "最後のメッセージを再送信",
+    "add_prompt": "新しいプロンプト"
   },
   "config_import": {
     "title": "設定をインポート",

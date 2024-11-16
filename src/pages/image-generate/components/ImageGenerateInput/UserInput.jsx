@@ -6,10 +6,8 @@ import { getOptimizedPrompts, getEnglishText } from '@src/services/api';
 import Tooltip from '@src/components/MobileCompatible/Tooltip';
 import { useTranslation } from 'react-i18next';
 
-const NOT_ENGLISH_REGEX = /[^\w\s,.!'?\\-]/;
 const SingleInput = ({
-  main,
-  onAdd,
+  single,
   onRemove,
   addGeneratedPrompt,
   value,
@@ -34,10 +32,10 @@ const SingleInput = ({
   }, [value]);
 
   useEffect(() => {
-    if (main) {
+    if (single) {
       inputRef.current.focus();
     }
-  }, [main, inputRef]);
+  }, [single, inputRef]);
 
   const {
     loading: generateLoading,
@@ -47,16 +45,18 @@ const SingleInput = ({
     manual: true,
   });
 
-  const {
-    loading: translateLoading,
-    data: translateData,
-    runAsync: runTranslate,
-  } = useRequest(getEnglishText, {
-    manual: true,
-  });
+  const { loading: translateLoading, runAsync: runTranslate } = useRequest(
+    getEnglishText,
+    {
+      manual: true,
+    }
+  );
 
-  const onTranslateToEnglish = () => {
-    runTranslate(value).then(data => {
+  const { i18n } = useTranslation();
+
+  const onTranslate = () => {
+    if (translateLoading) return;
+    runTranslate(value, i18n.language).then(data => {
       onChange(data.trim());
     });
   };
@@ -75,8 +75,6 @@ const SingleInput = ({
       addGeneratedPrompt(data);
     });
   };
-
-  const isNotEnglish = NOT_ENGLISH_REGEX.test(value);
 
   const onInput = e => {
     onChange(e.target.value.trimStart());
@@ -113,47 +111,43 @@ const SingleInput = ({
         className=" outline-none overflow-y-auto flex-1 bg-transparent resize-none pl-2 pr-28 text-base leading-6"
       />
       <div className="absolute flex items-center top-0 h-12 right-4 z-20 ">
+        <Tooltip
+          content={generateGpt?.advise || t('chat.generate_optimized_prompt')}
+        >
+          <i
+            onClick={generateLoading || !value.length ? null : onGeneratePrompt}
+            className={
+              'w-6 h-6 block mr-2 cursor-pointer transition-all duration-500 ease-in-out ' +
+              (generateLoading
+                ? ' i-mingcute-loading-3-fill animate-spin '
+                : ' iconify mingcute--quill-pen-ai-line') +
+              (!value.length ? ' opacity-60' : '')
+            }
+          ></i>
+        </Tooltip>
         {
           <Tooltip content={t('common.translate_to_english')}>
             <i
-              onClick={
-                translateLoading || !isNotEnglish ? null : onTranslateToEnglish
-              }
+              onClick={onTranslate}
               className={
                 'w-6 h-6 block mr-2 transition-all duration-500 ease-in-out ' +
                 (translateLoading
                   ? ' i-mingcute-loading-3-fill animate-spin '
                   : ' iconify mingcute--translate-2-ai-line') +
-                (!isNotEnglish ? ' opacity-60' : ' cursor-pointer')
+                (!value.length ? ' opacity-60' : ' cursor-pointer')
               }
             ></i>
           </Tooltip>
         }
-        {main && (
-          <Tooltip
-            content={generateGpt?.advise || t('chat.generate_optimized_prompt')}
-          >
-            <i
-              onClick={
-                generateLoading || !value.length ? null : onGeneratePrompt
-              }
-              className={
-                'w-6 h-6 block mr-2 cursor-pointer transition-all duration-500 ease-in-out ' +
-                (generateLoading
-                  ? ' i-mingcute-loading-3-fill animate-spin '
-                  : ' iconify mingcute--quill-pen-ai-line') +
-                (!value.length ? ' opacity-60' : '')
-              }
-            ></i>
-          </Tooltip>
-        )}
         <i
-          onClick={main ? onAdd : onRemove}
+          onClick={() => {
+            if (!single) {
+              onRemove();
+            }
+          }}
           className={
-            'w-6 h-6  mr-2 cursor-pointer transition-all duration-500 ease-in-out ' +
-            (main
-              ? ' i-mingcute-add-circle-fill'
-              : ' i-mingcute-minus-circle-fill')
+            'w-6 h-6  mr-2 cursor-pointer transition-all duration-500 ease-in-out i-mingcute-minus-circle-fill ' +
+            (single ? ' opacity-60' : '')
           }
         ></i>
       </div>
@@ -175,10 +169,13 @@ export default function ({ inputs, setInputs, onStop, onSubmit, onGenerate }) {
     setInputs(newInputs);
   };
 
-  const addGeneratedPrompt = data => {
-    const [main, ...rest] = inputs;
-    const newInputs = [main, data.optimized, ...rest];
-    setInputs(newInputs);
+  const addGeneratedPrompt = (currentInput, data) => {
+    setInputs(inputs => {
+      const newInputs = [...inputs];
+      const index = newInputs.findIndex(item => item === currentInput);
+      newInputs.splice(index + 1, 0, data.optimized);
+      return newInputs;
+    });
   };
 
   const removeInput = index => {
@@ -192,16 +189,23 @@ export default function ({ inputs, setInputs, onStop, onSubmit, onGenerate }) {
           className="mb-2"
           key={index}
           value={input}
-          main={index == 0}
+          single={inputs.length === 1}
           onChange={value => updateInput(index, value)}
           onRemove={() => removeInput(index)}
-          onAdd={addInput}
-          addGeneratedPrompt={addGeneratedPrompt}
+          addGeneratedPrompt={addGeneratedPrompt.bind(null, input)}
         />
       ))}
       <div className="mt-4 flex items-center justify-center">
         <Button
+          icon={<i className="iconify mingcute--add-line mr-1" />}
           variant="outline"
+          onClick={addInput}
+        >
+          {t('chat.add_prompt')}
+        </Button>
+        <Button
+          variant="outline"
+          className="ml-2"
           disabled={validInputs.length === 0}
           onClick={onSubmit}
         >

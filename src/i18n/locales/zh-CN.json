@@ -20,7 +20,7 @@
     "content": "内容",
     "select": "选择",
     "remove": "移除",
-    "translate_to_english": "翻译为英文",
+    "translate_to_english": "双语互译",
     "back": "返回",
     "trial": "试用",
     "free": "免费",
@@ -129,7 +129,8 @@
     "adjust_model_or_parameters": "调整模型或参数",
     "start_generation": "开始生成",
     "stop": "停止对话",
-    "resend_last": "重发上一条"
+    "resend_last": "重发上一条",
+    "add_prompt": "新增 Prompt"
   },
   "config_import": {
     "title": "导入配置",

@@ -20,7 +20,7 @@
     "content": "내용",
     "select": "선택",
     "remove": "제거",
-    "translate_to_english": "영어로 번역",
+    "translate_to_english": "이중언어 번역",
     "back": "뒤로",
     "trial": "체험판",
     "free": "무료",
@@ -129,7 +129,8 @@
     "adjust_model_or_parameters": "모델 또는 매개변수 조정",
     "start_generation": "생성 시작",
     "stop": "채팅 중지",
-    "resend_last": "마지막 메시지 재전송"
+    "resend_last": "마지막 메시지 재전송",
+    "add_prompt": "새 프롬프트"
   },
   "config_import": {
     "title": "설정 가져오기",

@@ -20,7 +20,7 @@
     "content": "Contenido",
     "select": "Seleccionar",
     "remove": "Eliminar",
-    "translate_to_english": "Traducir al inglés",
+    "translate_to_english": "Traducción bilingüe",
     "back": "Volver",
     "trial": "Prueba",
     "free": "Gratis",
@@ -129,7 +129,8 @@
     "adjust_model_or_parameters": "Ajustar modelo o parámetros",
     "start_generation": "Iniciar generación",
     "stop": "Detener chat",
-    "resend_last": "Reenviar último"
+    "resend_last": "Reenviar último",
+    "add_prompt": "Nuevo mensaje"
   },
   "config_import": {
     "title": "Importar configuración",

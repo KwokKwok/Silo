@@ -20,7 +20,7 @@
     "content": "內容",
     "select": "選擇",
     "remove": "移除",
-    "translate_to_english": "翻譯為英文",
+    "translate_to_english": "雙語互譯",
     "back": "返回",
     "trial": "試用",
     "free": "免費",
@@ -129,7 +129,8 @@
     "adjust_model_or_parameters": "調整模型或參數",
     "start_generation": "開始生成",
     "stop": "停止對話",
-    "resend_last": "重發上一條"
+    "resend_last": "重發上一條",
+    "add_prompt": "新增 Prompt"
   },
   "config_import": {
     "title": "導入配置",

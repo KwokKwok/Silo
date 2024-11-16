@@ -27,10 +27,22 @@ export const getOptimizedPrompts = async (userInput) => {
   return { advise, optimized };
 };
 
-export const getEnglishText = async (userInput) => {
-  const result = await getChatCompletion(`Translate the following source text to English, Output translation directly without any additional text.
-  Source Text: ${userInput}
-  Translated Text:`, { systemPrompt: 'You are a highly skilled translation engine with expertise in the technology sector. Your function is to translate texts accurately into English, maintaining the original format, technical terms, and abbreviations. Do not add any explanations or annotations to the translated text.' })
+function isEnglish (text) {
+  // 移除常见标点和数字
+  const cleanText = text.replace(/[\s\d.,!?'"]/g, '');
+
+  // 计算非英文字符的比例
+  const nonEnglishChars = cleanText.replace(/[A-Za-z]/g, '');
+  const ratio = nonEnglishChars.length / cleanText.length;
+
+  // 如果非英文字符比例小于 20%，认为是英文
+  return ratio < 0.2;
+}
+
+export const getEnglishText = async (userInput, language) => {
+  // 判断 userInput 的句子是否为英文
+  const targetLanguage = isEnglish(userInput) ? language : 'English';
+  const result = await getChatCompletion(`${userInput}`, { systemPrompt: `You are a highly skilled translation engine with expertise in the technology sector. Your function is to translate texts accurately to ${targetLanguage}, maintaining the original format, technical terms, and abbreviations. Do not add any explanations or annotations to the translated text. Output translation directly without any additional text.` })
   return result;
 };
 

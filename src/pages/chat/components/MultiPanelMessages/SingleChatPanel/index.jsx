@@ -62,12 +62,12 @@ export default function ({ model, plain = false }) {
 
   const lastAiMessage = messages[messages.length - 1];
   useEffect(() => {
-    if (!plain && mouseOverRef.current) return;
+    if (mouseOverRef.current) return;
     if (messages.length > 0);
     {
       requestAnimationFrame(scrollToBottom);
     }
-  }, [lastAiMessage]);
+  }, [JSON.stringify(lastAiMessage)]);
   return (
     <div
       data-model={model}
