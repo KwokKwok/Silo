@@ -15,6 +15,7 @@
     "zip:edge": "wxt zip -b edge"
   },
   "dependencies": {
+    "@vercel/analytics": "^1.4.0",
     "ahooks": "^3.8.1",
     "ai": "^3.3.7",
     "axios": "^1.7.4",
