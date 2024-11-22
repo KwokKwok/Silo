@@ -7,6 +7,8 @@ import { getModelIcon } from '@src/utils/models';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import MarkdownRenderer from '@src/components/MarkdownRenderer';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { message } from 'tdesign-react';
 
 export default function AiMessage({
   model,
@@ -43,7 +45,7 @@ export default function AiMessage({
       ) : (
         <div
           className={
-            ' relative flex-shrink-0 max-w-full leading-6 ' +
+            'group relative flex-shrink-0 max-w-full leading-6 ' +
             (plain
               ? ''
               : 'mb-2 px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md')
@@ -78,6 +80,16 @@ export default function AiMessage({
               </div>
             </div>
           )}
+          <div
+            className={`absolute bottom-2 right-2 flex text-sm items-center justify-end`}
+          >
+            <CopyToClipboard
+              text={content.trim()}
+              onCopy={() => message.success(t('common.copied'))}
+            >
+              <i className="opacity-0 group-hover:opacity-60 transition-opacity duration-300 text-base  i-ri-file-copy-line cursor-pointer"></i>
+            </CopyToClipboard>
+          </div>
           {formattedInfo && (
             <div className="mt-1 text-xs opacity-25">{formattedInfo}</div>
           )}
