@@ -272,7 +272,7 @@ export function useSiloChat (systemPrompt) {
     }
   }, [loading])
   const onSubmit = (message, image, overrideSystemPrompt) => {
-    const _systemPrompt = overrideSystemPrompt || systemPrompt;
+    const _systemPrompt = typeof overrideSystemPrompt === 'string' ? overrideSystemPrompt : systemPrompt;
     refreshController.start();
     const newMessage = _addUserMessage(message, _systemPrompt, image);
     activeChats.forEach(chat => {

@@ -17,7 +17,6 @@ function Chat() {
   const isMobile = useIsMobile();
   useEffect(() => {
     const onHashChange = () => {
-      onStop(true);
       const search = new URLSearchParams(
         decodeURIComponent(location.hash.split('?')[1])
       );
@@ -28,11 +27,15 @@ function Chat() {
         setActiveModels(activeModels.split(','));
       }
       const systemPrompt = all.find(p => p.id === systemPromptId);
+
       if (systemPrompt) {
         setActiveSystemPrompt(systemPrompt);
       }
       if (question) {
-        onSubmit(question, null, systemPrompt?.content);
+        onStop(true);
+        requestAnimationFrame(() => {
+          onSubmit(question, null, systemPrompt?.content);
+        });
       }
     };
     onHashChange();
