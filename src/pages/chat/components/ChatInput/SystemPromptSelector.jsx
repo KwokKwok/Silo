@@ -7,6 +7,8 @@ import { useIsMobile } from '@src/utils/use';
 import { useImperativeHandle } from 'react';
 import { forwardRef } from 'react';
 import { GUIDE_STEP } from '@src/utils/types';
+import CopyToClipboard from 'react-copy-to-clipboard';
+import { message } from 'tdesign-react';
 const FormItem = Form.FormItem;
 
 function SystemPromptSelector({}, ref) {
@@ -92,6 +94,18 @@ function SystemPromptSelector({}, ref) {
                     </span>
                     <div className="flex items-center justify-end">
                       <div className="flex-1"></div>
+                      <CopyToClipboard
+                        text={prompt.id}
+                        onCopy={() => message.success(t('common.copied'))}
+                      >
+                        <Button
+                          size="small"
+                          icon={<i className="i-mingcute-copy-2-line mr-1" />}
+                          variant="text"
+                        >
+                          {t('common.copy_id')}
+                        </Button>
+                      </CopyToClipboard>
                       <Button
                         size="small"
                         icon={<i className="i-mingcute-copy-2-line mr-1" />}

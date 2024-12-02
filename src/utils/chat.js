@@ -271,11 +271,12 @@ export function useSiloChat (systemPrompt) {
       _evaluateResponse(activeChats, refreshController, systemPrompt);
     }
   }, [loading])
-  const onSubmit = (message, image) => {
+  const onSubmit = (message, image, overrideSystemPrompt) => {
+    const _systemPrompt = overrideSystemPrompt || systemPrompt;
     refreshController.start();
-    const newMessage = _addUserMessage(message, systemPrompt, image);
+    const newMessage = _addUserMessage(message, _systemPrompt, image);
     activeChats.forEach(chat => {
-      _streamChat(chat, newMessage, systemPrompt);
+      _streamChat(chat, newMessage, _systemPrompt);
     })
   }
   const onStop = (clear) => {

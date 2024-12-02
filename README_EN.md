@@ -80,6 +80,23 @@ services:
 - SILO_DEFAULT_ACTIVE_IMAGE_MODELS: Default activated text-to-image models, multiple models separated by commas
 ```
 
+## Setting Parameters via URL
+
+Silo supports getting parameters through URLs, which allows it to be used as a search engine. For example, you can add `https://silo-chat.vercel.app/#/chat?q=%s` as a search engine in Chrome.
+
+Additionally, you can select models and system prompts for new conversation pages by specifying `active_models` and `system_prompt_id`.
+
+Available parameters:
+
+```js
+- q: Conversation question, suitable for search engines
+- active_models: Activated chat model IDs, multiple models separated by commas. Model IDs can be copied from the chat panel
+- system_prompt_id: Activated system prompt ID. System prompt IDs can be copied from the selection page
+```
+
+> [!NOTE]
+> For example, you can use the default English Translator system prompt to provide a translation engine by specifying `system_prompt_id`<br>`https://silo-chat.vercel.app/#/chat?q=%s&system_prompt_id=preset-english-translator`
+
 ## Acknowledgments
 
 1. Thanks to [SiliconCloud](https://siliconflow.cn/zh-cn/siliconcloud).

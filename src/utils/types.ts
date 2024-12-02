@@ -137,3 +137,9 @@ export enum GUIDE_STEP {
    */
   HEADER_MORE_FUNCTION = 'header-more-function',
 }
+
+export enum LOCATION_QUERY_KEY {
+  SYSTEM_PROMPT_ID = 'system_prompt_id',
+  QUESTION = 'q',
+  ACTIVE_MODELS = 'active_models',
+}

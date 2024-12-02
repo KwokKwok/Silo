@@ -4,22 +4,42 @@ import { useIsMobile } from '@src/utils/use';
 import { useSiloChat } from '@src/utils/chat';
 import ChatInput from './components/ChatInput';
 import { useSystemPrompts } from '@src/utils/system-prompt';
+import { useActiveModels } from '@src/store/app';
+import { LOCATION_QUERY_KEY } from '@src/utils/types';
 import { useEffect } from 'react';
 
 function Chat() {
-  const { active } = useSystemPrompts();
+  const { active, all, setActive: setActiveSystemPrompt } = useSystemPrompts();
+  const { setActiveModels } = useActiveModels();
+
   const { loading, onSubmit, onStop, hasVisionModel, messageHistory } =
     useSiloChat(active.content);
   const isMobile = useIsMobile();
   useEffect(() => {
-    // 让它作为一个搜索引擎使用，从 url 中获取 search 参数
-    const query = new URLSearchParams(
-      decodeURIComponent(location.hash.split('?')[1])
-    ).get('q');
-
-    if (query) {
-      onSubmit(query);
-    }
+    const onHashChange = () => {
+      onStop(true);
+      const search = new URLSearchParams(
+        decodeURIComponent(location.hash.split('?')[1])
+      );
+      const activeModels = search.get(LOCATION_QUERY_KEY.ACTIVE_MODELS);
+      const systemPromptId = search.get(LOCATION_QUERY_KEY.SYSTEM_PROMPT_ID);
+      const question = search.get(LOCATION_QUERY_KEY.QUESTION);
+      if (activeModels) {
+        setActiveModels(activeModels.split(','));
+      }
+      const systemPrompt = all.find(p => p.id === systemPromptId);
+      if (systemPrompt) {
+        setActiveSystemPrompt(systemPrompt);
+      }
+      if (question) {
+        onSubmit(question, null, systemPrompt?.content);
+      }
+    };
+    onHashChange();
+    window.addEventListener('hashchange', onHashChange);
+    return () => {
+      window.removeEventListener('hashchange', onHashChange);
+    };
   }, []);
   return (
     <>

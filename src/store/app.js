@@ -8,18 +8,21 @@ const activeModels = atom(
   getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, SILO_ENV.DEFAULT_ACTIVE_CHAT_MODELS)
 )
 
+const allTextModelIds = getAllTextModels().map(item => item.id);
+
 export const useActiveModels = () => {
   const [value, setValue] = useAtom(activeModels);
   const setActiveModels = (models) => {
-    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, models);
-    setValue(models);
+    const newModels = models.filter(item => allTextModelIds.includes(item));
+    // 如果一个都没有，则添加一个默认的
+    if (newModels.length === 0) {
+      newModels.push(allTextModelIds[0]);
+    }
+    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, newModels);
+    setValue(newModels);
   }
   const removeActiveModel = (model) => {
     const newValue = value.filter(item => item !== model);
-    if (newValue.length == 0) {
-      // 只有一个时，页面会禁用删除。但是有一种情况是：仅剩的一个不再提供了，此时需要添加一个
-      newValue.push(getAllTextModels()[0].id);
-    }
     setActiveModels(newValue);
   }
 

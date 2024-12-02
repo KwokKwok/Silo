@@ -9,21 +9,23 @@ import ImgNon from "@src/assets/img/non.svg";
 import { LOCAL_STORAGE_KEY } from './types';
 
 const presetOf = (
+  id,
   name,
   icon,
   desc,
   prompt,
-) => ({ name, icon, desc, content: prompt, id: `preset-${name}`, isPreset: true });
+) => ({ name, icon, desc, content: prompt, id: `preset-${id}`, isPreset: true });
 
 const systemPromptPresets = [
   presetOf(
+    'none',
     'None',
     ImgNon,
     'Nothing. Go ahead and have fun',
     ''
   ),
-  presetOf('English Translator', ImgTranslator, '', 'You are a highly skilled translation engine with expertise in the technology sector. Your function is to translate texts accurately into English, maintaining the original format, technical terms, and abbreviations. Do not add any explanations or annotations to the translated text.Translate the following source text to English, Output translation directly without any additional text.Source Text: '),
-  presetOf('费曼老师', ImgFeynman, '', `请用简单易懂的语言解释一个概念，比如可以包含如下几个方面：
+  presetOf('english-translator', 'English Translator', ImgTranslator, '', 'You are a highly skilled translation engine with expertise in the technology sector. Your function is to translate texts accurately into English, maintaining the original format, technical terms, and abbreviations. Do not add any explanations or annotations to the translated text.Translate the following source text to English, Output translation directly without any additional text.Source Text: '),
+  presetOf('feynman', '费曼老师', ImgFeynman, '', `请用简单易懂的语言解释一个概念，比如可以包含如下几个方面：
     定义：这个概念是什么？
     背景和发展历史：这个概念是如何产生的？它的发展历程是怎样的？
     局限性：这个概念有哪些不足或限制？
@@ -47,7 +49,7 @@ export function useSystemPrompts () {
     const newPrompts = [...customPrompts];
     const index = newPrompts.findIndex(p => p.id === prompt.id);
     if (index === -1) {
-      prompt.id = `custom-${Date.now()}`;
+      prompt.id = `custom-${Date.now().toString(16)}`;
       newPrompts.push(prompt);
     } else {
       newPrompts[index] = prompt;
