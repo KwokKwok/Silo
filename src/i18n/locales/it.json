@@ -92,7 +92,9 @@
       "content": "Sposta il mouse nella parte superiore della pagina o premi il tasto Esc per uscire dalla modalità zen",
       "do_not_show_again": "Non mostrare più"
     },
-    "guide": "Mostra guida"
+    "guide": "Mostra guida",
+    "add_as_search_engine": "Aggiungi come motore di ricerca",
+    "add_as_search_engine_content": "Copia l'URL e aggiungilo manualmente come motore di ricerca del browser. Nota: se il tuo browser non utilizza il formato %s, regolalo di conseguenza"
   },
   "ai_message": {
     "best_reply": "Votata come migliore risposta dall'IA"

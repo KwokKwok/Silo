@@ -92,7 +92,9 @@
       "content": "Move the mouse to the top of the page or press the Esc key to exit Zen Mode",
       "do_not_show_again": "Okay"
     },
-    "guide": "Show Guide"
+    "guide": "Show Guide",
+    "add_as_search_engine": "Add as Search Engine",
+    "add_as_search_engine_content": "Copy URL and manually add it as a browser search engine. Note: If your browser doesn't use %s format, please adjust accordingly"
   },
   "ai_message": {
     "best_reply": "AI voted as the best reply"

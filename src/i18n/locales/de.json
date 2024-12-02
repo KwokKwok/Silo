@@ -92,7 +92,9 @@
       "content": "Bewegen Sie die Maus zum oberen Seitenrand oder drücken Sie die Esc-Taste, um den Zen-Modus zu verlassen",
       "do_not_show_again": "Nicht mehr anzeigen"
     },
-    "guide": "Anleitung anzeigen"
+    "guide": "Anleitung anzeigen",
+    "add_as_search_engine": "Als Suchmaschine hinzufügen",
+    "add_as_search_engine_content": "Kopieren Sie die URL und fügen Sie sie manuell als Browser-Suchmaschine hinzu. Hinweis: Wenn Ihr Browser nicht das %s-Format verwendet, passen Sie es bitte entsprechend an"
   },
   "ai_message": {
     "best_reply": "Von KI als beste Antwort gewählt"

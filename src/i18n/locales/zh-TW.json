@@ -92,7 +92,9 @@
       "content": "滑鼠移至頁面頂部或按下 Esc 鍵退出禪模式",
       "do_not_show_again": "不再提示"
     },
-    "guide": "顯示引導"
+    "guide": "顯示引導",
+    "add_as_search_engine": "添加為搜索引擎",
+    "add_as_search_engine_content": "複製 URL 並手動添加為瀏覽器搜索引擎。注意：如您的瀏覽器不使用 %s 的方式，請自行調整"
   },
   "ai_message": {
     "best_reply": "已由 AI 票選為最佳回覆"

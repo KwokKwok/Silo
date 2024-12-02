@@ -84,6 +84,7 @@ export default function () {
       addMoreModel();
     }
   };
+
   return (
     <>
       {showGuide && <Guide />}
@@ -247,6 +248,40 @@ export default function () {
                     onClick: () => setNoGuide(false),
                     title: t('header.guide'),
                     hidden: isMobile,
+                  },
+                  {
+                    icon: 'i-mingcute-search-fill',
+                    onClick: async () => {
+                      const searchUrl = `${window.location.origin}/#/chat?q=%s`;
+                      const notify = await notification.info({
+                        placement: 'bottom-right',
+                        offset: [-20, -20],
+                        title: t('header.add_as_search_engine'),
+                        content: t('header.add_as_search_engine_content'),
+                        closeBtn: true,
+                        duration: 0,
+                        footer: (
+                          <>
+                            <CopyToClipboard
+                              text={searchUrl}
+                              onCopy={() => {
+                                message.success(t('common.copied'));
+                                notify.close();
+                              }}
+                            >
+                              <Button
+                                className="ml-2"
+                                theme="primary"
+                                variant="text"
+                              >
+                                {t('common.copy')}
+                              </Button>
+                            </CopyToClipboard>
+                          </>
+                        ),
+                      });
+                    },
+                    title: t('header.add_as_search_engine'),
                   },
                   {
                     icon: 'i-mingcute-file-export-fill',

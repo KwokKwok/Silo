@@ -92,7 +92,9 @@
       "content": "マウスを画面上部に移動するかEscキーを押して禅モードを終了",
       "do_not_show_again": "次回から表示しない"
     },
-    "guide": "ガイドを表示"
+    "guide": "ガイドを表示",
+    "add_as_search_engine": "検索エンジンとして追加",
+    "add_as_search_engine_content": "URLをコピーしてブラウザの検索エンジンとして手動で追加してください。注意：ブラウザが %s 形式を使用しない場合は、適宜調整してください"
   },
   "ai_message": {
     "best_reply": "AIによって最良の返信として投票されました"
