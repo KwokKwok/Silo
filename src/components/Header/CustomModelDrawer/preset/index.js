@@ -40,6 +40,7 @@ const CUSTOM_MODEL_PRESET = [
     length: '',
     price: void 0,
     vision: true,
+    baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
     paramsMode: true,
     params: [
       {
@@ -50,6 +51,14 @@ const CUSTOM_MODEL_PRESET = [
         label: 'custom_model.secret_key',
         prop: 'apiKey',
         url: 'https://aistudio.google.com/apikey'
+      },
+      {
+        type: 'input',
+        rules: [
+          { required: true, message: 'common.required', type: 'error' }
+        ],
+        label: 'custom_model.base_url',
+        prop: 'baseUrl',
       }
     ],
     resolveFn: geminiResolveFn,
@@ -103,6 +112,7 @@ const CUSTOM_MODEL_PRESET = [
     price: void 0,
     paramsMode: true,
     vision: false,
+    baseUrl: 'https://api.x.ai/v1',
     params: [
       {
         type: 'input',
@@ -112,6 +122,14 @@ const CUSTOM_MODEL_PRESET = [
         label: 'custom_model.secret_key',
         prop: 'apiKey',
         url: 'https://console.x.ai/'
+      },
+      {
+        type: 'input',
+        rules: [
+          { required: true, message: 'common.required', type: 'error' }
+        ],
+        label: 'custom_model.base_url',
+        prop: 'baseUrl',
       }
     ],
     resolveFn: xAiChat,

@@ -1,5 +1,5 @@
 export default async function geminiChat (modelConfig, modelId, messages, options, controller, onChunk, onEnd, onError) {
-  const { apiKey = '' } = modelConfig;
+  const { apiKey = '', baseUrl = '' } = modelConfig;
   if (!apiKey) {
     onError(new Error('请填写 API_KEY'))
     return;
@@ -42,7 +42,8 @@ export default async function geminiChat (modelConfig, modelId, messages, option
   };
 
   const model = modelId.split('/')[1];
-  fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:streamGenerateContent?key=${apiKey}`, {
+  const startTime = Date.now();
+  fetch(`${baseUrl}/models/${model}:streamGenerateContent?key=${apiKey}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -71,7 +72,12 @@ export default async function geminiChat (modelConfig, modelId, messages, option
     .then(stream => {
       const reader = stream.getReader(); // 创建一个读取器
       const decoder = new TextDecoder(); // 创建文本解码器
-
+      const info = {
+        usage: {
+          total_tokens: 0
+        },
+        costTime: 0
+      }
       // 读取流中的数据
       function read () {
         reader.read().then(({ done, value }) => {
@@ -79,13 +85,14 @@ export default async function geminiChat (modelConfig, modelId, messages, option
           if (!controller.current) return;
           const decodedDataString = decoder.decode(value);
           if (!decodedDataString || done) {
-            onEnd()
+            info.costTime = Date.now() - startTime;
+            onEnd(info)
             return;
           }
           // 提取 `{` 和 `}` 之间的 JSON 数据，可能有多个块。比如输入可能是 `[{},{}`
           const jsonChunksStr = decodedDataString.substring(decodedDataString.indexOf('{'), decodedDataString.lastIndexOf('}') + 1);
 
-          const chunks = JSON.parse(`[\n${jsonChunksStr}\n]`)
+          const chunks = JSON.parse(`[\n${jsonChunksStr}\n]`).filter(Boolean);
 
           // 如果存在无法输出的块，则抛出错误。可能原因：过载、安全设置等
           const error = chunks.find(item => !item?.candidates?.[0]?.content?.['parts']?.[0]);
@@ -95,6 +102,9 @@ export default async function geminiChat (modelConfig, modelId, messages, option
           }
           // 解析 JSON、根据响应取出 content、最后合并起来
           const content = chunks.map(item => item.candidates[0].content['parts'][0].text).join('');
+          if (chunks.length > 0) {
+            info.usage.total_tokens += chunks[chunks.length - 1].usageMetadata?.totalTokenCount || 0;
+          }
           if (content) {
             // 将本次拿到的 content 返回
             onChunk(content);
