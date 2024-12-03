@@ -7,6 +7,7 @@ import ImgFeynman from "@src/assets/img/preset/feynman.png"
 import ImgTranslator from "@src/assets/img/preset/translator.png"
 import ImgNon from "@src/assets/img/non.svg";
 import { LOCAL_STORAGE_KEY } from './types';
+import { useRef } from 'react';
 
 const presetOf = (
   id,
@@ -40,6 +41,7 @@ const systemPromptPresets = [
 
 export const SYSTEM_PROMPT_PRESETS = systemPromptPresets;
 
+let disablePersistPrompt = false;
 export function useSystemPrompts () {
   const [activeId, setActiveId] = useActiveSystemPromptId();
   const [customPrompts, setCustomPrompts] = useLocalStorageJSONAtom(LOCAL_STORAGE_KEY.SYSTEM_PROMPTS);
@@ -62,7 +64,10 @@ export function useSystemPrompts () {
     setCustomPrompts(newPrompts);
   };
   const setActive = (prompt) => {
-    setActiveId(prompt.id);
+    setActiveId(prompt.id, disablePersistPrompt);
   }
-  return { active, setActive, all, save, remove }
+  const disablePersist = (disable) => {
+    disablePersistPrompt = disable;
+  }
+  return { active, setActive, disablePersist, all, save, remove }
 }

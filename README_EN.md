@@ -84,7 +84,7 @@ services:
 
 Silo supports getting parameters through URLs, which allows it to be used as a search engine. For example, you can add `https://silo-chat.vercel.app/#/chat?q=%s` as a search engine in Chrome.
 
-Additionally, you can select models and system prompts for new conversation pages by specifying `active_models` and `system_prompt_id`.
+Additionally, you can temporarily set the model and system prompt for the new conversation page by specifying `active_models` or `system_prompt_id`.
 
 Available parameters:
 

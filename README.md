@@ -82,7 +82,7 @@ services:
 
 Silo 支持通过 URL 获取参数，这使得它可以作为搜索引擎使用。例如，在 Chrome 中将 `https://silo-chat.vercel.app/#/chat?q=%s` 添加为搜索引擎。
 
-此外，你可以通过指定 `active_models` 和 `system_prompt_id` 来选择新对话页面的模型和系统提示词。
+此外，你可以通过指定 `active_models` 或 `system_prompt_id` 来临时设置新对话页面的模型和系统提示词。
 
 可用参数：
 

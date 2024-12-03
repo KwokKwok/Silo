@@ -10,6 +10,7 @@ const activeModels = atom(
 
 const allTextModelIds = getAllTextModels().map(item => item.id);
 
+let disablePersistModels = false;
 export const useActiveModels = () => {
   const [value, setValue] = useAtom(activeModels);
   const setActiveModels = (models) => {
@@ -18,7 +19,9 @@ export const useActiveModels = () => {
     if (newModels.length === 0) {
       newModels.push(allTextModelIds[0]);
     }
-    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, newModels);
+    if (!disablePersistModels) {
+      setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, newModels);
+    }
     setValue(newModels);
   }
   const removeActiveModel = (model) => {
@@ -30,7 +33,11 @@ export const useActiveModels = () => {
     const nonActiveModels = getAllTextModels().filter(item => !value.includes(item.id)).map(item => item.id);
     setActiveModels(value.concat(nonActiveModels.splice(0, 1)))
   }
-  return { activeModels: value, setActiveModels, addMoreModel: addMore, removeActiveModel }
+  const disablePersist = (disable) => {
+    disablePersistModels = disable;
+  }
+
+  return { activeModels: value, setActiveModels, addMoreModel: addMore, removeActiveModel, disablePersist }
 }
 
 const isRowMode = atom(getLocalStorage(LOCAL_STORAGE_KEY.ROW_MODE, 'false') === 'true')

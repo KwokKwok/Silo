@@ -9,8 +9,14 @@ import { LOCATION_QUERY_KEY } from '@src/utils/types';
 import { useEffect } from 'react';
 
 function Chat() {
-  const { active, all, setActive: setActiveSystemPrompt } = useSystemPrompts();
-  const { setActiveModels } = useActiveModels();
+  const {
+    active,
+    all,
+    setActive: setActiveSystemPrompt,
+    disablePersist: disablePersistSystemPrompt,
+  } = useSystemPrompts();
+  const { setActiveModels, disablePersist: disablePersistModels } =
+    useActiveModels();
 
   const { loading, onSubmit, onStop, hasVisionModel, messageHistory } =
     useSiloChat(active.content);
@@ -24,11 +30,13 @@ function Chat() {
       const systemPromptId = search.get(LOCATION_QUERY_KEY.SYSTEM_PROMPT_ID);
       const question = search.get(LOCATION_QUERY_KEY.QUESTION);
       if (activeModels) {
+        disablePersistModels(true);
         setActiveModels(activeModels.split(','));
       }
       const systemPrompt = all.find(p => p.id === systemPromptId);
 
       if (systemPrompt) {
+        disablePersistSystemPrompt(true);
         setActiveSystemPrompt(systemPrompt);
       }
       if (question) {

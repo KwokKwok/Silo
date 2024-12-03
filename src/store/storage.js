@@ -76,9 +76,11 @@ export function useLocalStorageJSONAtom (key) {
 
 export function useLocalStorageAtom (key, isJson = false) {
   const [value, setValue] = useAtom(atomMap[key]);
-  const setValueToLocalStorage = (newValue) => {
+  const setValueToLocalStorage = (newValue, noPersist = false) => {
     setValue(newValue);
-    (isJson ? setJsonDataToLocalStorage : setLocalStorage)(key, newValue)
+    if (!noPersist) {
+      (isJson ? setJsonDataToLocalStorage : setLocalStorage)(key, newValue)
+    }
   }
   return [value, setValueToLocalStorage]
 }
