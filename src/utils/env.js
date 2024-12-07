@@ -17,4 +17,5 @@ export const SILO_ENV = {
   AFF_LINK: (import.meta.env.SILO_AFF_LINK || 'https://cloud.siliconflow.cn/i/Vry8ZUHq').trim(),
   DEFAULT_ACTIVE_CHAT_MODELS: modelStrToIds(import.meta.env.SILO_DEFAULT_ACTIVE_CHAT_MODELS, ["Pro/Qwen/Qwen2-VL-7B-Instruct", "Qwen/Qwen2.5-7B-Instruct", "THUDM/glm-4-9b-chat"]),
   DEFAULT_ACTIVE_IMAGE_MODELS: modelStrToIds(import.meta.env.SILO_DEFAULT_ACTIVE_IMAGE_MODELS, ['black-forest-labs/FLUX.1-schnell', 'stabilityai/stable-diffusion-3-medium']),
+  DEFAULT_WEB_COPILOT_ACTIVE_MODELS: modelStrToIds(import.meta.env.SILO_DEFAULT_WEB_COPILOT_ACTIVE_MODELS, ['Qwen/Qwen2.5-7B-Instruct']),
 };

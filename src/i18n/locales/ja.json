@@ -193,5 +193,10 @@
     "chat_options_desc": "ここをクリックして、温度や最大トークン数などのチャットパラメータを調整できます",
     "more_functions": "その他の機能",
     "more_functions_desc": "ここでモデルの追加や画像生成モードへの切り替えなどができます。その他の機能は右上のボタンをご確認ください。お楽しみください！"
+  },
+  "webCopilot": {
+    "settings": "Web Copilot 設定",
+    "selectModel": "モデルを選択",
+    "prompt": "プロンプト"
   }
 }

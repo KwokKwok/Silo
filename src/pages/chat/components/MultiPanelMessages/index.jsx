@@ -1,11 +1,12 @@
 import Sortable from 'sortablejs';
 import SingleChatPanel from './SingleChatPanel';
 import { useEffect } from 'react';
-import { useMultiRows } from '@src/utils/use';
+import { useMultiRows, useRefresh } from '@src/utils/use';
 import { useRef } from 'react';
 
 export default function () {
   const [multiRows, setRows] = useMultiRows();
+  const { refresh } = useRefresh();
   const containerRef = useRef();
   useEffect(() => {
     const sorts = multiRows.map((line, index) => {
@@ -27,12 +28,13 @@ export default function () {
               Array.from(line.children).map(item => item.dataset.model)
             )
           );
+          refresh();
         },
       });
     });
-    // return () => {
-    //   sorts.forEach(item => item.destroy());
-    // };
+    return () => {
+      sorts.forEach(item => item.destroy());
+    };
   }, [multiRows]);
   return (
     <div className="flex flex-col h-full" ref={containerRef}>

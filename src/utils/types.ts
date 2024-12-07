@@ -105,6 +105,14 @@ export enum LOCAL_STORAGE_KEY {
    * 关闭引导
    */
   FLAG_NO_GUIDE = 'flag_no_guide',
+  /**
+   * 词解器激活模型
+   */
+  WORD_EXPLAINER_ACTIVE_MODELS = 'word_explainer_active_models',
+  /**
+   * 词解器提示词
+   */
+  WORD_EXPLAINER_PROMPT = 'word_explainer_prompt',
 }
 
 export enum GUIDE_STEP {

@@ -193,5 +193,10 @@
     "chat_options_desc": "Clicca qui per regolare i parametri della chat come temperatura, token massimi, ecc.",
     "more_functions": "Altre funzioni",
     "more_functions_desc": "Puoi aggiungere modelli, passare alla modalità generazione immagini e altro qui. Controlla il pulsante in alto a destra per altre funzionalità. Buon utilizzo!"
+  },
+  "webCopilot": {
+    "settings": "Impostazioni Web Copilot",
+    "selectModel": "Seleziona modelli",
+    "prompt": "Prompt"
   }
 }

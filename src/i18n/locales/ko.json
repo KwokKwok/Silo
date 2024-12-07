@@ -193,5 +193,10 @@
     "chat_options_desc": "여기를 클릭하여 온도, 최대 토큰 수 등의 대화 매개변수를 조정할 수 있습니다",
     "more_functions": "추가 기능",
     "more_functions_desc": "여기서 모델 추가, 이미지 생성 모드로 전환 등을 할 수 있습니다. 더 많은 기능은 우측 상단 버튼을 확인하세요. 즐거운 사용 되세요!"
+  },
+  "webCopilot": {
+    "settings": "Web Copilot 설정",
+    "selectModel": "모델 선택",
+    "prompt": "프롬프트"
   }
 }

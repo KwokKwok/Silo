@@ -193,5 +193,10 @@
     "chat_options_desc": "Klicken Sie hier, um Chat-Parameter wie Temperatur, maximale Token-Anzahl usw. anzupassen",
     "more_functions": "Weitere Funktionen",
     "more_functions_desc": "Sie können hier Modelle hinzufügen, in den Bildgenerierungsmodus wechseln und mehr. Überprüfen Sie den Button oben rechts für weitere Funktionen. Viel Spaß beim Benutzen!"
+  },
+  "webCopilot": {
+    "settings": "Web Copilot Einstellungen",
+    "selectModel": "Modelle auswählen",
+    "prompt": "Prompt"
   }
 }

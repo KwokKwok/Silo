@@ -194,5 +194,10 @@
     "chat_options_desc": "您可以點擊這裡調整對話參數，如溫度、最大token數等",
     "more_functions": "更多功能",
     "more_functions_desc": "您可以在這裡添加模型、切換文生圖模式等。更多功能請點擊右上角按鈕查看。祝您使用愉快！"
+  },
+  "webCopilot": {
+    "settings": "Web Copilot 設置",
+    "selectModel": "選擇模型",
+    "prompt": "提示詞"
   }
 }

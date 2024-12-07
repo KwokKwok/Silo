@@ -7,6 +7,7 @@ import { message } from 'tdesign-react';
 import i18next from 'i18next';
 import { SILO_ENV } from '@src/utils/env';
 import { decrypt } from '@src/utils/encryption';
+import wordExplainPrompt from '@src/services/prompt/web-copilot.txt?raw';
 
 export const EXPERIENCE_SK = SILO_ENV.EXPERIENCE_SK;
 
@@ -55,6 +56,10 @@ const allCustomSystemPromptsAtom = atom(
 const paidSkPasswordAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.PAID_SK_PASSWORD, ''))
 
 const noGuideAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.FLAG_NO_GUIDE, false))
+
+const wordExplainerActiveModelsAtom = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.WORD_EXPLAINER_ACTIVE_MODELS, SILO_ENV.DEFAULT_WEB_COPILOT_ACTIVE_MODELS))
+const wordExplainerPromptAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.WORD_EXPLAINER_PROMPT, wordExplainPrompt))
+
 const atomMap = {
   [LOCAL_STORAGE_KEY.SYSTEM_PROMPTS]: allCustomSystemPromptsAtom,
   [LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS]: activeImageModels,
@@ -63,6 +68,8 @@ const atomMap = {
   [LOCAL_STORAGE_KEY.SECRET_KEY]: secretKeyAtom,
   [LOCAL_STORAGE_KEY.PAID_SK_PASSWORD]: paidSkPasswordAtom,
   [LOCAL_STORAGE_KEY.FLAG_NO_GUIDE]: noGuideAtom,
+  [LOCAL_STORAGE_KEY.WORD_EXPLAINER_ACTIVE_MODELS]: wordExplainerActiveModelsAtom,
+  [LOCAL_STORAGE_KEY.WORD_EXPLAINER_PROMPT]: wordExplainerPromptAtom,
 }
 
 /**

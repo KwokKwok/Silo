@@ -1,28 +1,68 @@
 import { useLastGptResponse } from '@src/utils/chat';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import SingleChatPanel from '../../chat/components/MultiPanelMessages/SingleChatPanel';
 import InputControl from '../../chat/components/ChatInput';
 import { useSiloChat } from '@src/utils/chat';
-import wordExplainPrompt from '@src/services/prompt/web-copilot.txt?raw';
+import {
+  useLocalStorageAtom,
+  useLocalStorageJSONAtom,
+} from '@src/store/storage';
+import { LOCAL_STORAGE_KEY } from '@src/utils/types';
+import { useActiveModels } from '@src/store/app';
+
+const SYSTEM_PROMPT_CONTEXT_KEY = '${silo_page_context}';
 
 export default function ({ context, word }) {
-  const { loading, onSubmit, onStop } = useSiloChat(
-    `${wordExplainPrompt}<context>${context}</context>\n`
+  const [activeModels, setWordExplainerActiveModels] = useLocalStorageJSONAtom(
+    LOCAL_STORAGE_KEY.WORD_EXPLAINER_ACTIVE_MODELS
+  );
+  const {
+    activeModels: appActiveModels,
+    disablePersist: disablePersistAppActiveModels,
+    setActiveModels: setAppActiveModels,
+  } = useActiveModels();
+  const [isModelInit, setIsModelInit] = useState(false);
+  const [prompt, setPrompt] = useLocalStorageAtom(
+    LOCAL_STORAGE_KEY.WORD_EXPLAINER_PROMPT
   );
 
   useEffect(() => {
+    disablePersistAppActiveModels(true);
+    setAppActiveModels(activeModels);
+    setTimeout(() => {
+      setIsModelInit(true);
+    }, 16);
+  }, [activeModels]);
+
+  const systemPrompt = prompt.includes(SYSTEM_PROMPT_CONTEXT_KEY)
+    ? prompt.replace(
+        SYSTEM_PROMPT_CONTEXT_KEY,
+        `<context>${context}</context>\n`
+      )
+    : `${prompt}\n<context>${context}</context>\n`;
+
+  const { loading, onSubmit, onStop } = useSiloChat(systemPrompt, activeModels);
+
+  useEffect(() => {
+    if (!isModelInit) return;
+    console.log(appActiveModels);
+
     onStop(true);
     if (word) {
       setTimeout(() => {
         onSubmit(word);
       }, 16);
     }
-  }, [context, word]);
+  }, [context, word, isModelInit]);
 
   const modelResponses = useLastGptResponse();
   const [activeIndex, setActiveIndex] = useState(0);
-  const optionLength = modelResponses.length;
+  const filteredResponses =
+    activeModels.length > 0
+      ? modelResponses.filter(response => activeModels.includes(response.model))
+      : modelResponses;
+  const optionLength = filteredResponses.length;
+
   const onCursor = offset => {
     setActiveIndex(prev => {
       let target = prev;
@@ -32,27 +72,29 @@ export default function ({ context, word }) {
     });
   };
 
-  if (!modelResponses.length) return null;
+  console.log(isModelInit);
+
+  if (!isModelInit || !filteredResponses.length) return null;
   return (
     <div className="flex-1 flex flex-col h-full w-full pb-[8px]">
-      <div className="flex-1 h-0 overflow-auto pb-4 relative text-sm leading-6">
-        {modelResponses[activeIndex] && (
-          <SingleChatPanel model={modelResponses[activeIndex].model} plain />
+      <div className="flex-1 h-0 overflow-auto pb-4 relative text-sm leading-6 pl-[4px]">
+        {filteredResponses[activeIndex] && (
+          <SingleChatPanel model={filteredResponses[activeIndex].model} plain />
         )}
       </div>
 
-      <div className=" mt-[8px] flex-shrink-0 px-4 items-center flex">
-        <div className=" flex items-center relative flex-shrink-0 ">
+      <div className="mt-[8px] flex-shrink-0 px-4 items-center flex">
+        <div className="flex items-center relative flex-shrink-0">
           <div
             style={{
               transform: `translateX(${activeIndex * (32 + 8)}px)`,
             }}
             className="absolute left-0 top-0 h-[32px] w-[32px] transform transition-transform duration-300 opacity-75 outline-primary outline outline-[2px] rounded-[4px]"
           ></div>
-          {modelResponses.map((response, index) => (
+          {filteredResponses.map((response, index) => (
             <div
               key={index}
-              className={`cursor-pointer mr-[8px] p-[4px] transition-transform duration-300 select-none ${
+              className={`cursor-pointer mr-[8px] last:mr-0 p-[4px] transition-transform duration-300 select-none ${
                 activeIndex === index
                   ? ' overflow-hidden shadow-lg scale-105'
                   : 'scale-100'
@@ -79,7 +121,7 @@ export default function ({ context, word }) {
             onCursorNext={() => onCursor(1)}
             onStop={onStop}
             onSubmit={onSubmit}
-            loading={modelResponses[activeIndex]?.loading}
+            loading={filteredResponses[activeIndex]?.loading}
           />
         </div>
       </div>

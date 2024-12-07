@@ -8,6 +8,7 @@ import { Popup } from 'tdesign-react';
 import SingleImageViewer from '@src/components/SingleImageViewer';
 import Shortcuts, { SHORTCUTS_ACTIONS, useShortcuts } from './Shortcuts';
 import { GUIDE_STEP } from '@src/utils/types';
+import { removeUserMessage } from '@src/utils/chat';
 
 /**
  * 不使用输入框的历史记录
@@ -40,7 +41,9 @@ export default function ({
     } else if (action === SHORTCUTS_ACTIONS.STOP) {
       onStop(false);
     } else if (action === SHORTCUTS_ACTIONS.RESEND_LAST) {
-      const { message, image } = messageHistory[messageHistory.length - 1];
+      const { message, image, chatId } =
+        messageHistory[messageHistory.length - 1];
+      removeUserMessage(chatId);
       onSubmit(message, image);
     }
     setInput('');

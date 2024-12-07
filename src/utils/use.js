@@ -85,21 +85,44 @@ export function useAutoScrollToBottomRef () {
 
 
 let _sortedRows = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.USER_SORT_SETTINGS, [])
+let _isDisablePersistModels = false;
 const setRows = (rows) => {
   _sortedRows = rows;
-  setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.USER_SORT_SETTINGS, rows);
+  console.log(rows);
+
+  if (!_isDisablePersistModels) {
+    setJsonDataToLocalStorage(LOCAL_STORAGE_KEY.USER_SORT_SETTINGS, rows);
+  }
 }
 export function useMultiRows () {
-  const { activeModels } = useActiveModels();
+  const { activeModels, isDisablePersistModels } = useActiveModels();
   const [isRowMode, setIsRowMode] = useIsRowMode();
   const refreshController = useRefresh();
 
   useEffect(() => {
-    if (activeModels.length === 1 && isRowMode) {
-      setIsRowMode(false);
-      _sortedRows = [[activeModels[0]]]
-      return;
+    if (isDisablePersistModels) {
+      _isDisablePersistModels = isDisablePersistModels;
+      setRows([]);
     }
+  }, [isDisablePersistModels])
+
+  useEffect(() => {
+    if (isRowMode) {
+      console.log(isRowMode, _sortedRows);
+
+      if (activeModels.length === 1) {
+        setIsRowMode(false);
+        _sortedRows = [activeModels]
+        return;
+      }
+      if (_sortedRows.filter(row => !row.length).length > 0) {
+        _sortedRows = _sortedRows.filter(row => row.length);
+        setIsRowMode(_sortedRows.length > 1)
+      }
+    }
+  }, [isRowMode, _sortedRows])
+
+  useEffect(() => {
     let newRows = JSON.parse(JSON.stringify(_sortedRows))
     const oldModels = newRows.reduce((acc, row) => [...acc, ...row], []); // 打平
     const newModels = [...activeModels]
@@ -158,9 +181,9 @@ export function useMultiRows () {
       newRows = [result];
     }
 
-    setRows(newRows);
+    setRows(newRows, isDisablePersistModels);
     refreshController.refresh();
-  }, [activeModels, isRowMode])
+  }, [activeModels, isRowMode, isDisablePersistModels])
 
   return [_sortedRows, setRows];
 }

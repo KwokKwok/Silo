@@ -25,8 +25,8 @@ export default function AiMessage({
 
   const tokenUsage = info.usage?.total_tokens || 0;
   const formattedInfo =
-    (tokenUsage ? `${tokenUsage} tokens used, ` : '') +
-    (info?.costTime ? `${info.costTime / 1000} s` : '');
+    (tokenUsage ? `${tokenUsage} tokens used, ` : ' ') +
+    (info?.costTime ? `${info.costTime / 1000} s` : ' ');
 
   /**
    * @deprecated 暂时不显示最佳答案文案，仅显示点赞

@@ -7,6 +7,7 @@ import { useSystemPrompts } from '@src/utils/system-prompt';
 import { useActiveModels } from '@src/store/app';
 import { LOCATION_QUERY_KEY } from '@src/utils/types';
 import { useEffect } from 'react';
+import { useState } from 'react';
 
 function Chat() {
   const {
@@ -17,6 +18,8 @@ function Chat() {
   } = useSystemPrompts();
   const { setActiveModels, disablePersist: disablePersistModels } =
     useActiveModels();
+
+  const [questionNeedSubmit, setQuestionNeedSubmit] = useState('');
 
   const { loading, onSubmit, onStop, hasVisionModel, messageHistory } =
     useSiloChat(active.content);
@@ -40,10 +43,7 @@ function Chat() {
         setActiveSystemPrompt(systemPrompt);
       }
       if (question) {
-        onStop(true);
-        requestAnimationFrame(() => {
-          onSubmit(question, null, systemPrompt?.content);
-        });
+        setQuestionNeedSubmit(question);
       }
     };
     onHashChange();
@@ -52,6 +52,15 @@ function Chat() {
       window.removeEventListener('hashchange', onHashChange);
     };
   }, []);
+
+  useEffect(() => {
+    if (questionNeedSubmit) {
+      onStop(true);
+      onSubmit(questionNeedSubmit);
+      setQuestionNeedSubmit('');
+    }
+  }, [questionNeedSubmit]);
+
   return (
     <>
       <div className="flex-1 h-0 w-full pb-2">

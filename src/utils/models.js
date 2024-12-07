@@ -38,6 +38,7 @@ const keywordsMap = {
   'mistralai': '法国欧洲',
   'deepseek-ai': '私募巨头幻方量化深度求索',
   '01-ai': '01万物零一万物李开复',
+  'AIDC-AI': 'AIDC-AI,阿里云,CoT',
 };
 
 // 修改后的 textModelOf 函数，统一处理 "Pro/" 前缀
@@ -122,6 +123,7 @@ export function getModelIcon (model) {
  */
 const SILICON_MODELS = [
   textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32, false),
+  textModelOf("AIDC-AI/Marco-o1", 0, 32, false),
   textModelOf("THUDM/glm-4-9b-chat", 0, 128, false),
   textModelOf("01-ai/Yi-1.5-9B-Chat-16K", 0, 16, false),
   textModelOf("internlm/internlm2_5-7b-chat", 0, 32, false),
@@ -134,7 +136,7 @@ const SILICON_MODELS = [
   textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 32, true),
   // textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8, true),
   textModelOf("Qwen/QwQ-32B-Preview", 1.26, 32, false, false),
-  textModelOf("Tencent/Hunyuan-A52B-Instruct", 21, 32, false),
+  // textModelOf("Tencent/Hunyuan-A52B-Instruct", 21, 32, false),
   textModelOf("Qwen/Qwen2.5-14B-Instruct", 0.7, 32, false),
   textModelOf("internlm/internlm2_5-20b-chat", 1, 32, false),
   textModelOf("01-ai/Yi-1.5-34B-Chat-16K", 1.26, 16, false),
@@ -144,13 +146,13 @@ const SILICON_MODELS = [
   textModelOf("deepseek-ai/DeepSeek-V2.5", 1.33, 32, false),
   // textModelOf("deepseek-ai/DeepSeek-Coder-V2-Instruct", 1.33, 32, false),
   textModelOf("deepseek-ai/DeepSeek-V2-Chat", 1.33, 32, false),
-  textModelOf("Qwen/Qwen2.5-Math-72B-Instruct", 4.13, 4, false),
+  // textModelOf("Qwen/Qwen2.5-Math-72B-Instruct", 4.13, 4, false),
   textModelOf("Qwen/Qwen2.5-72B-Instruct-128K", 4.13, 128, false),
   textModelOf("Qwen/Qwen2.5-72B-Instruct", 4.13, 32, false),
   textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32, false),
   textModelOf("Vendor-A/Qwen/Qwen2.5-72B-Instruct", 1, 32, false),
   textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 1, 32, false),
-  textModelOf("nvidia/Llama-3.1-Nemotron-70B-Instruct", 4.13, 32, true),
+  // textModelOf("nvidia/Llama-3.1-Nemotron-70B-Instruct", 4.13, 32, true),
   textModelOf("google/gemma-2-27b-it", 1.26, 8, true),
   textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 8, true),
   // textModelOf("meta-llama/Meta-Llama-3-70B-Instruct", 4.13, 8, true),

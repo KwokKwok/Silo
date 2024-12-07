@@ -23,13 +23,13 @@ let evaluationInput = {};
 
 let messageHistory = [];
 
-function _addUserMessage (message, systemPrompt, image) {
-  messageHistory.push({ message, image });
+function _addUserMessage (message, systemPrompt, image, activeModels) {
   const chatId = Date.now();
+  messageHistory.push({ message, image, chatId });
   const newMessage = { content: message, chatId };
   // 可仅评估第一个问题：&& Object.keys(userMessages).length < 1
-  // 多模态问题不做评估
-  if (!image) {
+  // 多模态问题不做评估，仅一个模型不做评估
+  if (!image && activeModels.length > 1) {
     getQuestionEvaluation(message, systemPrompt).then(isEvaluate => {
       if (isEvaluate) {
         evaluationInput[chatId] = {
@@ -90,6 +90,13 @@ function _evaluateResponse (activeChats, refreshController, systemPrompt) {
  */
 export function getUserMessages () {
   return userMessages
+}
+
+export function removeUserMessage (chatId) {
+  delete userMessages[chatId];
+  Object.keys(allChats).forEach(model => {
+    delete allChats[model].messages[chatId];
+  })
 }
 
 
@@ -187,9 +194,12 @@ export function useActiveChatsMessages () {
  */
 export function useLastGptResponse () {
   const [rows] = useMultiRows();
+
   const sortedActiveModels = (rows[0] || []).flatMap((item, index) =>
     rows[1]?.[index] ? [item, rows[1][index]] : [item]
   );
+  console.log(rows, sortedActiveModels);
+
   const chatId = Object.keys(userMessages)[0];
   return sortedActiveModels.map(model => ({
     model,
@@ -271,12 +281,11 @@ export function useSiloChat (systemPrompt) {
       _evaluateResponse(activeChats, refreshController, systemPrompt);
     }
   }, [loading])
-  const onSubmit = (message, image, overrideSystemPrompt) => {
-    const _systemPrompt = typeof overrideSystemPrompt === 'string' ? overrideSystemPrompt : systemPrompt;
+  const onSubmit = (message, image) => {
     refreshController.start();
-    const newMessage = _addUserMessage(message, _systemPrompt, image);
+    const newMessage = _addUserMessage(message, systemPrompt, image, activeModels);
     activeChats.forEach(chat => {
-      _streamChat(chat, newMessage, _systemPrompt);
+      _streamChat(chat, newMessage, systemPrompt);
     })
   }
   const onStop = (clear) => {
@@ -288,5 +297,6 @@ export function useSiloChat (systemPrompt) {
     }
     refreshController.refresh();
   }
+
   return { loading, onSubmit, onStop, hasVisionModel, messageHistory }
 }

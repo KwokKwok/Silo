@@ -12,12 +12,13 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import Tooltip from '@src/components/MobileCompatible/Tooltip';
 import { useTranslation } from 'react-i18next';
 import ConfigImportModal from './ConfigImportModal';
-import { exportConfig } from '@src/utils/utils';
+import { exportConfig, isBrowserExtension } from '@src/utils/utils';
 import SecretKeyPopup from './SecretKeyPopup';
 import { GUIDE_STEP, LOCAL_STORAGE_KEY } from '@src/utils/types';
 import Guide from '@src/components/Guide';
 import { i18nOptions } from '@src/i18n/resources';
 import MobileModelSelector from './MobileModelSelector';
+import WebCopilotSettingsModal from './WebCopilotSettingsModal';
 
 export default function () {
   const secretKeyPopupRef = useRef(null);
@@ -76,7 +77,7 @@ export default function () {
 
   const { addMoreModel, activeModels } = useActiveModels();
   const mobileModelSelectorRef = useRef();
-
+  const webCopilotSettingsRef = useRef();
   const onAddMoreModel = () => {
     if (isMobile) {
       mobileModelSelectorRef.current.open();
@@ -229,6 +230,12 @@ export default function () {
                 onClick: () => customModelRef.current.open(),
                 hidden: isMobile || isImageMode,
                 title: t('header.custom_model'),
+              },
+              {
+                icon: 'i-ri-copilot-fill',
+                onClick: () => webCopilotSettingsRef.current.open(),
+                hidden: !isBrowserExtension || isImageMode,
+                title: t('webCopilot.settings'),
               },
               // {
               //   icon: 'iconify mingcute--translate-2-line',
@@ -399,6 +406,7 @@ export default function () {
         checkKeyValid={getUserData}
       />
       <ConfigImportModal ref={configModalRef} />
+      <WebCopilotSettingsModal ref={webCopilotSettingsRef} />
     </>
   );
 }
