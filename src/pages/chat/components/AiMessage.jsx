@@ -80,16 +80,21 @@ export default function AiMessage({
               </div>
             </div>
           )}
-          <div
-            className={`absolute bottom-2 right-2 flex text-sm items-center justify-end`}
-          >
-            <CopyToClipboard
-              text={content.trim()}
-              onCopy={() => message.success(t('common.copied'))}
+          {!loading && (
+            <div
+              className={
+                `absolute right-2 flex text-sm items-center justify-end cursor-pointer z-20 ` +
+                (plain ? 'bottom-0 ' : 'bottom-2')
+              }
             >
-              <i className="opacity-0 group-hover:opacity-60 transition-opacity duration-300 text-base  i-ri-file-copy-line cursor-pointer"></i>
-            </CopyToClipboard>
-          </div>
+              <CopyToClipboard
+                text={content.trim()}
+                onCopy={() => message.success(t('common.copied'))}
+              >
+                <i className="opacity-0 group-hover:opacity-60 transition-opacity duration-300 text-base  i-ri-file-copy-line cursor-pointer"></i>
+              </CopyToClipboard>
+            </div>
+          )}
           {formattedInfo && (
             <div className="mt-1 text-xs opacity-25">{formattedInfo}</div>
           )}

@@ -3,7 +3,6 @@ import { getChatResolver, isLimitedModel } from './models';
 import { fmtBaseUrl } from "./format";
 import { isExperienceSK } from "@src/store/storage";
 import { LOCAL_STORAGE_KEY } from "./types";
-import { getLocalStorage } from "./helpers";
 export function createOpenAICompatibleRequestOptions (sk, model, messages, options = {}) {
   return {
     method: 'POST',
@@ -38,7 +37,10 @@ const defaultModelIdResolver = modelId => {
 export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messages, chatOptions, controller, onChunk, onEnd, onError) {
   const modelId = (modelIdResolver || defaultModelIdResolver)(model) // 取出模型ID
   if (!sk) {
-    return onError(new Error('API Key未配置'))
+    if (isBrowserExtension) {
+      return onError(new Error('Please configure the API key in the extension main page and reload this page'))
+    }
+    return onError(new Error('API Key is missing'))
   }
   const startTime = Date.now()
   fetch(`${fmtBaseUrl(baseUrl)}/chat/completions`, { ...createOpenAICompatibleRequestOptions(sk, modelId, messages, chatOptions), signal: controller.current.signal })

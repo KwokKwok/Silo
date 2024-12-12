@@ -20,7 +20,7 @@ import { Dropdown } from 'tdesign-react';
 import ChatModelSelector from './ChatModelSelector';
 import { message } from 'tdesign-react';
 import { GUIDE_STEP } from '@src/utils/types';
-export default function ({ model, plain = false }) {
+export default function ({ model, plain = false, className = '' }) {
   const { t } = useTranslation();
   const messages = useChatMessages(model);
   const { activeModels, removeActiveModel } = useActiveModels();

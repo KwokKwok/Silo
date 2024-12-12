@@ -3,13 +3,13 @@ import { browser } from "wxt/browser";
 export default defineBackground(() => {
   browser.contextMenus.create({
     id: "explain",
-    title: "解释：%s",
+    title: `${browser.i18n.getMessage("explain")}`,
     contexts: ["selection"]
   });
 
   browser.contextMenus.create({
-    id: "summarize",
-    title: "总结全文",
+    id: "copilot",
+    title: `${browser.i18n.getMessage("copilot")}`,
     contexts: ["page"]
   });
 

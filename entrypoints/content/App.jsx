@@ -31,9 +31,10 @@ export default ({ ctx }) => {
     registerContentMessage(async payload => {
       const { menuItemId, selectionText } = payload;
       setPayload({
-        message: menuItemId === 'explain' ? selectionText : '总结全文',
+        message: menuItemId === 'explain' ? selectionText : '',
         type: menuItemId,
         context: getPageContext(),
+        from: 'silo:extension',
       });
       setShowPage(true);
     });

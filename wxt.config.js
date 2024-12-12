@@ -5,7 +5,7 @@ console.log(path.resolve(__dirname, './src'));
 export default defineConfig({
   modules: ['@wxt-dev/module-react'],
   manifest: {
-    name: 'Silo - Multi-model chat, text-to-image',
+    name: '__MSG_extName__',
     permissions: ['contextMenus'],
     action: {},
     "web_accessible_resources": [
@@ -13,7 +13,8 @@ export default defineConfig({
         "resources": ["ext.html"],
         "matches": ['*://*/*']
       }
-    ]
+    ],
+    default_locale: 'en',
   },
   vite: () => ({
     esbuild: {

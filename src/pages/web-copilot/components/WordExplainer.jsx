@@ -41,13 +41,14 @@ export default function ({ context, word }) {
       )
     : `${prompt}\n<context>${context}</context>\n`;
 
-  const { loading, onSubmit, onStop } = useSiloChat(systemPrompt, activeModels);
+  const { loading, onSubmit, onStop, messageHistory } = useSiloChat(
+    systemPrompt,
+    activeModels
+  );
 
   useEffect(() => {
     if (!isModelInit) return;
-    console.log(appActiveModels);
 
-    onStop(true);
     if (word) {
       setTimeout(() => {
         onSubmit(word);
@@ -71,8 +72,6 @@ export default function ({ context, word }) {
       return target;
     });
   };
-
-  console.log(isModelInit);
 
   if (!isModelInit || !filteredResponses.length) return null;
   return (
@@ -114,7 +113,7 @@ export default function ({ context, word }) {
         </div>
         <div className="flex-1 relative flex-shrink-0 ml-2">
           <InputControl
-            placeholder="继续问我吧"
+            placeholder=""
             plain
             enter
             onCursorPre={() => onCursor(-1)}
@@ -122,6 +121,7 @@ export default function ({ context, word }) {
             onStop={onStop}
             onSubmit={onSubmit}
             loading={filteredResponses[activeIndex]?.loading}
+            messageHistory={messageHistory}
           />
         </div>
       </div>

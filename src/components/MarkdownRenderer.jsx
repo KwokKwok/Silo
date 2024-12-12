@@ -103,7 +103,7 @@ export default function MarkdownRenderer({ content, loading = false }) {
       children={content}
       remarkPlugins={[remarkGfm, remarkMath]}
       rehypePlugins={[rehypeKatex]}
-      className="silo-markdown prose !max-w-none prose-pre:bg-transparent prose-slate prose-red prose-sm dark:prose-invert prose-headings:text-primary dark:prose-headings:text-[#2ddaff]"
+      className="silo-markdown prose !max-w-none prose-pre:bg-transparent prose-slate prose-red prose-sm dark:prose-invert prose-headings:text-primary dark:prose-headings:text-[#2ddaff] group"
       components={{
         code(props) {
           let { children, className, node, ...rest } = props;

@@ -7,6 +7,21 @@ export default function ({ close, payload, visible }) {
   const iframeRef = useRef(null);
 
   useEffect(() => {
+    const listener = event => {
+      const message = JSON.parse(event.data);
+      console.log(message);
+
+      if (message.type === 'silo:web-copilot-close') {
+        close();
+      }
+    };
+    window.addEventListener('message', listener);
+    return () => {
+      window.removeEventListener('message', listener);
+    };
+  }, []);
+
+  useEffect(() => {
     if (payload.type) {
       iframeRef.current.contentWindow.postMessage(JSON.stringify(payload), '*');
     }

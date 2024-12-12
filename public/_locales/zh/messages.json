@@ -1,0 +1,13 @@
+{
+  "extName": {
+    "message": "Silo - 多模型对话，文生图"
+  },
+  "explain": {
+    "message": "解释：%s",
+    "description": "Explain the selected text"
+  },
+  "copilot": {
+    "message": "问问 Silo",
+    "description": "Ask Silo"
+  }
+}

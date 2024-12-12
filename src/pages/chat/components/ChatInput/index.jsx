@@ -40,7 +40,10 @@ export default function ({
       onStop(true);
     } else if (action === SHORTCUTS_ACTIONS.STOP) {
       onStop(false);
-    } else if (action === SHORTCUTS_ACTIONS.RESEND_LAST) {
+    } else if (
+      action === SHORTCUTS_ACTIONS.RESEND_LAST &&
+      messageHistory.length > 0
+    ) {
       const { message, image, chatId } =
         messageHistory[messageHistory.length - 1];
       removeUserMessage(chatId);
