@@ -217,9 +217,12 @@ export default function ({
 
   // 添加粘贴事件处理函数
   const handlePaste = e => {
+    e.preventDefault();
     if (!hasVisionModel) return;
 
     const items = e.clipboardData.items;
+    console.log(items);
+
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.indexOf('image') !== -1) {
         const file = items[i].getAsFile();
@@ -250,10 +253,9 @@ export default function ({
         placement="top-left"
       >
         <div
-          className={
-            'min-h-12 z-40 absolute left-2 right-2 bottom-0 bg-white dark:bg-black flex pl-4 pr-10 py-3 shadow-md overflow-hidden transition-[border-radius] duration-400 ' +
-            (input.includes('\n') ? 'rounded-2xl' : 'rounded-3xl')
-          }
+          className={`min-h-12 z-40 absolute left-2 right-2 bottom-0 bg-white dark:bg-black flex pl-4 pr-10 py-3 shadow-md overflow-hidden transition-[border-radius] duration-400 ${
+            input.includes('\n') ? 'rounded-2xl' : 'rounded-3xl'
+          } ${plain ? '!bg-opacity-70' : ''}`}
         >
           {!plain && <SystemPromptSelector ref={systemPromptSelectorRef} />}
           {hasVisionModel && imageUploader}

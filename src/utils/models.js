@@ -65,6 +65,8 @@ function getCustomModelResolveFn (modelConfig) {
   return (...args) => model.resolveFn(modelConfig, ...args);
 }
 
+const VISION_CUSTOM_MODELS = ['grok-vision-beta'];
+
 export function getCustomModels () {
   if (!customModels) {
     customModels = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.USER_CUSTOM_MODELS, []);
@@ -78,8 +80,10 @@ export function getCustomModels () {
         const { series, name, isPro } = parseModelId(id);
         const icon = item.icon || getModelIcon(id); // 使用原始id获取图标
         const displayName = isPro ? `Pro/${name}` : name; // 根据 isPro 添加前缀
+        const vision = VISION_CUSTOM_MODELS.includes(name) || item.vision;
         return ({
           ...item,
+          vision,
           keywords: item.keywords || keywordsMap[series],
           ids: void 0, // 移除原始ids字段
           id,

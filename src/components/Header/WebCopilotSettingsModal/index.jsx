@@ -35,6 +35,9 @@ const WebCopilotSettings = forwardRef((props, ref) => {
   }, [activeModels, activePrompt]);
 
   const handleSave = () => {
+    if (selectedModels.length === 0) {
+      return;
+    }
     setActiveModels(selectedModels);
     setActivePrompt(prompt);
     setIsOpen(false);

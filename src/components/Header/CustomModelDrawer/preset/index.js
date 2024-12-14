@@ -36,7 +36,7 @@ const CUSTOM_MODEL_PRESET = [
     name: 'Google Gemini',
     id: 'preset-gemini',
     icon: '',
-    ids: 'google/gemini-1.5-flash,google/gemini-1.5-pro',
+    ids: 'google/gemini-1.5-flash,google/gemini-1.5-pro,google/gemini-2.0-flash-exp',
     length: '',
     price: void 0,
     vision: true,
@@ -108,10 +108,9 @@ const CUSTOM_MODEL_PRESET = [
     name: 'X.AI/Grok',
     id: 'preset-x-ai',
     icon: '',
-    ids: 'x-ai/grok-beta',
+    ids: 'x-ai/grok-beta,x-ai/grok-vision-beta',
     price: void 0,
     paramsMode: true,
-    vision: false,
     baseUrl: 'https://api.x.ai/v1',
     params: [
       {

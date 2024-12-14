@@ -6,6 +6,7 @@ import { getJsonDataFromLocalStorage, getLocalStorage, setJsonDataToLocalStorage
 import { LOCAL_STORAGE_KEY } from "./types";
 import { useActiveModels, useIsRowMode } from "../store/app";
 import i18next from "i18next";
+import { useLocalStorageAtom } from "@src/store/storage";
 
 /**
  * 响应式判断是否为移动端，>=768为PC
@@ -16,13 +17,16 @@ export function useIsMobile () {
   return !responsive.md;
 }
 
-export function useDarkMode () {
+export function useDarkMode (persist = true) {
   // 另外有一部分逻辑在 index.html，因为需要提前给 body 加 dark class
-  const initialValue = getLocalStorage(LOCAL_STORAGE_KEY.THEME_MODE, matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') == 'dark';
-  const [isDark, setDarkMode] = useState(initialValue);
+
+  const [theme, setTheme] = useLocalStorageAtom(LOCAL_STORAGE_KEY.THEME_MODE)
+  const isDark = theme == 'dark';
+  const setDarkMode = (isDark) => {
+    setTheme(isDark ? 'dark' : 'light', !persist);
+  }
   const functionRef = useRef(() => { });
   functionRef.current = function toggleDarkMode (isDark) {
-    setLocalStorage(LOCAL_STORAGE_KEY.THEME_MODE, isDark ? 'dark' : 'light');
     document.documentElement.setAttribute(
       'theme-mode',
       isDark ? 'dark' : 'light'

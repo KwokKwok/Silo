@@ -60,6 +60,8 @@ const noGuideAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.FLAG_NO_GUIDE, false)
 const wordExplainerActiveModelsAtom = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.WORD_EXPLAINER_ACTIVE_MODELS, SILO_ENV.DEFAULT_WEB_COPILOT_ACTIVE_MODELS))
 const wordExplainerPromptAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.WORD_EXPLAINER_PROMPT, wordExplainPrompt))
 
+const themeModeAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.THEME_MODE, matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+
 const atomMap = {
   [LOCAL_STORAGE_KEY.SYSTEM_PROMPTS]: allCustomSystemPromptsAtom,
   [LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS]: activeImageModels,
@@ -70,6 +72,7 @@ const atomMap = {
   [LOCAL_STORAGE_KEY.FLAG_NO_GUIDE]: noGuideAtom,
   [LOCAL_STORAGE_KEY.WORD_EXPLAINER_ACTIVE_MODELS]: wordExplainerActiveModelsAtom,
   [LOCAL_STORAGE_KEY.WORD_EXPLAINER_PROMPT]: wordExplainerPromptAtom,
+  [LOCAL_STORAGE_KEY.THEME_MODE]: themeModeAtom,
 }
 
 /**

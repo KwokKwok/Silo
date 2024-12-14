@@ -12,14 +12,25 @@ const commonIconClass =
 export default function () {
   const settingsRef = useRef(null);
   const [message, setMessage] = useState(!isBrowserExtension ? mockData : null);
-  const [isDark, setDarkMode] = useDarkMode();
+  const [isDark, setDarkMode] = useDarkMode(false);
 
   useEffect(() => {
+    document.documentElement.style.background = 'transparent';
     const handleMessage = event => {
       if (event.data && typeof event.data === 'string') {
+        console.log(event.data);
+
         const message = JSON.parse(event.data);
-        if (message.from === 'silo:extension') {
+        if (message.type === 'silo:web-copilot-init') {
+          setDarkMode(message.isDarkTheme);
+        }
+        if (message.type === 'silo:web-copilot-query') {
           setMessage(message);
+          setTimeout(() => {
+            console.log(document.getElementsByTagName('textarea'));
+
+            document.getElementsByTagName('textarea')[0]?.focus();
+          }, 100);
         }
       }
     };

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Modal from './components/Modal';
-import Logo from '@/public/logo.svg';
 
 async function registerContentMessage(onQuery) {
   browser.runtime.onMessage.addListener(function (request, sendResponse) {
@@ -32,9 +31,8 @@ export default ({ ctx }) => {
       const { menuItemId, selectionText } = payload;
       setPayload({
         message: menuItemId === 'explain' ? selectionText : '',
-        type: menuItemId,
+        type: 'silo:web-copilot-query',
         context: getPageContext(),
-        from: 'silo:extension',
       });
       setShowPage(true);
     });
