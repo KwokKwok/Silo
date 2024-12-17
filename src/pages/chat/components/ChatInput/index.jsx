@@ -217,14 +217,13 @@ export default function ({
 
   // 添加粘贴事件处理函数
   const handlePaste = e => {
-    e.preventDefault();
-    if (!hasVisionModel) return;
-
+    e.preventDefault(); // 阻止默认粘贴行为
     const items = e.clipboardData.items;
-    console.log(items);
 
+    let hasImage = false;
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.indexOf('image') !== -1) {
+        hasImage = true;
         const file = items[i].getAsFile();
         const reader = new FileReader();
         reader.onload = event => {
@@ -233,6 +232,19 @@ export default function ({
         reader.readAsDataURL(file);
         break;
       }
+    }
+
+    // 只有在没有图片的情况下才处理文本
+    if (!hasImage) {
+      const text = e.clipboardData.getData('text');
+      const target = e.target;
+      const start = target.selectionStart;
+      const end = target.selectionEnd;
+      const currentValue = target.value;
+      const newValue =
+        currentValue.substring(0, start) + text + currentValue.substring(end);
+      target.value = newValue;
+      target.selectionStart = target.selectionEnd = start + text.length;
     }
   };
 

@@ -5,6 +5,8 @@ function init () {
   const ERROR_KEY = '_error'
   if (location.href.endsWith('?clear')) {
     clearUserData();
+    // 移除 ?clear
+    location.href = location.href.replace('?clear', '');
     return;
   }
   if (location.host.startsWith('localhost')) return
