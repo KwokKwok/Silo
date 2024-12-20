@@ -148,6 +148,7 @@ const SILICON_MODELS = [
   textModelOf("Qwen/Qwen2.5-32B-Instruct", 1.26, 32, false),
   // textModelOf("Qwen/Qwen2-57B-A14B-Instruct", 1.26, 32, false),
   textModelOf("deepseek-ai/DeepSeek-V2.5", 1.33, 32, false),
+  textModelOf("deepseek-ai/deepseek-vl2", 0.99, 4, false, true),
   // textModelOf("deepseek-ai/DeepSeek-Coder-V2-Instruct", 1.33, 32, false),
   textModelOf("deepseek-ai/DeepSeek-V2-Chat", 1.33, 32, false),
   // textModelOf("Qwen/Qwen2.5-Math-72B-Instruct", 4.13, 4, false),

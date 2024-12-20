@@ -23,6 +23,22 @@ let evaluationInput = {};
 
 let messageHistory = [];
 
+let thoughts = {};
+
+function _addThought (chatId, model, content) {
+  if (!thoughts[chatId]) {
+    thoughts[chatId] = {};
+  }
+  if (!thoughts[chatId][model]) {
+    thoughts[chatId][model] = '';
+  }
+  thoughts[chatId][model] += content;
+}
+
+export function getModelThoughts (chatId, model) {
+  return thoughts[chatId]?.[model] || '';
+}
+
 function _addUserMessage (message, systemPrompt, image, activeModels) {
   const chatId = Date.now();
   messageHistory.push({ message, image, chatId });
@@ -105,8 +121,49 @@ async function _streamChat (chat, newMessage, systemPrompt) {
   chat.controller.current = new AbortController();
   chat.loading = true;
   const { model, controller } = chat
-  const _onChunk = (content) => {
+
+  const _onThinking = (content) => {
+    _addThought(chatId, model, content);
+  }
+
+  let isThoughtStart = false;
+  let isThoughtEnd = false;
+  const _onChunkContent = (content) => {
     chat.messages[chatId] += content;
+  }
+  const _onChunkThought = (content) => {
+    _onThinking(content)
+  }
+  const _onChunk = (content) => {
+    console.log(content);
+
+    // 阿里国际站团队推出的 Marco-o1 模型，可以模拟 o1 的思考过程。实现方式是使用两个标签 <Thought> 和 <Output> 包裹内容。
+    if (chat.messages[chatId].trim().startsWith('<Thought>')) {
+      isThoughtStart = true;
+      _addThought(chatId, model, chat.messages[chatId].replace('<Thought>', ''));
+      chat.messages[chatId] = '';
+    }
+    if (!isThoughtStart) {
+      // 非 thought 模式，直接输出内容
+      _onChunkContent(content);
+      return;
+    } else if (!isThoughtEnd) {
+      // 是 <Thought> 标签包裹的内容，且没有结束
+      _onChunkThought(content);
+      const currentThought = thoughts[chatId][model];
+      if (currentThought.includes('</Thought>')) {
+        isThoughtEnd = true;
+        const [thought, _output] = currentThought.split('</Thought>');
+        thoughts[chatId][model] = thought;
+        content = _output;
+      } else {
+        content = ''
+      }
+    }
+    if (content) {
+      _onChunkContent(content);
+      chat.messages[chatId] = chat.messages[chatId].replace('<Output>', '').replace('</Output>', '');
+    }
   }
   const _onEnd = (info) => {
     chat.loading = false;
@@ -118,6 +175,7 @@ async function _streamChat (chat, newMessage, systemPrompt) {
     chat.messages[chatId] = ERROR_PREFIX + err.message;
     _onEnd();
   }
+
 
   // 构建对话历史
   const chatMessage = Object.keys(chat.messages).reduce((arr, curTime) => {
@@ -168,7 +226,7 @@ async function _streamChat (chat, newMessage, systemPrompt) {
     _onError({ message: 'error.model_not_vlm' })
     return;
   }
-  streamChat(model, finalMessages, controller, _onChunk, _onEnd, _onError)
+  streamChat(model, finalMessages, controller, _onChunk, _onEnd, _onError, _onThinking)
 }
 
 

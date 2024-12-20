@@ -1,4 +1,4 @@
-export default async function geminiChat (modelConfig, modelId, messages, options, controller, onChunk, onEnd, onError) {
+export default async function geminiChat (modelConfig, modelId, messages, options, controller, onChunk, onEnd, onError, onThinking) {
   const { apiKey = '', baseUrl = '' } = modelConfig;
   if (!apiKey) {
     onError(new Error('请填写 API_KEY'))
@@ -101,13 +101,27 @@ export default async function geminiChat (modelConfig, modelId, messages, option
             return;
           }
           // 解析 JSON、根据响应取出 content、最后合并起来
-          const content = chunks.map(item => item.candidates[0].content['parts'][0].text).join('');
+          let thingContent = '';
+          let content = ''
+          for (const chunk of chunks) {
+            const parts = chunk.candidates[0].content['parts'];
+            for (const part of parts) {
+              if (part.thought) {
+                thingContent += part.text;
+              } else {
+                content += part.text;
+              }
+            }
+          }
           if (chunks.length > 0) {
             info.usage.total_tokens += chunks[chunks.length - 1].usageMetadata?.totalTokenCount || 0;
           }
           if (content) {
             // 将本次拿到的 content 返回
             onChunk(content);
+          }
+          if (thingContent) {
+            onThinking(thingContent);
           }
           read(); // 读取下一块数据
         });

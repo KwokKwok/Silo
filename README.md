@@ -51,7 +51,7 @@ version: '3.8'
 
 services:
   frontend:
-    image: ghcr.io/KwokKwok/silo:latest
+    image: ghcr.io/kwokkwok/silo:latest
     ports:
       - '3000:3000'
     environment:

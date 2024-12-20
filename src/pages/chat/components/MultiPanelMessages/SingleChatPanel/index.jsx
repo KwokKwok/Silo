@@ -181,6 +181,7 @@ export default function ({ model, plain = false, className = '' }) {
               <AiMessage
                 plain={plain}
                 model={model}
+                chatId={message.chatId}
                 info={getChatMessageInfo(model, message.chatId)}
                 isLast={index === messages.length - 1}
                 content={message.ai}

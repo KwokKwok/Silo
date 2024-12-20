@@ -37,7 +37,8 @@
     "stop": "Stopp",
     "clear_all": "Alles löschen",
     "copy_id": "ID kopieren",
-    "select_models": "Modell auswählen"
+    "select_models": "Modell auswählen",
+    "thinking": "Gedanken"
   },
   "error": {
     "model_not_vlm": "Dieses Modell ist kein visuelles Sprachmodell, bitte verwenden Sie nur Text-Prompts"

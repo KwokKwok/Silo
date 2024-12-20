@@ -25,6 +25,7 @@ export default function () {
           {Object.keys(item.ai).map(key => (
             <AiMessage
               key={`${item.chatId}-${key}`}
+              chatId={item.chatId}
               model={key}
               showModelName
               isLast={index === messages.length - 1}

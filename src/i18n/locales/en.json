@@ -37,7 +37,8 @@
     "stop": "Stop",
     "clear_all": "Clear All",
     "copy_id": "Copy ID",
-    "select_models": "Select model"
+    "select_models": "Select model",
+    "thinking": "Thoughts"
   },
   "error": {
     "model_not_vlm": "This model is not a visual language model, please only use text prompts"

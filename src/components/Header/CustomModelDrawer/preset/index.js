@@ -36,11 +36,11 @@ const CUSTOM_MODEL_PRESET = [
     name: 'Google Gemini',
     id: 'preset-gemini',
     icon: '',
-    ids: 'google/gemini-1.5-flash,google/gemini-1.5-pro,google/gemini-2.0-flash-exp',
+    ids: 'google/gemini-1.5-flash,google/gemini-1.5-pro,google/gemini-2.0-flash-exp,google/gemini-2.0-flash-thinking-exp',
     length: '',
     price: void 0,
     vision: true,
-    baseUrl: 'https://generativelanguage.googleapis.com/v1beta',
+    baseUrl: 'https://generativelanguage.googleapis.com/v1alpha',
     paramsMode: true,
     params: [
       {

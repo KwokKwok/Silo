@@ -89,15 +89,14 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
     })
 }
 
-export async function streamChat (model, messages, controller, onChunk, onEnd, onError) {
+export async function streamChat (model, messages, controller, onChunk, onEnd, onError, onThinking) {
   const modelChatOptions = getChatOptions(model, true)
   try {
     const resolver = getChatResolver(model);
-    return resolver(model, messages, modelChatOptions, controller, onChunk, onEnd, onError)
+    return resolver(model, messages, modelChatOptions, controller, onChunk, onEnd, onError, onThinking)
   } catch (error) {
     onError(error);
   }
-  return
 }
 
 export const isBrowserExtension = !!import.meta.env.BROWSER
@@ -173,4 +172,28 @@ export function importConfig (config) {
       localStorage.setItem(item, config[item])
     }
   })
+}
+
+/**
+ * 阿里国际站团队推出的 Marco-o1 模型，可以模拟 o1 的思考过程。实现方式是使用两个标签 <Thought> 和 <Output> 包裹内容。
+ * 
+ * 本函数的作用是解析出 <Thought> 和 <Output> 包裹的内容。
+ * 
+ * 例如：
+ * 
+ * <Thought>
+ * 思考过程
+ * </Thought>
+ * <Output>
+ * 输出内容
+ * </Output>
+ */
+export function marcoLikeThought (content, tagThought = 'Thought', tagOutput = 'Output') {
+
+  return {
+    isThoughtStart: false,
+    isThoughtEnd: false,
+    thought: "",
+    output: ""
+  }
 }

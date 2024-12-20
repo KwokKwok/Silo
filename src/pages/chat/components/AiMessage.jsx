@@ -2,15 +2,17 @@ import { ERROR_PREFIX } from '@src/utils/types';
 import 'katex/dist/katex.min.css';
 import '@src/assets/styles/markdown.scss';
 import { useDarkMode } from '@src/utils/use';
-import { useSingleChat } from '@src/utils/chat';
+import { getModelThoughts, useSingleChat } from '@src/utils/chat';
 import { getModelIcon } from '@src/utils/models';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import MarkdownRenderer from '@src/components/MarkdownRenderer';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { message } from 'tdesign-react';
+import { Collapse } from 'tdesign-react';
 
 export default function AiMessage({
+  chatId,
   model,
   content,
   isLast,
@@ -32,6 +34,9 @@ export default function AiMessage({
    * @deprecated 暂时不显示最佳答案文案，仅显示点赞
    */
   const isBest = (evaluate?.best || []).some(item => item.model === model);
+
+  const thought = getModelThoughts(chatId, model);
+
   const likes = (evaluate?.results || [])
     .map(item => (item.winners.includes(model) ? item.judge : ''))
     .filter(Boolean);
@@ -61,7 +66,24 @@ export default function AiMessage({
               {model}
             </span>
           )}
-          <MarkdownRenderer content={content} loading={isLast && loading} />
+          {!!thought && (
+            <Collapse
+              borderless
+              defaultExpandAll
+              className="!rounded-lg !rounded-r-2xl overflow-hidden mb-4 mt-2 opacity-80"
+            >
+              <Collapse.Panel header={t('common.thinking')}>
+                <MarkdownRenderer
+                  content={thought}
+                  loading={isLast && loading && !content}
+                />
+              </Collapse.Panel>
+            </Collapse>
+          )}
+          <MarkdownRenderer
+            content={content}
+            loading={isLast && loading && (!thought || content)}
+          />
           {likes.length > 0 && (
             <div className="mt-2 text-xs text-gray-500 dark:text-gray-400 flex items-center">
               <div className="flex items-center border border-primary rounded-[12px] overflow-hidden h-6 box-border pl-6 pr-2 relative ">
@@ -100,6 +122,14 @@ export default function AiMessage({
           )}
         </div>
       ),
-    [content, loading, likes.length, isDark, i18n.language, formattedInfo]
+    [
+      thought,
+      content,
+      loading,
+      likes.length,
+      isDark,
+      i18n.language,
+      formattedInfo,
+    ]
   );
 }

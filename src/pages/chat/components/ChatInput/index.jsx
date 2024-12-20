@@ -245,6 +245,7 @@ export default function ({
         currentValue.substring(0, start) + text + currentValue.substring(end);
       target.value = newValue;
       target.selectionStart = target.selectionEnd = start + text.length;
+      setInput(newValue);
     }
   };
 
