@@ -25,10 +25,26 @@ export default function AiMessage({
   const [isDark] = useDarkMode();
   const { loading } = useSingleChat(model);
 
-  const tokenUsage = info.usage?.total_tokens || 0;
-  const formattedInfo =
-    (tokenUsage ? `${tokenUsage} tokens used, ` : ' ') +
-    (info?.costTime ? `${info.costTime / 1000} s` : ' ');
+  const {
+    total_tokens: tokenUsage,
+    completion_tokens: completionTokens,
+    prompt_tokens: promptTokens,
+  } = info.usage || {};
+  const formattedInfo = (
+    <>
+      {tokenUsage && (
+        <span className="inline-flex items-center mr-1">
+          {tokenUsage} tokens used (
+          <i className="iconify mingcute--arrow-up-line" />
+          {promptTokens},
+          <i className="iconify mingcute--arrow-down-line ml-2" />
+          {completionTokens}
+          ),
+        </span>
+      )}
+      {info?.costTime && <span>{info.costTime / 1000} s</span>}
+    </>
+  );
 
   /**
    * @deprecated 暂时不显示最佳答案文案，仅显示点赞

@@ -114,7 +114,10 @@ export default async function geminiChat (modelConfig, modelId, messages, option
             }
           }
           if (chunks.length > 0) {
-            info.usage.total_tokens += chunks[chunks.length - 1].usageMetadata?.totalTokenCount || 0;
+            const usage = chunks[chunks.length - 1].usageMetadata;
+            info.usage.total_tokens = usage?.totalTokenCount || 0;
+            info.usage.completion_tokens = usage?.candidatesTokenCount || 0;
+            info.usage.prompt_tokens = usage?.promptTokenCount || 0;
           }
           if (content) {
             // 将本次拿到的 content 返回

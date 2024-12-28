@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
@@ -40,28 +41,62 @@ export default function ({ close, payload, visible }) {
   const url = browser.runtime.getURL('ext.html') + '#web-copilot';
   const [loaded, setLoaded] = useState(false);
   const iframeRef = useRef(null);
+  const offsetRef = useRef({ x: 0, y: 0, timestamp: 0 });
 
   useEffect(() => {
+    if (!loaded) return;
+    let maxOffset = { x: 0, y: 0 };
+    let lastPositon = { x: 0, y: 0 };
+    const calculateMaxOffset = () => {
+      const iframeRect = iframeRef.current.getBoundingClientRect();
+      maxOffset.x = (window.innerWidth - iframeRect.width) / 2;
+      maxOffset.y = (window.innerHeight - iframeRect.height) / 2;
+    };
+    const between = (min, max, value) => Math.max(Math.min(value, max), min);
     const listener = event => {
-      console.log(event.data);
       if (typeof event.data === 'string') {
         const message = JSON.parse(event.data);
+
         if (message.type === 'silo:web-copilot-close') {
           close();
+        } else if (message.type === 'silo:web-copilot-move') {
+          const oldOffset = offsetRef.current;
+          if (message.timestamp >= oldOffset.timestamp) {
+            const position = message.position;
+            offsetRef.current.x += position.x - lastPositon.x;
+            offsetRef.current.y += position.y - lastPositon.y;
+            Object.assign(lastPositon, position);
+            const { x: maxX, y: maxY } = maxOffset;
+
+            offsetRef.current = {
+              x: between(-maxX, maxX, offsetRef.current.x),
+              y: between(-maxY, maxY, offsetRef.current.y),
+              timestamp: message.timestamp,
+            };
+            iframeRef.current.style.transform = `translate3d(${offsetRef.current.x}px, ${offsetRef.current.y}px,0)`;
+          } else {
+            console.warn(
+              'silo:web-copilot-move 消息的 timestamp 小于旧的 timestamp'
+            );
+          }
         }
       }
     };
+    calculateMaxOffset();
+    window.addEventListener('resize', calculateMaxOffset);
     window.addEventListener('message', listener);
     return () => {
       window.removeEventListener('message', listener);
+      window.removeEventListener('resize', calculateMaxOffset);
     };
-  }, []);
+  }, [loaded]);
 
   function sendThemeMessage() {
     iframeRef.current.contentWindow.postMessage(
       JSON.stringify({
         type: 'silo:web-copilot-init',
         isDarkTheme: isPageDarkTheme(),
+        isIFrame: true,
       }),
       '*'
     );
@@ -92,13 +127,14 @@ export default function ({ close, payload, visible }) {
         ref={iframeRef}
         style={{
           colorScheme: isPageDarkTheme() ? 'dark' : 'light',
+          transform: `translate(${offsetRef.current.x}px, ${offsetRef.current.y}px)`,
         }}
         onLoad={() => {
           setLoaded(true);
           sendThemeMessage();
         }}
         className={
-          'border-none transition-opacity duration-300 outline-none rounded-[16px] shadow-2xl bg-transparent filter backdrop-blur-lg overflow-hidden w-[512px] h-[80dvh] ' +
+          'border-none transform-gpu transition-opacity duration-300 outline-none rounded-[16px] shadow-2xl bg-primary bg-opacity-[0.03] filter backdrop-blur-lg overflow-hidden w-[512px] h-[80dvh] ' +
           (loaded ? 'opacity-100' : 'opacity-0')
         }
         src={url}

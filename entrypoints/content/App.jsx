@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Modal from './components/Modal';
+import FloatButton from './components/FloatButton';
 
 async function registerContentMessage(onQuery) {
   browser.runtime.onMessage.addListener(function (request, sendResponse) {
@@ -25,16 +26,22 @@ const getPageContext = () => {
 export default ({ ctx }) => {
   const [showPage, setShowPage] = useState(false);
   const [payload, setPayload] = useState({});
+  const [showFloatButton, setShowFloatButton] = useState(false);
+
+  const _setPayload = (message = '') => {
+    setPayload({
+      message: message,
+      type: 'silo:web-copilot-query',
+      context: getPageContext(),
+    });
+    setShowPage(true);
+  };
 
   useEffect(() => {
     registerContentMessage(async payload => {
       const { menuItemId, selectionText } = payload;
-      setPayload({
-        message: menuItemId === 'explain' ? selectionText : '',
-        type: 'silo:web-copilot-query',
-        context: getPageContext(),
-      });
-      setShowPage(true);
+      _setPayload(menuItemId === 'explain' ? selectionText : '');
+      setShowFloatButton(true);
     });
   }, []);
 
@@ -50,9 +57,14 @@ export default ({ ctx }) => {
     <div className="fixed right-0 my-auto top-0 bottom-0 flex items-center">
       <Modal
         visible={showPage}
-        close={() => setShowPage(false)}
+        close={() => {
+          setShowPage(false);
+        }}
         payload={payload}
       />
+      {showFloatButton && !showPage && (
+        <FloatButton onClick={() => _setPayload()} />
+      )}
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
-import { Dialog, Button, Textarea, Space } from 'tdesign-react';
+import { Drawer, Button, Textarea, Space } from 'tdesign-react';
 import { getAllTextModels } from '@src/utils/models';
 
 import { useTranslation } from 'react-i18next';
@@ -44,13 +44,15 @@ const WebCopilotSettings = forwardRef((props, ref) => {
   };
 
   return (
-    <Dialog
+    <Drawer
+      placement="top"
+      size="72dvh"
       closeOnOverlayClick={false}
       visible={isOpen}
       onClose={() => setIsOpen(false)}
       header={t('webCopilot.settings')}
       footer={
-        <Space>
+        <Space className="flex justify-end items-center gap-2">
           <Button variant="outline" onClick={() => setIsOpen(false)}>
             {t('common.cancel')}
           </Button>
@@ -101,7 +103,7 @@ const WebCopilotSettings = forwardRef((props, ref) => {
           />
         </div>
       </div>
-    </Dialog>
+    </Drawer>
   );
 });
 

@@ -140,6 +140,7 @@ const SILICON_MODELS = [
   textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 32, true),
   // textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8, true),
   textModelOf("Qwen/QwQ-32B-Preview", 1.26, 32, false, false),
+  textModelOf("Qwen/QVQ-72B-Preview", 9.9, 32, false, true),
   // textModelOf("Tencent/Hunyuan-A52B-Instruct", 21, 32, false),
   textModelOf("Qwen/Qwen2.5-14B-Instruct", 0.7, 32, false),
   textModelOf("internlm/internlm2_5-20b-chat", 1, 32, false),

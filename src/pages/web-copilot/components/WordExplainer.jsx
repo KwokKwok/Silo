@@ -9,6 +9,7 @@ import {
 } from '@src/store/storage';
 import { LOCAL_STORAGE_KEY } from '@src/utils/types';
 import { useActiveModels } from '@src/store/app';
+import { isVisionModel } from '@src/utils/models';
 
 const SYSTEM_PROMPT_CONTEXT_KEY = '${silo_page_context}';
 
@@ -116,6 +117,9 @@ export default function ({ context, word }) {
             placeholder=""
             plain
             enter
+            hasVisionModel={isVisionModel(
+              filteredResponses[activeIndex]?.model
+            )}
             onCursorPre={() => onCursor(-1)}
             onCursorNext={() => onCursor(1)}
             onStop={onStop}
