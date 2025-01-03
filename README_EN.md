@@ -9,7 +9,7 @@
 <p align="center"><a target="_blank" rel="noreferrer noopener" href="https://silo-chat.vercel.app"><img alt="ONLINE" src="https://img.shields.io/badge/ONLINE-112418.svg?&style=for-the-badge&logo=safari&logoColor=white"></a></p>
 
 <p align="center"><a target="_blank" rel="noreferrer noopener" href="https://chromewebstore.google.com/detail/nakohnjaacfmjiodegibhnepfmioejln"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Chrome Web STORE-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a> 
-<a rel="noreferrer noopener" target="_blank" href="https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Edge Addons-141e24.svg?&style=for-the-badge&logo=microsoft-edge&logoColor=white"></a> 
+<!-- <a rel="noreferrer noopener" target="_blank" href="https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Edge Addons-141e24.svg?&style=for-the-badge&logo=microsoft-edge&logoColor=white"></a>  -->
 <a target="_blank" rel="noreferrer noopener" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2FKwokKwok%2FSilo.git&project-name=silo&repository-name=silo&env=SILO_EXPERIENCE_SK&envDescription=You%20can%20input%200%20indicate%20not%20providing%20trial%20way%EF%BC%8Ccheck%20GitHub%20README%20for%20more%20environment%20variables&envLink=https%3A%2F%2Fgithub.com%2FKwokKwok%2FSilo%2Fblob%2Fmain%2FREADME_EN.md%23environment-variables"><img alt="Deploy" src="https://img.shields.io/badge/Deploy To Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white"></a></p>
 
 <br/>
@@ -41,10 +41,10 @@
 ## Browser Extension
 
 <p align="left"><a target="_blank" rel="noreferrer noopener" href="https://chromewebstore.google.com/detail/nakohnjaacfmjiodegibhnepfmioejln"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Chrome Web Store-141e24.svg?&style=for-the-badge&logo=google-chrome&logoColor=white"></a>
-<a rel="noreferrer noopener" target="_blank" href="https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Edge Addons-141e24.svg?&style=for-the-badge&logo=microsoft-edge&logoColor=white"></a> 
+<!-- <a rel="noreferrer noopener" target="_blank" href="https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod"><img alt="Chrome Web Store" src="https://img.shields.io/badge/Edge Addons-141e24.svg?&style=for-the-badge&logo=microsoft-edge&logoColor=white"></a>  -->
 <a target="_blank" rel="noreferrer noopener" href="https://github.com/KwokKwok/SiloChat/releases"><img alt="github releases" src="https://img.shields.io/badge/RELEASES-181717.svg?&style=for-the-badge&logo=github&logoColor=white"></a></p>
 
-When the version of this project changes, it will be automatically packaged and submitted to the Chrome App Store and Edge Addons, and the generated zip file will be uploaded to [GitHub Releases](https://github.com/KwokKwok/SiloChat/releases). You can also download it directly and install it in the browser.
+When the version of this project changes, it will be automatically packaged and submitted to the Chrome App Store, and the generated zip file will be uploaded to [GitHub Releases](https://github.com/KwokKwok/SiloChat/releases). You can also download it directly and install it in the browser.
 
 ## Docker deployment
 

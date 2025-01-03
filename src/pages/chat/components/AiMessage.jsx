@@ -30,20 +30,22 @@ export default function AiMessage({
     completion_tokens: completionTokens,
     prompt_tokens: promptTokens,
   } = info.usage || {};
-  const formattedInfo = (
-    <>
-      {tokenUsage && (
-        <span className="inline-flex items-center mr-1">
-          {tokenUsage} tokens used (
-          <i className="iconify mingcute--arrow-up-line" />
-          {promptTokens},
-          <i className="iconify mingcute--arrow-down-line ml-2" />
-          {completionTokens}
-          ),
-        </span>
-      )}
-      {info?.costTime && <span>{info.costTime / 1000} s</span>}
-    </>
+  const formattedInfo = useMemo(
+    () => (
+      <>
+        {tokenUsage && (
+          <span className="inline-flex items-center mr-1">
+            {tokenUsage} tokens used (
+            <i className="iconify mingcute--arrow-up-line" />
+            {promptTokens},
+            <i className="iconify mingcute--arrow-down-line ml-2" />
+            {completionTokens}) ,
+          </span>
+        )}
+        {info?.costTime && <span>{info.costTime / 1000} s</span>}
+      </>
+    ),
+    [tokenUsage, promptTokens, completionTokens, info.costTime]
   );
 
   /**

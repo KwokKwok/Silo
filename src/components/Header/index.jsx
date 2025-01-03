@@ -1,7 +1,11 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
 import { useActiveModels, useIsRowMode } from '@src/store/app';
-import { useLocalStorageAtom, useZenMode } from '@src/store/storage';
+import {
+  useActiveSystemPromptId,
+  useLocalStorageAtom,
+  useZenMode,
+} from '@src/store/storage';
 import { fetchUserInfo } from '@src/services/api';
 import { useDarkMode, useIsMobile } from '@src/utils/use';
 import CustomModelDrawer from './CustomModelDrawer';
@@ -19,7 +23,6 @@ import Guide from '@src/components/Guide';
 import { i18nOptions } from '@src/i18n/resources';
 import MobileModelSelector from './MobileModelSelector';
 import WebCopilotSettingsModal from './WebCopilotSettingsModal';
-
 export default function () {
   const secretKeyPopupRef = useRef(null);
   const configModalRef = useRef(null);
@@ -76,6 +79,7 @@ export default function () {
   }, [isZenMode]);
 
   const { addMoreModel, activeModels } = useActiveModels();
+  const [systemPromptId] = useActiveSystemPromptId();
   const mobileModelSelectorRef = useRef();
   const webCopilotSettingsRef = useRef();
   const onAddMoreModel = () => {
@@ -259,7 +263,11 @@ export default function () {
                   {
                     icon: 'i-mingcute-search-fill',
                     onClick: async () => {
-                      const searchUrl = `${window.location.origin}/#/chat?q=%s`;
+                      const searchUrl = `${window.location.origin}/${
+                        isBrowserExtension ? 'ext.html' : ''
+                      }#/chat?q=%s&system_prompt_id=${systemPromptId}&model=${activeModels.join(
+                        ','
+                      )}`;
                       const notify = await notification.info({
                         placement: 'bottom-right',
                         offset: [-20, -20],
@@ -366,16 +374,16 @@ export default function () {
                     },
                     title: t('header.chrome_extension'),
                   },
-                  {
-                    icon: 'i-logos-microsoft-edge',
-                    onClick: () => {
-                      window.open(
-                        'https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod',
-                        '_blank'
-                      );
-                    },
-                    title: t('header.edge_addons'),
-                  },
+                  // {
+                  //   icon: 'i-logos-microsoft-edge',
+                  //   onClick: () => {
+                  //     window.open(
+                  //       'https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod',
+                  //       '_blank'
+                  //     );
+                  //   },
+                  //   title: t('header.edge_addons'),
+                  // },
                 ]
                   .filter(item => !item.hidden)
                   .map(item => ({

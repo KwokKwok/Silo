@@ -54,22 +54,16 @@ jobs:
         run: pnpm install
       - name: Zip extensions
         run: |
-          pnpm run zip:chrome && 
-          pnpm run zip:edge
+          pnpm run zip:chrome
       - name: Submit to stores
         run: |
           pnpm wxt submit \
             --chrome-zip ${{ env.DIRECTORY }}/${{env.PROJECT_NAME}}-${{ needs.Version.outputs.version }}-chrome.zip \
-            --edge-zip ${{ env.DIRECTORY }}/${{env.PROJECT_NAME}}-${{ needs.Version.outputs.version }}-edge.zip
         env:
           CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
           CHROME_CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
           CHROME_CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
           CHROME_REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
-          EDGE_PRODUCT_ID: ${{ secrets.EDGE_PRODUCT_ID }}
-          EDGE_CLIENT_ID: ${{ secrets.EDGE_CLIENT_ID }}
-          EDGE_CLIENT_SECRET: ${{ secrets.EDGE_CLIENT_SECRET }}
-          EDGE_ACCESS_TOKEN_URL: ${{ secrets.EDGE_ACCESS_TOKEN_URL }}
       - name: Create Release
         uses: softprops/action-gh-release@v2
         env:
@@ -81,4 +75,3 @@ jobs:
           prerelease: false
           files: |
             ${{ env.DIRECTORY }}/${{env.PROJECT_NAME}}-${{ needs.Version.outputs.version }}-chrome.zip
-            ${{ env.DIRECTORY }}/${{env.PROJECT_NAME}}-${{ needs.Version.outputs.version }}-edge.zip

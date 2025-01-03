@@ -215,7 +215,8 @@ async function _streamChat (chat, newMessage, systemPrompt) {
     formattedContent.push({ type: 'text', text: content })
     return {
       role,
-      content: formattedContent
+      // 部分 LLM 不支持复杂结构，做兼容处理
+      content: isVision ? formattedContent : content
     }
   })
 
