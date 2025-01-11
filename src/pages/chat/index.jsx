@@ -64,7 +64,11 @@ function Chat() {
   return (
     <>
       <div className="flex-1 h-0 w-full pb-2">
-        {isMobile ? <GroupMessages /> : <MultiPanelMessages />}
+        {isMobile ? (
+          <GroupMessages loading={loading} />
+        ) : (
+          <MultiPanelMessages />
+        )}
       </div>
       <div className="flex-shrink-0 w-full relative">
         <ChatInput

@@ -1,16 +1,26 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import UserMessage from '../UserMessage';
 import AiMessage from '../AiMessage';
 import ChatHolder from '../ChatHolder';
 import { useActiveChatsMessages } from '@src/utils/chat';
 import { useAutoScrollToBottomRef } from '@src/utils/use';
 
-export default function () {
+export default function ({ loading }) {
   const { scrollRef, scrollToBottom } = useAutoScrollToBottomRef();
   const messages = useActiveChatsMessages();
+  const isTouchedRef = useRef(false);
   useEffect(() => {
-    if (messages.length > 0) {
+    setTimeout(() => {
+      isTouchedRef.current = false;
+    }, 100);
+    if (loading) {
+      // 从非loading状态切换到loading状态时，需要自动滚动到底部
+      scrollToBottom();
+    }
+  }, [loading]);
+  useEffect(() => {
+    if (messages.length > 0 && !isTouchedRef.current) {
       scrollToBottom();
     }
   }, [messages]);
@@ -18,6 +28,9 @@ export default function () {
     <div
       className="h-full max-w-full flex flex-col items-start px-1 overflow-auto"
       ref={scrollRef}
+      onTouchStart={() => {
+        isTouchedRef.current = true;
+      }}
     >
       {messages.map((item, index) => (
         <React.Fragment key={item.chatId}>
