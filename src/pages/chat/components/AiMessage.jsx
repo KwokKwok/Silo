@@ -68,10 +68,10 @@ export default function AiMessage({
       ) : (
         <div
           className={
-            'group relative flex-shrink-0 max-w-full leading-6 ' +
+            'group relative flex-shrink-0 max-w-full leading-6 mb-2  ' +
             (plain
               ? ''
-              : 'mb-2 px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md')
+              : 'px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md')
           }
         >
           {showModelName && (

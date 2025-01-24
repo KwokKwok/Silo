@@ -1,8 +1,5 @@
 [English Version](https://github.com/KwokKwok/Silo/blob/main/README_EN.md)
 
-> [!NOTE]
-> 请注意：体验密钥是公开的，但请不要滥用体验密钥。如您需要修改代码自行部署该项目，请同时修改默认的体验密钥，或者至少不要移除体验密钥相关限制。
-
 <p align="center"><a href="https://silo-chat.vercel.app" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://silo-chat.vercel.app/logo.svg"></a></p>
 <h1 align="center">Silo - 纯前端多模型对话、文生图</h1>
 
@@ -36,6 +33,23 @@
 <!-- ![dark](./docs/dark.png)
 ![light](./docs/light.png)
 <img src="./docs/mobile.jpg" alt="mobile" width="250"> -->
+
+## 通过 URL 设置参数
+
+Silo 支持通过 URL 获取参数，这使得它可以作为搜索引擎使用。例如，在 Chrome 中将 `https://silo-chat.vercel.app/#/chat?q=%s` 添加为搜索引擎。
+
+此外，你可以通过指定 `active_models` 或 `system_prompt_id` 来临时设置新对话页面的模型和系统提示词。
+
+可用参数：
+
+```js
+- q: 对话问题，适用于搜索引擎
+- active_models: 激活的对话模型 ID，多个模型用英文逗号分隔。模型 ID 可在对话面板中复制
+- system_prompt_id: 激活的系统提示词 ID。系统提示词 ID 可在选择页面复制
+```
+
+> [!NOTE]
+> 比如，你可以通过指定 `system_prompt_id` 提供一个翻译引擎<br>`https://silo-chat.vercel.app/#/chat?q=%s&system_prompt_id=preset-english-translator`
 
 ## 浏览器扩展
 
@@ -79,23 +93,6 @@ services:
 - SILO_DEFAULT_ACTIVE_CHAT_MODELS: 默认激活的对话模型，多个模型以英文逗号分隔
 - SILO_DEFAULT_ACTIVE_IMAGE_MODELS: 默认激活的文生图模型，多个模型以英文逗号分隔
 ```
-
-## 通过 URL 设置参数
-
-Silo 支持通过 URL 获取参数，这使得它可以作为搜索引擎使用。例如，在 Chrome 中将 `https://silo-chat.vercel.app/#/chat?q=%s` 添加为搜索引擎。
-
-此外，你可以通过指定 `active_models` 或 `system_prompt_id` 来临时设置新对话页面的模型和系统提示词。
-
-可用参数：
-
-```js
-- q: 对话问题，适用于搜索引擎
-- active_models: 激活的对话模型 ID，多个模型用英文逗号分隔。模型 ID 可在对话面板中复制
-- system_prompt_id: 激活的系统提示词 ID。系统提示词 ID 可在选择页面复制
-```
-
-> [!NOTE]
-> 比如，你可以通过指定 `system_prompt_id` 提供一个翻译引擎<br>`https://silo-chat.vercel.app/#/chat?q=%s&system_prompt_id=preset-english-translator`
 
 ## 致谢
 

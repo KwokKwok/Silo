@@ -1,8 +1,5 @@
 [简体中文](https://github.com/KwokKwok/Silo)
 
-> [!NOTE]
-> Please note: The experience key is public, but please do not abuse it. If you need to modify the code for self-deployment of this project, please modify the default experience key at the same time, or at least do not remove the related restrictions.
-
 <p align="center"><a target="_blank" href="https://silo-chat.vercel.app" target="_blank" rel="noreferrer noopener"><img style="width:160px" alt="Silo" src="https://silo-chat.vercel.app/logo.svg"></a></p>
 <h1 align="center">Silo - Pure front-end multi-model chat, text-to-image generation</h1>
 
@@ -37,6 +34,23 @@
 <!-- ![dark](./docs/dark.png)
 ![light](./docs/light.png)
 <img src="./docs/mobile.jpg" alt="mobile" width="250"> -->
+
+## Setting Parameters via URL
+
+Silo supports getting parameters through URLs, which allows it to be used as a search engine. For example, you can add `https://silo-chat.vercel.app/#/chat?q=%s` as a search engine in Chrome.
+
+Additionally, you can temporarily set the model and system prompt for the new conversation page by specifying `active_models` or `system_prompt_id`.
+
+Available parameters:
+
+```js
+- q: Conversation question, suitable for search engines
+- active_models: Activated chat model IDs, multiple models separated by commas. Model IDs can be copied from the chat panel
+- system_prompt_id: Activated system prompt ID. System prompt IDs can be copied from the selection page
+```
+
+> [!NOTE]
+> For example, you can use the default English Translator system prompt to provide a translation engine by specifying `system_prompt_id`<br>`https://silo-chat.vercel.app/#/chat?q=%s&system_prompt_id=preset-english-translator`
 
 ## Browser Extension
 
@@ -80,23 +94,6 @@ services:
 - SILO_DEFAULT_ACTIVE_CHAT_MODELS: Default activated chat models, multiple models separated by commas
 - SILO_DEFAULT_ACTIVE_IMAGE_MODELS: Default activated text-to-image models, multiple models separated by commas
 ```
-
-## Setting Parameters via URL
-
-Silo supports getting parameters through URLs, which allows it to be used as a search engine. For example, you can add `https://silo-chat.vercel.app/#/chat?q=%s` as a search engine in Chrome.
-
-Additionally, you can temporarily set the model and system prompt for the new conversation page by specifying `active_models` or `system_prompt_id`.
-
-Available parameters:
-
-```js
-- q: Conversation question, suitable for search engines
-- active_models: Activated chat model IDs, multiple models separated by commas. Model IDs can be copied from the chat panel
-- system_prompt_id: Activated system prompt ID. System prompt IDs can be copied from the selection page
-```
-
-> [!NOTE]
-> For example, you can use the default English Translator system prompt to provide a translation engine by specifying `system_prompt_id`<br>`https://silo-chat.vercel.app/#/chat?q=%s&system_prompt_id=preset-english-translator`
 
 ## Acknowledgments
 
