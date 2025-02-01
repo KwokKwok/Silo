@@ -139,6 +139,8 @@ const SILICON_MODELS = [
   textModelOf("google/gemma-2-9b-it", 0, 8, true),
   textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 32, true),
   // textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8, true),
+  textModelOf("deepseek-ai/DeepSeek-R1", 16, 64, false, false),
+  textModelOf("deepseek-ai/DeepSeek-V3", 8, 64, false, false),
   textModelOf("Qwen/QwQ-32B-Preview", 1.26, 32, false, false),
   textModelOf("Qwen/QVQ-72B-Preview", 9.9, 32, false, true),
   // textModelOf("Tencent/Hunyuan-A52B-Instruct", 21, 32, false),

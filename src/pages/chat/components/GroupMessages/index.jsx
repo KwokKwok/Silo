@@ -3,7 +3,7 @@ import { useEffect, useRef } from 'react';
 import UserMessage from '../UserMessage';
 import AiMessage from '../AiMessage';
 import ChatHolder from '../ChatHolder';
-import { useActiveChatsMessages } from '@src/utils/chat';
+import { getChatMessageInfo, useActiveChatsMessages } from '@src/utils/chat';
 import { useAutoScrollToBottomRef } from '@src/utils/use';
 
 export default function ({ loading }) {
@@ -35,16 +35,21 @@ export default function ({ loading }) {
       {messages.map((item, index) => (
         <React.Fragment key={item.chatId}>
           <UserMessage content={item.user} image={item.image} />
-          {Object.keys(item.ai).map(key => (
-            <AiMessage
-              key={`${item.chatId}-${key}`}
-              chatId={item.chatId}
-              model={key}
-              showModelName
-              isLast={index === messages.length - 1}
-              content={item.ai[key]}
-            />
-          ))}
+          {Object.keys(item.ai).map(key =>
+            item.ai[key] ? (
+              <AiMessage
+                key={`${item.chatId}-${key}`}
+                chatId={item.chatId}
+                model={key}
+                info={getChatMessageInfo(key, item.chatId)}
+                showModelName
+                isLast={index === messages.length - 1}
+                content={item.ai[key]}
+              />
+            ) : (
+              <></>
+            )
+          )}
         </React.Fragment>
       ))}
     </div>
