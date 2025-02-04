@@ -135,13 +135,10 @@ async function _streamChat (chat, newMessage, systemPrompt) {
     _onThinking(content)
   }
   const _onChunk = (content) => {
-    console.log(content);
-
     // 阿里国际站团队推出的 Marco-o1 模型，可以模拟 o1 的思考过程。实现方式是使用两个标签 <Thought> 和 <Output> 包裹内容。
-    // DeepSeek 使用 <think> 标签包裹
-    if (chat.messages[chatId].trim().startsWith('<Thought>') || chat.messages[chatId].trim().startsWith('<think>')) {
+    if (chat.messages[chatId].trim().startsWith('<Thought>')) {
       isThoughtStart = true;
-      _addThought(chatId, model, chat.messages[chatId].replace('<Thought>', '').replace('<think>', ''));
+      _addThought(chatId, model, chat.messages[chatId].replace('<Thought>', ''));
       chat.messages[chatId] = '';
     }
     if (!isThoughtStart) {
@@ -152,9 +149,9 @@ async function _streamChat (chat, newMessage, systemPrompt) {
       // 是 <Thought> 标签包裹的内容，且没有结束
       _onChunkThought(content);
       const currentThought = thoughts[chatId][model];
-      if (currentThought.includes('</Thought>') || currentThought.includes('</think>')) {
+      if (currentThought.includes('</Thought>')) {
         isThoughtEnd = true;
-        const [thought, _output] = currentThought.includes('</Thought>') ? currentThought.split('</Thought>') : currentThought.split('</think>');
+        const [thought, _output] = currentThought.split('</Thought>');
         thoughts[chatId][model] = thought;
         if (!thought.trim()) {
           delete thoughts[chatId][model]

@@ -34,7 +34,7 @@ const defaultModelIdResolver = modelId => {
   return rest.join('/');
 }
 
-export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messages, chatOptions, controller, onChunk, onEnd, onError) {
+export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messages, chatOptions, controller, onChunk, onEnd, onError, onThinking) {
   const modelId = (modelIdResolver || defaultModelIdResolver)(model) // 取出模型ID
   if (!sk) {
     if (isBrowserExtension) {
@@ -69,14 +69,20 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
             return;
           }
           const decodedData = decoder.decode(value); // 解码数据
-          const content = decodedData.split('data: ').filter(item => item.trim() && item.startsWith('{')).map(item => {
+
+          const deltas = decodedData.split('data: ').filter(item => item.trim() && item.startsWith('{')).map(item => {
             const { choices, ...rest } = JSON.parse(item)
             info = rest
-            return choices[0].delta.content
-          }).join("");
+            return choices[0].delta
+          });
+          const content = deltas.map(item => item.content).filter(Boolean).join('');
+          const reasoning_content = deltas.map(item => item.reasoning_content).filter(Boolean).join('');
           if (content) {
             // 将本次拿到的 content 拼接到 streamingMessage 中
             onChunk(content);
+          }
+          if (reasoning_content) {
+            onThinking(reasoning_content)
           }
           read(); // 递归读取下一块数据
         });

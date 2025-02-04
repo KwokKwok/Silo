@@ -35,21 +35,17 @@ export default function ({ loading }) {
       {messages.map((item, index) => (
         <React.Fragment key={item.chatId}>
           <UserMessage content={item.user} image={item.image} />
-          {Object.keys(item.ai).map(key =>
-            item.ai[key] ? (
-              <AiMessage
-                key={`${item.chatId}-${key}`}
-                chatId={item.chatId}
-                model={key}
-                info={getChatMessageInfo(key, item.chatId)}
-                showModelName
-                isLast={index === messages.length - 1}
-                content={item.ai[key]}
-              />
-            ) : (
-              <></>
-            )
-          )}
+          {Object.keys(item.ai).map(key => (
+            <AiMessage
+              key={`${item.chatId}-${key}`}
+              chatId={item.chatId}
+              model={key}
+              info={getChatMessageInfo(key, item.chatId)}
+              showModelName
+              isLast={index === messages.length - 1}
+              content={item.ai[key]}
+            />
+          ))}
         </React.Fragment>
       ))}
     </div>

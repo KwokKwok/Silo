@@ -127,6 +127,9 @@ export function getModelIcon (model) {
  */
 const SILICON_MODELS = [
   textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32, false),
+  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Llama-8B", 0, 32, false, false),
+  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", 0, 32, false, false),
+  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B", 0, 32, false, false),
   textModelOf("AIDC-AI/Marco-o1", 0, 32, false),
   textModelOf("THUDM/glm-4-9b-chat", 0, 128, false),
   textModelOf("01-ai/Yi-1.5-9B-Chat-16K", 0, 16, false),
@@ -150,6 +153,10 @@ const SILICON_MODELS = [
   textModelOf("Qwen/Qwen2.5-Coder-32B-Instruct", 1.26, 32, false),
   textModelOf("Qwen/Qwen2.5-32B-Instruct", 1.26, 32, false),
   // textModelOf("Qwen/Qwen2-57B-A14B-Instruct", 1.26, 32, false),
+  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Llama-70B", 4.13, 32, false, false),
+  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-32B", 1.26, 32, false, false),
+  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-14B", 0.7, 32, false, false),
+
   textModelOf("deepseek-ai/DeepSeek-V2.5", 1.33, 32, false),
   textModelOf("deepseek-ai/deepseek-vl2", 0.99, 4, false, true),
   // textModelOf("deepseek-ai/DeepSeek-Coder-V2-Instruct", 1.33, 32, false),

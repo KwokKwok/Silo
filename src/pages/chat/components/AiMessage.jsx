@@ -75,7 +75,7 @@ export default function AiMessage({
           }
         >
           {showModelName && (
-            <span className="text-xs mb-1 flex items-center text-gray-500 dark:text-gray-400">
+            <span className="text-xs mb-2 flex items-center text-gray-500 dark:text-gray-400">
               <img
                 src={getModelIcon(model)}
                 alt=""
