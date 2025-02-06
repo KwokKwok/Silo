@@ -38,7 +38,8 @@
     "clear_all": "清空所有",
     "copy_id": "复制 ID",
     "select_models": "选择模型",
-    "thinking": "思考过程"
+    "thinking": "思考中...",
+    "think_end": "已深度思考"
   },
   "error": {
     "model_not_vlm": "该模型不是视觉语言模型，请仅使用文本提示"

@@ -41,7 +41,7 @@ export default function ({ loading }) {
               chatId={item.chatId}
               model={key}
               info={getChatMessageInfo(key, item.chatId)}
-              showModelName
+              mobile
               isLast={index === messages.length - 1}
               content={item.ai[key]}
             />

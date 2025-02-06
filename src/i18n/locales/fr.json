@@ -38,7 +38,8 @@
     "clear_all": "Tout effacer",
     "copy_id": "Copier l'ID",
     "select_models": "Sélectionnez le modèle",
-    "thinking": "Pensées"
+    "thinking": "Pensée...",
+    "think_end": "Ont pensé profondément"
   },
   "error": {
     "model_not_vlm": "Ce modèle n'est pas un modèle de langage visuel, veuillez utiliser uniquement des invites textuelles"

@@ -38,7 +38,8 @@
     "clear_all": "Limpiar todo",
     "copy_id": "Copiar ID",
     "select_models": "Seleccionar modelo",
-    "thinking": "Pensamientos"
+    "thinking": "Pensamiento...",
+    "think_end": "He pensado profundamente"
   },
   "error": {
     "model_not_vlm": "Este modelo no es un modelo de lenguaje visual, por favor use solo indicaciones de texto"

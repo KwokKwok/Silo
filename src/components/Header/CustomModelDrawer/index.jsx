@@ -5,6 +5,7 @@ import CustomModelForm from './CustomModelForm';
 import { useRef } from 'react';
 import { Drawer } from 'tdesign-react';
 import { useTranslation } from 'react-i18next';
+import { useIsMobile } from '@src/utils/use';
 
 // 用户需要输入模型名称、图标、解析方法等信息
 export default forwardRef(({}, ref) => {
@@ -12,6 +13,7 @@ export default forwardRef(({}, ref) => {
   useImperativeHandle(ref, () => ({
     open: () => setVisible(true),
   }));
+  const isMobile = useIsMobile();
   const [visible, setVisible] = useState(false);
   const onClose = () => {
     setVisible(false);
@@ -25,10 +27,9 @@ export default forwardRef(({}, ref) => {
   return (
     <Drawer
       header={t('header.custom_model')}
-      size="large"
       visible={visible}
       confirmOnEnter
-      width={'720px'}
+      size={isMobile ? '100vw' : 'large'}
       onClose={onClose}
       onConfirm={onConfirm}
     >

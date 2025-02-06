@@ -13,6 +13,7 @@ import { useMemo } from 'react';
 import { isBrowserExtension } from '@src/utils/utils';
 import { useTranslation } from 'react-i18next';
 import { Switch } from 'tdesign-react';
+import { useIsMobile } from '@src/utils/use';
 const { FormItem } = Form;
 
 const ID_REGEX = /^[a-zA-Z0-9_\-@\.]+\/[a-zA-Z0-9_\-@\.\/]+$/;
@@ -20,6 +21,7 @@ const ID_REGEX = /^[a-zA-Z0-9_\-@\.]+\/[a-zA-Z0-9_\-@\.\/]+$/;
 export default forwardRef((props, ref) => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
+  const isMobile = useIsMobile();
   useImperativeHandle(ref, () => ({
     submit: async () => {
       const success = await form.validate();
@@ -136,7 +138,7 @@ export default forwardRef((props, ref) => {
     <>
       <Form
         rules={rules}
-        labelWidth={'128px'}
+        labelWidth={isMobile ? '' : '128px'}
         form={form}
         labelAlign="right"
         layout="vertical"

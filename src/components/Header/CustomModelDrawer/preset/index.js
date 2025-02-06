@@ -36,7 +36,7 @@ const CUSTOM_MODEL_PRESET = [
     name: 'Google Gemini',
     id: 'preset-gemini',
     icon: '',
-    ids: 'google/gemini-1.5-flash,google/gemini-1.5-pro,google/gemini-2.0-flash-exp,google/gemini-2.0-flash-thinking-exp',
+    ids: 'google/gemini-2.0-flash,google/gemini-2.0-flash-lite-preview,google/gemini-2.0-flash-thinking-exp,google/gemini-2.0-pro-exp',
     length: '',
     price: void 0,
     vision: true,
@@ -138,7 +138,7 @@ const CUSTOM_MODEL_PRESET = [
     name: 'DeepSeek',
     id: 'preset-deepseek',
     icon: '',
-    ids: 'deepseek-ai/deepseek-coder,deepseek-ai/deepseek-chat',
+    ids: 'deepseek-ai/deepseek-reasoner,deepseek-ai/deepseek-chat',
     price: void 0,
     paramsMode: true,
     params: [

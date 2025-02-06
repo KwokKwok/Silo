@@ -232,23 +232,15 @@ export default function () {
               {
                 icon: 'i-mingcute-plugin-2-fill',
                 onClick: () => customModelRef.current.open(),
-                hidden: isMobile || isImageMode,
+                hidden: isImageMode,
                 title: t('header.custom_model'),
               },
               {
                 icon: 'i-ri-copilot-fill',
                 onClick: () => webCopilotSettingsRef.current.open(),
-                hidden: !isBrowserExtension || isImageMode,
+                hidden: !isBrowserExtension || isMobile || isImageMode,
                 title: t('webCopilot.settings'),
               },
-              // {
-              //   icon: 'iconify mingcute--translate-2-line',
-              //   title: t('header.select_language'),
-              //   children: i18nOptions.map(item => ({
-              //     content: item.label,
-              //     onClick: () => i18n.changeLanguage(item.value),
-              //   })),
-              // },
               {
                 icon: 'iconify mingcute--more-3-fill',
                 title: t('header.more'),
@@ -258,7 +250,7 @@ export default function () {
                     icon: 'i-mingcute-question-fill',
                     onClick: () => setNoGuide(false),
                     title: t('header.guide'),
-                    hidden: isMobile,
+                    hidden: isMobile || isImageMode,
                   },
                   {
                     icon: 'i-mingcute-search-fill',
@@ -296,6 +288,7 @@ export default function () {
                         ),
                       });
                     },
+                    hidden: isMobile || isImageMode,
                     title: t('header.add_as_search_engine'),
                   },
                   {
@@ -373,17 +366,8 @@ export default function () {
                       );
                     },
                     title: t('header.chrome_extension'),
+                    hidden: isMobile || isImageMode,
                   },
-                  // {
-                  //   icon: 'i-logos-microsoft-edge',
-                  //   onClick: () => {
-                  //     window.open(
-                  //       'https://microsoftedge.microsoft.com/addons/detail/silo-siliconcloud-api-p/kjfjhcmdndibdlfofffhoehailbdlbod',
-                  //       '_blank'
-                  //     );
-                  //   },
-                  //   title: t('header.edge_addons'),
-                  // },
                 ]
                   .filter(item => !item.hidden)
                   .map(item => ({
