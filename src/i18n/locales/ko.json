@@ -38,7 +38,8 @@
     "clear_all": "모두 지우기",
     "copy_id": "ID 복사",
     "select_models": "모델 선택",
-    "thinking": "사고 과정"
+    "thinking": "생각...",
+    "think_end": "깊이 생각했습니다"
   },
   "error": {
     "model_not_vlm": "이 모델은 시각 언어 모델이 아닙니다. 텍스트 프롬프트만 사용해 주세요"

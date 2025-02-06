@@ -38,7 +38,8 @@
     "clear_all": "Alles löschen",
     "copy_id": "ID kopieren",
     "select_models": "Modell auswählen",
-    "thinking": "Gedanken"
+    "thinking": "Denken...",
+    "think_end": "Habe tief nachgedacht"
   },
   "error": {
     "model_not_vlm": "Dieses Modell ist kein visuelles Sprachmodell, bitte verwenden Sie nur Text-Prompts"

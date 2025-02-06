@@ -38,7 +38,8 @@
     "clear_all": "すべてクリア",
     "copy_id": "IDをコピー",
     "select_models": "モデルを選択してください",
-    "thinking": "思考プロセス"
+    "thinking": "考え...",
+    "think_end": "深く考えました"
   },
   "error": {
     "model_not_vlm": "このモデルは視覚言語モデルではありません。テキストプロンプトのみを使用してください"

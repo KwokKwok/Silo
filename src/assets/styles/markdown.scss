@@ -5,6 +5,11 @@
     overflow-x: auto;
   }
 
+  ul>li,
+  ol>li {
+    margin-left: 4px;
+  }
+
   // table {
   //   margin: 8px 0;
   // }

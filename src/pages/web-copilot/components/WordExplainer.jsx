@@ -116,7 +116,6 @@ export default function ({ context, word }) {
           <InputControl
             placeholder=""
             plain
-            enter
             hasVisionModel={isVisionModel(
               filteredResponses[activeIndex]?.model
             )}

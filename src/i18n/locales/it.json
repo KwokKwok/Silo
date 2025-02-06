@@ -38,7 +38,8 @@
     "clear_all": "Cancella tutto",
     "copy_id": "Copia ID",
     "select_models": "Seleziona modello",
-    "thinking": "Pensieri"
+    "thinking": "Pensiero...",
+    "think_end": "Ho pensato profondamente"
   },
   "error": {
     "model_not_vlm": "Questo modello non è un modello di linguaggio visivo, usa solo prompt testuali"

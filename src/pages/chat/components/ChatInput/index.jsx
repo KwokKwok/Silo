@@ -19,7 +19,6 @@ export default function ({
   onStop,
   onSubmit,
   loading,
-  enter,
   placeholder,
   plain = false,
   onCursorPre,
@@ -149,17 +148,29 @@ export default function ({
     setHistoryIndex(targetIndex);
   };
 
+  useEffect(() => {
+    if (isMobile && showShortcuts) {
+      inputRef.current.blur();
+    }
+  }, [isMobile, showShortcuts]);
+
   const onKeyDown = e => {
-    if (onKeyDownHook(e)) return;
-    if (!enter && isMobile) return; // 移动端只允许点击发送
+    if (onKeyDownHook(e)) {
+      return;
+    }
+
     if (e.key === 'Enter') {
       // 允许回车键发送
-      if (!e.shiftKey) {
+      if (isMobile || !e.shiftKey) {
         // shift+回车 换行不发送
         e.preventDefault();
         onSend();
+        if (isMobile) {
+          inputRef.current.blur();
+        }
       }
     }
+
     // 获取光标的位置
     const selectionStart = inputRef.current.selectionStart;
     const isOnStart = selectionStart === 0;
@@ -287,6 +298,7 @@ export default function ({
               id={GUIDE_STEP.CHAT_INPUT}
               type="text"
               rows={1}
+              enterkeyhint="send"
               value={input}
               style={{ height: '1.5rem' }}
               onInput={onInput}

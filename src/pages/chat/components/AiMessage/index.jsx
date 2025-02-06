@@ -10,13 +10,14 @@ import MarkdownRenderer from '@src/components/MarkdownRenderer';
 import CopyToClipboard from 'react-copy-to-clipboard';
 import { message } from 'tdesign-react';
 import { Collapse } from 'tdesign-react';
+import './index.scss';
 
 export default function AiMessage({
   chatId,
   model,
   content,
   isLast,
-  showModelName = false,
+  mobile = false,
   plain = false,
   evaluate = {},
   info = {},
@@ -71,10 +72,12 @@ export default function AiMessage({
             'group relative flex-shrink-0 max-w-full leading-6 mb-2  ' +
             (plain
               ? ''
-              : 'px-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l-md')
+              : mobile
+              ? 'pl-2 pr-2 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-2xl rounded-l'
+              : 'pl-2 pr-4 py-2 dark:bg-teal-900 bg-slate-200 rounded-r-lg rounded-l-md')
           }
         >
-          {showModelName && (
+          {mobile && (
             <span className="text-xs mb-2 flex items-center text-gray-500 dark:text-gray-400">
               <img
                 src={getModelIcon(model)}
@@ -88,9 +91,20 @@ export default function AiMessage({
             <Collapse
               borderless
               defaultExpandAll
-              className="!rounded-lg !rounded-r-2xl overflow-hidden mb-4 mt-2 opacity-80"
+              expandIconPlacement="right"
+              className="overflow-hidden !bg-transparent"
             >
-              <Collapse.Panel header={t('common.thinking')}>
+              <Collapse.Panel
+                className="thinking-section"
+                header={
+                  <span className="flex items-center">
+                    <i className="iconify ri--brain-line mr-1"></i>
+                    {loading && !content
+                      ? t('common.thinking')
+                      : t('common.think_end')}
+                  </span>
+                }
+              >
                 <MarkdownRenderer
                   content={thought}
                   loading={isLast && loading && !content}
