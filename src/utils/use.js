@@ -27,6 +27,15 @@ export function useDarkMode (persist = true) {
   }
   const functionRef = useRef(() => { });
   functionRef.current = function toggleDarkMode (isDark) {
+    // 更新 theme-color meta 标签
+    function updateThemeColor (isDark) {
+      const themeColorMeta = document.querySelectorAll('meta[name="theme-color"]');
+      if (themeColorMeta.length) {
+        themeColorMeta.forEach(meta => {
+          meta.content = isDark ? '#242424' : '#f7f7f7';
+        })
+      }
+    }
     document.documentElement.setAttribute(
       'theme-mode',
       isDark ? 'dark' : 'light'
@@ -36,6 +45,7 @@ export function useDarkMode (persist = true) {
     } else {
       document.documentElement.classList.remove('dark');
     }
+    updateThemeColor(isDark);
     setDarkMode(isDark);
   }
   useEffect(() => {

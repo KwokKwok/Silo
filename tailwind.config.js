@@ -28,6 +28,9 @@ export default {
       colors: {
         primary: '#0f54ff'
       },
+      padding: {
+        'safe': 'env(safe-area-inset-bottom)'
+      },
       transitionProperty: {
         'visible': 'transform, opacity',
       },

@@ -18,6 +18,7 @@
 ## Features
 
 🌐 Browser extension and web access available, and you can chat with page by using extension<br>
+📱 Support PWA, can be installed as a local application<br>
 🚀 Based on SiliconCloud API, rich models and fast response<br>
 🔑 Simple configuration, you only need to configure the key once<br>
 💰 Support SiliconCloud balance automatic refresh<br>

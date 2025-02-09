@@ -8,7 +8,7 @@ function ImageGenerate() {
   const [isInputMode, setIsInputMode] = useState(true);
 
   return (
-    <div className="pt-0 h-0 flex-1 flex flex-col">
+    <div className="pt-0 h-0 flex-1 flex flex-col pb-safe">
       <ImageInput
         isInputMode={isInputMode}
         setIsInputMode={setIsInputMode}

@@ -1,7 +1,7 @@
 {
   "name": "silo",
   "private": true,
-  "version": "1.7.5",
+  "version": "1.8.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -12,7 +12,8 @@
     "build:chrome": "wxt build -b chrome",
     "zip:chrome": "wxt zip -b chrome",
     "build:edge": "wxt build -b edge",
-    "zip:edge": "wxt zip -b edge"
+    "zip:edge": "wxt zip -b edge",
+    "generate-pwa-icons": "node scripts/generate-pwa-icons.js"
   },
   "dependencies": {
     "@vercel/analytics": "^1.4.0",
@@ -59,8 +60,10 @@
     "globals": "^15.9.0",
     "postcss": "^8.4.41",
     "sass": "^1.77.8",
+    "sharp": "^0.33.5",
     "tailwindcss": "^3.4.10",
     "vite": "^5.4.1",
+    "vite-plugin-pwa": "^0.21.1",
     "wxt": "^0.19.7"
   }
 }

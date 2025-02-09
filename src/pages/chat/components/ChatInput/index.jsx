@@ -158,10 +158,9 @@ export default function ({
     if (onKeyDownHook(e)) {
       return;
     }
-
     if (e.key === 'Enter') {
       // 允许回车键发送
-      if (isMobile || !e.shiftKey) {
+      if (isMobile || (!e.shiftKey && !e.nativeEvent?.isComposing)) {
         // shift+回车 换行不发送
         e.preventDefault();
         onSend();

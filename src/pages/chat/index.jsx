@@ -79,6 +79,7 @@ function Chat() {
           messageHistory={messageHistory}
         />
       </div>
+      <div className="pb-safe"></div>
     </>
   );
 }
