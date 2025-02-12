@@ -115,7 +115,7 @@ const MobileModelSelector = forwardRef((props, ref) => {
         {/* 过滤器 */}
         <div className="border-gray-200 px-2 py-2 shadow-[0_-8px_12px_-2px_rgba(0,0,0,0.2),0_-4px_8px_-2px_rgba(0,0,0,0.12)]">
           <Radio.Group
-            className='w-full'
+            className="w-full"
             value={activeFilter}
             onChange={value => setActiveFilter(value)}
             variant="default-filled"

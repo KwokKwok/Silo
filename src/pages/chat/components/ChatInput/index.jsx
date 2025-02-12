@@ -297,13 +297,13 @@ export default function ({
               id={GUIDE_STEP.CHAT_INPUT}
               type="text"
               rows={1}
-              enterkeyhint="send"
+              enterKeyHint="send"
               value={input}
               style={{ height: '1.5rem' }}
               onInput={onInput}
               onKeyDown={onKeyDown}
               onPaste={handlePaste}
-              placeholder={loading ? '正在思考中...' : placeholder}
+              placeholder={loading ? '' : placeholder}
               ref={inputRef}
               className="outline-none overflow-y-auto w-full bg-transparent resize-none px-2 text-base leading-6"
             />

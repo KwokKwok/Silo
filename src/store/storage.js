@@ -62,6 +62,8 @@ const wordExplainerPromptAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.WORD_EXPL
 
 const themeModeAtom = atom(getLocalStorage(LOCAL_STORAGE_KEY.THEME_MODE, matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
 
+const webSearchSettingsAtom = atom(getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS, { zhipuai: null }))
+
 const atomMap = {
   [LOCAL_STORAGE_KEY.SYSTEM_PROMPTS]: allCustomSystemPromptsAtom,
   [LOCAL_STORAGE_KEY.ACTIVE_IMAGE_MODELS]: activeImageModels,
@@ -73,6 +75,7 @@ const atomMap = {
   [LOCAL_STORAGE_KEY.WORD_EXPLAINER_ACTIVE_MODELS]: wordExplainerActiveModelsAtom,
   [LOCAL_STORAGE_KEY.WORD_EXPLAINER_PROMPT]: wordExplainerPromptAtom,
   [LOCAL_STORAGE_KEY.THEME_MODE]: themeModeAtom,
+  [LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS]: webSearchSettingsAtom,
 }
 
 /**
@@ -168,4 +171,42 @@ export const useZenMode = () => {
     };
   }, []);
   return [value, _setValue];
+}
+
+/**
+ * 联网搜索设置，当前只支持智谱AI
+ * @returns 
+ */
+export const useWebSearchSettings = () => {
+  const [{ zhipuai }, setValue] = useLocalStorageJSONAtom(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS)
+  const setZhipuai = (zhipuai) => {
+    setValue({ zhipuai })
+  }
+  const defaultZhipuai = {
+    apiKey: '',
+    active: false,
+    model: 'THUDM/glm-4-9b-chat',
+    skipIntent: false,
+    prompt: `你是一个智能助手，你的任务是判断用户输入是否需要联网搜索才能获得最佳答案。
+
+如果用户输入涉及以下情况，请回答“是”：
+*   需要实时信息（例如：天气、新闻、股票价格）
+*   需要查找特定事实或数据（例如：某人的生日、某事件的日期）
+*   需要获取最新的信息或知识（例如：最新的科技进展、最近的体育赛事结果）
+*   需要查找特定地点或服务（例如：附近的餐馆、某公司的地址）
+
+如果用户输入可以通过已有的知识或简单的计算得出答案，请回答“否”。
+
+输出要求：仅输出是或否
+用户的输入是：`
+  }
+  const resetZhipuai = () => {
+    setZhipuai({
+      ...defaultZhipuai,
+      active: zhipuai?.active || false,
+      skipIntent: zhipuai?.skipIntent || false,
+      apiKey: zhipuai?.apiKey || '',
+    })
+  }
+  return [zhipuai || defaultZhipuai, setZhipuai, resetZhipuai]
 }

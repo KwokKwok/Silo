@@ -8,8 +8,22 @@
   background-color: rgba($color: #fff, $alpha: 0.6);
 }
 
+.t-collapse-panel__content {
+  border-left: 2px solid #555;
+}
+
+.dark .t-collapse-panel__content {
+  border-left: 2px solid #ccc;
+}
+
 .thinking-section {
   background: transparent !important;
+
+  &.t-is-disabled .t-collapse-panel__header {
+    // 禁用样式
+    color: currentColor;
+    opacity: 0.6;
+  }
 
   .t-collapse-panel__header {
     user-select: none;
@@ -44,7 +58,14 @@
     margin-bottom: 8px;
     margin-left: 2px;
     opacity: 0.6;
-    border-left: solid 2px currentColor;
+    // border-left: solid 2px currentColor;
+  }
+
+  &.web-search {
+    .t-collapse-panel__content {
+      opacity: 1;
+      color: currentColor;
+    }
   }
 
   .silo-markdown {

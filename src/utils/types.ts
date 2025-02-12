@@ -113,6 +113,10 @@ export enum LOCAL_STORAGE_KEY {
    * 词解器提示词
    */
   WORD_EXPLAINER_PROMPT = 'word_explainer_prompt',
+  /**
+   * 联网搜索设置
+   */
+  WEB_SEARCH_SETTINGS = 'web_search_settings',
 }
 
 export enum GUIDE_STEP {

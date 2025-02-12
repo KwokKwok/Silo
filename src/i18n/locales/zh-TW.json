@@ -39,7 +39,8 @@
     "copy_id": "複製 ID",
     "select_models": "選擇模型",
     "thinking": "思考中...",
-    "think_end": "已深度思考"
+    "think_end": "已深度思考",
+    "reset": "重置"
   },
   "error": {
     "model_not_vlm": "該模型不是視覺語言模型，請僅使用文本提示"
@@ -96,7 +97,8 @@
     },
     "guide": "顯示引導",
     "add_as_search_engine": "添加為搜索引擎",
-    "add_as_search_engine_content": "複製 URL 並手動添加為瀏覽器搜索引擎。注意：如您的瀏覽器不使用 %s 的方式，請自行調整"
+    "add_as_search_engine_content": "複製 URL 並手動添加為瀏覽器搜索引擎。注意：如您的瀏覽器不使用 %s 的方式，請自行調整",
+    "settings": "設定"
   },
   "ai_message": {
     "best_reply": "已由 AI 票選為最佳回覆"
@@ -201,5 +203,8 @@
     "settings": "Web Copilot 設置",
     "selectModel": "選擇模型",
     "prompt": "提示詞"
+  },
+  "webSearch": {
+    "settings": "聯網搜索設置"
   }
 }

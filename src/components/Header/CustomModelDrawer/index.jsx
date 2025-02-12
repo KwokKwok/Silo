@@ -29,7 +29,8 @@ export default forwardRef(({}, ref) => {
       header={t('header.custom_model')}
       visible={visible}
       confirmOnEnter
-      size={isMobile ? '100vw' : 'large'}
+      placement={isMobile ? 'bottom' : 'right'}
+      size={isMobile ? '100dvh' : 'large'}
       onClose={onClose}
       onConfirm={onConfirm}
     >

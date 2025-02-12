@@ -152,3 +152,7 @@ h1 {
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
   }
 }
+
+.t-drawer__footer {
+  padding-bottom: calc(env(safe-area-inset-bottom) + 16px) !important;
+}

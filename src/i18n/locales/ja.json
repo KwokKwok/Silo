@@ -39,7 +39,8 @@
     "copy_id": "IDをコピー",
     "select_models": "モデルを選択してください",
     "thinking": "考え...",
-    "think_end": "深く考えました"
+    "think_end": "深く考えました",
+    "reset": "リセット"
   },
   "error": {
     "model_not_vlm": "このモデルは視覚言語モデルではありません。テキストプロンプトのみを使用してください"
@@ -96,7 +97,8 @@
     },
     "guide": "ガイドを表示",
     "add_as_search_engine": "検索エンジンとして追加",
-    "add_as_search_engine_content": "URLをコピーしてブラウザの検索エンジンとして手動で追加してください。注意：ブラウザが %s 形式を使用しない場合は、適宜調整してください"
+    "add_as_search_engine_content": "URLをコピーしてブラウザの検索エンジンとして手動で追加してください。注意：ブラウザが %s 形式を使用しない場合は、適宜調整してください",
+    "settings": "設定"
   },
   "ai_message": {
     "best_reply": "AIによって最良の返信として投票されました"
@@ -200,5 +202,8 @@
     "settings": "Web Copilot 設定",
     "selectModel": "モデルを選択",
     "prompt": "プロンプト"
+  },
+  "webSearch": {
+    "settings": "ネットワーク検索設定"
   }
 }

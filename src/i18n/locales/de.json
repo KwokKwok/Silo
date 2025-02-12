@@ -39,7 +39,8 @@
     "copy_id": "ID kopieren",
     "select_models": "Modell auswählen",
     "thinking": "Denken...",
-    "think_end": "Habe tief nachgedacht"
+    "think_end": "Habe tief nachgedacht",
+    "reset": "Zurücksetzen"
   },
   "error": {
     "model_not_vlm": "Dieses Modell ist kein visuelles Sprachmodell, bitte verwenden Sie nur Text-Prompts"
@@ -96,7 +97,8 @@
     },
     "guide": "Anleitung anzeigen",
     "add_as_search_engine": "Als Suchmaschine hinzufügen",
-    "add_as_search_engine_content": "Kopieren Sie die URL und fügen Sie sie manuell als Browser-Suchmaschine hinzu. Hinweis: Wenn Ihr Browser nicht das %s-Format verwendet, passen Sie es bitte entsprechend an"
+    "add_as_search_engine_content": "Kopieren Sie die URL und fügen Sie sie manuell als Browser-Suchmaschine hinzu. Hinweis: Wenn Ihr Browser nicht das %s-Format verwendet, passen Sie es bitte entsprechend an",
+    "settings": "Aufstellen"
   },
   "ai_message": {
     "best_reply": "Von KI als beste Antwort gewählt"
@@ -200,5 +202,8 @@
     "settings": "Web Copilot Einstellungen",
     "selectModel": "Modelle auswählen",
     "prompt": "Prompt"
+  },
+  "webSearch": {
+    "settings": "Einstellungen für Netzwerksuche"
   }
 }

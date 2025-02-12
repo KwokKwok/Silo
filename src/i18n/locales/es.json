@@ -39,7 +39,8 @@
     "copy_id": "Copiar ID",
     "select_models": "Seleccionar modelo",
     "thinking": "Pensamiento...",
-    "think_end": "He pensado profundamente"
+    "think_end": "He pensado profundamente",
+    "reset": "Reiniciar"
   },
   "error": {
     "model_not_vlm": "Este modelo no es un modelo de lenguaje visual, por favor use solo indicaciones de texto"
@@ -96,7 +97,8 @@
     },
     "guide": "Mostrar guía",
     "add_as_search_engine": "Agregar como motor de búsqueda",
-    "add_as_search_engine_content": "Copie la URL y agréguela manualmente como motor de búsqueda del navegador. Nota: Si su navegador no usa el formato %s, ajústelo según corresponda"
+    "add_as_search_engine_content": "Copie la URL y agréguela manualmente como motor de búsqueda del navegador. Nota: Si su navegador no usa el formato %s, ajústelo según corresponda",
+    "settings": "Configuración"
   },
   "ai_message": {
     "best_reply": "Votada como la mejor respuesta por la IA"
@@ -200,5 +202,8 @@
     "settings": "Configuración de Web Copilot",
     "selectModel": "Seleccionar modelos",
     "prompt": "Prompt"
+  },
+  "webSearch": {
+    "settings": "Configuración de búsqueda de red"
   }
 }

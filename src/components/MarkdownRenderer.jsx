@@ -114,7 +114,7 @@ export default function MarkdownRenderer({ content, loading = false }) {
            */
           if (children === LOADING_MATCH_TOKEN) {
             return (
-              <span className="relative inline-flex leading-4 h-3 w-3">
+              <span className="relative inline-flex translate-y-[1px] leading-4 h-3 w-3">
                 <span className="animate-ping animate-delay-150 absolute inline-flex h-full w-full rounded-full bg-current opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-full w-full bg-current"></span>
               </span>
@@ -169,6 +169,9 @@ export default function MarkdownRenderer({ content, loading = false }) {
               )}
             </>
           );
+        },
+        a(props) {
+          return <a {...props} target="_blank" rel="noopener noreferrer" />;
         },
       }}
     />

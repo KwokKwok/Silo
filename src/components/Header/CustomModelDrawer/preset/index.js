@@ -170,7 +170,7 @@ const CUSTOM_MODEL_PRESET = [
         ],
         label: 'custom_model.secret_key',
         prop: 'apiKey',
-        url: 'https://bigmodel.cn/usercenter/apikeys'
+        url: 'https://bigmodel.cn/usercenter/proj-mgmt/apikeys'
       }
     ],
     resolveFn: zhipuaiChat,

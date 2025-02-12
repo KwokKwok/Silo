@@ -1,6 +1,8 @@
+import { LOCAL_STORAGE_KEY } from "@src/utils/types";
 import { getSecretKey } from "../store/storage";
-import { getChatCompletion } from "../utils/helpers";
+import { getChatCompletion, getJsonDataFromLocalStorage } from "../utils/helpers";
 import imageGenPrompt from "./prompt/image-gen.txt?raw"
+import { message } from "tdesign-react";
 
 export const fetchUserInfo = async () => {
   const sk = getSecretKey();
@@ -51,6 +53,85 @@ export const getQuestionEvaluation = async (userInput, systemPrompt) => {
   输出数字，不要输出其他任何内容。详情如下：<system_prompt>${systemPrompt}</system_prompt>
   <input>${userInput}</input>，take a breath, and think step by step`, { top_p: 0.2 })
   return parseInt(result) >= 50;
+}
+
+export const checkWebSearch = async (userInput, onResultUpdate = () => { }) => {
+  const { zhipuai } = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS);
+  const { active, model, prompt, skipIntent } = zhipuai;
+
+  const result = {
+    active,
+    skipIntent,
+    done: false,
+    checking: false,
+    needSearch: false,
+    searching: false,
+    results: undefined
+  }
+  let webResults = [];
+  let needSearch = true;
+
+  if (!active) {
+    onResultUpdate({ ...result, done: true });
+    return [];
+  };
+
+
+  if (!skipIntent) {
+    onResultUpdate({ ...result, checking: true });
+    const startTime = Date.now();
+    try {
+      const result = await getChatCompletion(userInput, {
+        systemPrompt: prompt, modelId: model
+      })
+      const spendTime = Date.now() - startTime;
+      console.log(`[${userInput}] \n是否需要搜索：${result}，耗时：${spendTime}ms`);
+      needSearch = result.includes('是') || result.toLowerCase().includes('yes') || result.includes('true');
+    } catch (error) {
+      console.warn(`检查失败：${error.message}`)
+    }
+    onResultUpdate({ ...result, checking: false });
+  }
+  if (needSearch) {
+    onResultUpdate({ ...result, searching: true });
+    try {
+      webResults = await getWebSearchResults(userInput);
+
+    } catch (error) {
+      message.warning(`搜索失败：${error.message}`, 5000)
+    }
+  }
+  onResultUpdate({ ...result, needSearch, results: webResults, searching: false, done: true });
+  return webResults;
+}
+
+export const getWebSearchResults = async (userInput) => {
+  const { zhipuai } = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS);
+  const { apiKey } = zhipuai;
+  const url = "https://open.bigmodel.cn/api/paas/v4/tools";
+  const data = {
+    "messages": [
+      {
+        "role": "user",
+        "content": userInput
+      }
+    ],
+    tool: "web-search-pro",
+    stream: false
+  }
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data),
+  }).then(res => res.json())
+  if (res.error) {
+    throw new Error(res.error.message);
+  }
+
+  return res.choices[0]?.message?.tool_calls[1]?.search_result || []
 }
 
 export const getResponseEvaluationResults = (userInput, systemPrompt, responses, judges = ['Qwen/Qwen2.5-7B-Instruct', 'THUDM/glm-4-9b-chat', '01-ai/Yi-1.5-9B-Chat-16K', 'internlm/internlm2_5-7b-chat']) => {

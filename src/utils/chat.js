@@ -4,7 +4,7 @@ import { getModelIcon, isVisionModel } from "./models";
 import { ERROR_PREFIX } from "./types";
 import { useMultiRows, useRefresh } from "./use";
 import { resizeBase64Image, streamChat } from "./utils";
-import { getQuestionEvaluation, getResponseEvaluationResults } from "../services/api";
+import { checkWebSearch, getQuestionEvaluation, getResponseEvaluationResults } from "../services/api";
 import { getVisionModelOptionWidth } from "./options/chat-options";
 
 /**
@@ -25,6 +25,8 @@ let messageHistory = [];
 
 let thoughts = {};
 
+let webSearchResults = {};
+
 function _addThought (chatId, model, content) {
   if (!thoughts[chatId]) {
     thoughts[chatId] = {};
@@ -39,10 +41,18 @@ export function getModelThoughts (chatId, model) {
   return thoughts[chatId]?.[model] || '';
 }
 
+export function getWebSearchResults (chatId) {
+  const result = webSearchResults[chatId]
+  return result;
+}
+
 function _addUserMessage (message, systemPrompt, image, activeModels) {
   const chatId = Date.now();
   messageHistory.push({ message, image, chatId });
   const newMessage = { content: message, chatId };
+  checkWebSearch(message, result => {
+    webSearchResults[chatId] = result;
+  })
   // 可仅评估第一个问题：&& Object.keys(userMessages).length < 1
   // 多模态问题不做评估，仅一个模型不做评估
   if (!image && activeModels.length > 1) {
@@ -177,6 +187,15 @@ async function _streamChat (chat, newMessage, systemPrompt) {
     _onEnd();
   }
 
+  const formatContent = (userInput, chatId) => {
+    const { results: webSearchResult } = webSearchResults[chatId];
+    if (!webSearchResult?.length) {
+      return userInput;
+    }
+
+    const webSearchResultString = JSON.stringify(webSearchResult);
+    return `<system_info>This message is rewritten by the web search tool. I will give you the user's original question and a set of relevant web search results, please answer the user's question based on the provided web search results </system_info> <user_question>${userInput}</user_question> <web_search_results>${webSearchResultString}</web_search_results> `
+  }
 
   // 构建对话历史
   const chatMessage = Object.keys(chat.messages).reduce((arr, curTime) => {
@@ -186,8 +205,16 @@ async function _streamChat (chat, newMessage, systemPrompt) {
     if (aiMessage.startsWith(ERROR_PREFIX)) {
       return arr;
     }
-    return [...arr, { role: 'user', content: userMessage, image }, { role: 'assistant', content: aiMessage }]
+    return [...arr, { role: 'user', content: formatContent(userMessage, curTime), image }, { role: 'assistant', content: aiMessage }].filter(item => item.content)
   }, [])
+
+  // 可以先展示用户消息
+  chat.messages[chatId] = ''
+  // 等待 webSearchResults 有值。如果不启用 Web 搜索，也会返回空数组。
+  while (!webSearchResults[chatId]?.done) {
+    await new Promise(resolve => setTimeout(resolve, 100));
+  }
+
   const messageImage = messageImages[chatId];
   let image = messageImage;
   const isVision = isVisionModel(model);
@@ -198,7 +225,8 @@ async function _streamChat (chat, newMessage, systemPrompt) {
     chat.images[chatId] = image;
   }
 
-  chatMessage.push({ role: 'user', content, image })
+  chatMessage.push({ role: 'user', content: formatContent(content, chatId), image })
+
   if (systemPrompt) {
     chatMessage.unshift({ role: 'system', content: systemPrompt })
   }
@@ -221,8 +249,7 @@ async function _streamChat (chat, newMessage, systemPrompt) {
     }
   })
 
-  // 可以先展示用户消息
-  chat.messages[chatId] = ''
+
   // 如果模型不是多模态，但是用户上传了图片，则直接报错
   if (!isVision && image) {
     _onError({ message: 'error.model_not_vlm' })

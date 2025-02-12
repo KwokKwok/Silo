@@ -23,6 +23,8 @@ import Guide from '@src/components/Guide';
 import { i18nOptions } from '@src/i18n/resources';
 import MobileModelSelector from './MobileModelSelector';
 import WebCopilotSettingsModal from './WebCopilotSettingsModal';
+import WebSearchSettingsModal from './WebSearchSettingsModal';
+
 export default function () {
   const secretKeyPopupRef = useRef(null);
   const configModalRef = useRef(null);
@@ -82,6 +84,7 @@ export default function () {
   const [systemPromptId] = useActiveSystemPromptId();
   const mobileModelSelectorRef = useRef();
   const webCopilotSettingsRef = useRef();
+  const webSearchSettingsRef = useRef(null);
   const onAddMoreModel = () => {
     if (isMobile) {
       mobileModelSelectorRef.current.open();
@@ -178,18 +181,6 @@ export default function () {
               }
             ></i>
           </Tooltip>
-          <Dropdown
-            minColumnWidth="160"
-            maxHeight={400}
-            placement="bottom-right"
-            trigger="hover"
-            options={i18nOptions.map(item => ({
-              content: item.label,
-              onClick: () => i18n.changeLanguage(item.value),
-            }))}
-          >
-            <i className="iconify mingcute--translate-2-line block color-current mr-4 cursor-pointer"></i>
-          </Dropdown>
           <i
             className={
               (isDark ? 'i-ri-sun-line' : 'i-ri-moon-line') +
@@ -197,7 +188,6 @@ export default function () {
             }
             onClick={() => setDarkMode(!isDark)}
           ></i>
-
           <Dropdown
             maxColumnWidth="160"
             direction="left"
@@ -230,10 +220,27 @@ export default function () {
                 onClick: () => secretKeyPopupRef.current.open(),
               },
               {
+                icon: 'iconify mingcute--earth-2-line',
+                onClick: () => webSearchSettingsRef.current.open(),
+                hidden: isImageMode,
+                title: t('webSearch.settings'),
+              },
+              {
                 icon: 'i-mingcute-plugin-2-fill',
                 onClick: () => customModelRef.current.open(),
                 hidden: isImageMode,
                 title: t('header.custom_model'),
+              },
+              {
+                icon: 'i-mingcute-translate-2-line',
+                onClick: () => {
+                  window.open('https://silo.ai/translate', '_blank');
+                },
+                title: t('header.select_language'),
+                children: i18nOptions.map(item => ({
+                  content: item.label,
+                  onClick: () => i18n.changeLanguage(item.value),
+                })),
               },
               {
                 icon: 'i-ri-copilot-fill',
@@ -302,62 +309,6 @@ export default function () {
                     title: t('header.import_config'),
                   },
                   {
-                    icon: 'i-ri-github-fill',
-                    onClick: () => {
-                      window.open('https://github.com/KwokKwok/Silo', '_blank');
-                    },
-                    title: 'GitHub',
-                  },
-                  {
-                    icon: 'i-mingcute-wechat-fill',
-                    onClick: async () => {
-                      const notify = await notification.info({
-                        placement: 'bottom-right',
-                        offset: [-20, -20],
-                        title: t('header.contact_developer'),
-                        content: t('header.contact_developer_content'),
-                        closeBtn: true,
-                        duration: 0,
-                        footer: (
-                          <>
-                            <a
-                              href={`mailto:kwokglory@outlook.com?subject=${encodeURIComponent(
-                                'Silo Feedback'
-                              )}&body=${encodeURIComponent('')}`}
-                              onClick={() => {
-                                notify.close();
-                              }}
-                            >
-                              <Button
-                                className="ml-2"
-                                theme="default"
-                                variant="text"
-                              >
-                                {t('header.send_email')}
-                              </Button>
-                            </a>
-                            <CopyToClipboard
-                              text="17681890733"
-                              onCopy={() => {
-                                message.success(t('common.copied'));
-                                notify.close();
-                              }}
-                            >
-                              <Button
-                                className="ml-2"
-                                theme="primary"
-                                variant="text"
-                              >
-                                {t('header.use_wechat')}
-                              </Button>
-                            </CopyToClipboard>
-                          </>
-                        ),
-                      });
-                    },
-                    title: t('header.contact_developer'),
-                  },
-                  {
                     icon: 'i-logos-chrome',
                     onClick: () => {
                       window.open(
@@ -387,8 +338,20 @@ export default function () {
                 children: item.children,
               }))}
           >
-            <i className={'i-ri-more-fill cursor-pointer'}></i>
+            <i
+              className={
+                'i-ri-more-fill cursor-pointer mingcute--settings-3-line'
+              }
+            ></i>
           </Dropdown>
+          <div className="inline-flex items-center ml-4  cursor-pointer">
+            <i
+              className="iconify i-ri-github-fill"
+              onClick={() => {
+                window.open('https://github.com/KwokKwok/Silo', '_blank');
+              }}
+            ></i>
+          </div>
         </div>
       </div>
       <CustomModelDrawer ref={customModelRef} />
@@ -399,6 +362,7 @@ export default function () {
       />
       <ConfigImportModal ref={configModalRef} />
       <WebCopilotSettingsModal ref={webCopilotSettingsRef} />
+      <WebSearchSettingsModal ref={webSearchSettingsRef} />
     </>
   );
 }
