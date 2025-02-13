@@ -56,8 +56,8 @@ export const getQuestionEvaluation = async (userInput, systemPrompt) => {
 }
 
 export const checkWebSearch = async (userInput, onResultUpdate = () => { }) => {
-  const { zhipuai } = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS);
-  const { active, model, prompt, skipIntent } = zhipuai;
+  const { zhipuai } = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS) || {};
+  const { active, model, prompt, skipIntent } = zhipuai || { active: false };
 
   const result = {
     active,

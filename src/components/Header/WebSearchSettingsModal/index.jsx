@@ -39,7 +39,8 @@ const WebSearchSettings = forwardRef((props, ref) => {
   const [form] = Form.useForm();
 
   const handleSave = () => {
-    form.validate().then(() => {
+    form.validate().then(valid => {
+      if (valid !== true) return;
       const values = form.getFieldsValue(true);
       setZhipuai(values);
       setIsOpen(false);

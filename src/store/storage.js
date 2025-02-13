@@ -173,21 +173,13 @@ export const useZenMode = () => {
   return [value, _setValue];
 }
 
-/**
- * 联网搜索设置，当前只支持智谱AI
- * @returns 
- */
-export const useWebSearchSettings = () => {
-  const [{ zhipuai }, setValue] = useLocalStorageJSONAtom(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS)
-  const setZhipuai = (zhipuai) => {
-    setValue({ zhipuai })
-  }
-  const defaultZhipuai = {
-    apiKey: '',
-    active: false,
-    model: 'THUDM/glm-4-9b-chat',
-    skipIntent: false,
-    prompt: `你是一个智能助手，你的任务是判断用户输入是否需要联网搜索才能获得最佳答案。
+
+const defaultZhipuaiWebSearchSettings = {
+  apiKey: '',
+  active: false,
+  model: 'THUDM/glm-4-9b-chat',
+  skipIntent: false,
+  prompt: `你是一个智能助手，你的任务是判断用户输入是否需要联网搜索才能获得最佳答案。
 
 如果用户输入涉及以下情况，请回答“是”：
 *   需要实时信息（例如：天气、新闻、股票价格）
@@ -199,14 +191,25 @@ export const useWebSearchSettings = () => {
 
 输出要求：仅输出是或否
 用户的输入是：`
+}
+
+/**
+ * 联网搜索设置，当前只支持智谱AI
+ * @returns 
+ */
+export const useWebSearchSettings = () => {
+  const [{ zhipuai }, setValue] = useLocalStorageJSONAtom(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS)
+  const setZhipuai = (zhipuai) => {
+    setValue({ zhipuai })
   }
+
   const resetZhipuai = () => {
     setZhipuai({
-      ...defaultZhipuai,
+      ...defaultZhipuaiWebSearchSettings,
       active: zhipuai?.active || false,
       skipIntent: zhipuai?.skipIntent || false,
       apiKey: zhipuai?.apiKey || '',
     })
   }
-  return [zhipuai || defaultZhipuai, setZhipuai, resetZhipuai]
+  return [zhipuai || defaultZhipuaiWebSearchSettings, setZhipuai, resetZhipuai]
 }
