@@ -9,6 +9,7 @@ import SingleImageViewer from '@src/components/SingleImageViewer';
 import Shortcuts, { SHORTCUTS_ACTIONS, useShortcuts } from './Shortcuts';
 import { GUIDE_STEP } from '@src/utils/types';
 import { removeUserMessage } from '@src/utils/chat';
+import { isBrowserExtension } from '@src/utils/utils';
 
 /**
  * 不使用输入框的历史记录
@@ -116,6 +117,7 @@ export default function ({
       // 向上切换
       // 如果没使用历史记录，则设置为最后一个历史记录
       if (historyIndex === NO_INPUT_HISTORY_INDEX) {
+        if (input.length) return;
         targetIndex = messageHistory.length - 1;
       } else {
         targetIndex = Math.max(historyIndex - 1, 0);
@@ -149,7 +151,7 @@ export default function ({
   };
 
   useEffect(() => {
-    if (isMobile && showShortcuts) {
+    if (!isBrowserExtension && isMobile && showShortcuts) {
       inputRef.current.blur();
     }
   }, [isMobile, showShortcuts]);
@@ -160,7 +162,10 @@ export default function ({
     }
     if (e.key === 'Enter') {
       // 允许回车键发送
-      if (isMobile || (!e.shiftKey && !e.nativeEvent?.isComposing)) {
+      if (
+        (!isBrowserExtension && isMobile) ||
+        (!e.shiftKey && !e.nativeEvent?.isComposing)
+      ) {
         // shift+回车 换行不发送
         e.preventDefault();
         onSend();
