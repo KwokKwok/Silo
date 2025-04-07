@@ -128,19 +128,21 @@ function ImageGenerations({ generations }) {
                 )}
 
                 <div className="absolute top-1 right-1 flex items-center space-x-2">
-                  <div className="bg-white dark:bg-black bg-opacity-60 dark:bg-opacity-60  backdrop-blur-sm text-black dark:text-white pl-1 pr-2 py-1 rounded flex items-center">
-                    <div className="w-4 h-4 mr-1 bg-white rounded-sm flex items-center justify-center p-[2px]">
-                      <img
-                        alt={generation.model}
-                        className="h-[14px]"
-                        src={models[generation.model].icon}
-                      />
+                  {models[generation.model] && (
+                    <div className="bg-white dark:bg-black bg-opacity-60 dark:bg-opacity-60  backdrop-blur-sm text-black dark:text-white pl-1 pr-2 py-1 rounded flex items-center">
+                      <div className="w-4 h-4 mr-1 bg-white rounded-sm flex items-center justify-center p-[2px]">
+                        <img
+                          alt={generation.model}
+                          className="h-[14px]"
+                          src={models[generation.model].icon}
+                        />
+                      </div>
+                      <span className="text-xs">
+                        {models[generation.model].isPro ? 'Pro/' : ''}
+                        {models[generation.model].name}
+                      </span>
                     </div>
-                    <span className="text-xs">
-                      {models[generation.model].isPro ? 'Pro/' : ''}
-                      {models[generation.model].name}
-                    </span>
-                  </div>
+                  )}
                   {generation.images.length > 1 && (
                     <div className="bg-black bg-opacity-50 backdrop-blur-sm text-white px-2 py-1 rounded flex items-center">
                       <span className="text-xs">
