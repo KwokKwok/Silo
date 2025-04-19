@@ -10,6 +10,8 @@ import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import '@src/assets/styles/markdown.scss';
 import { useTranslation } from 'react-i18next';
+import { Tooltip } from 'tdesign-react';
+import { Popup } from 'tdesign-react';
 
 // From https://github.com/remarkjs/react-markdown/issues/785
 
@@ -82,7 +84,11 @@ export function preprocessLaTeX(content) {
 }
 
 const LOADING_MARK = ` \`${LOADING_MATCH_TOKEN}\``;
-export default function MarkdownRenderer({ content, loading = false }) {
+export default function MarkdownRenderer({
+  content,
+  loading = false,
+  citations = [],
+}) {
   const { t } = useTranslation();
 
   /**
@@ -172,6 +178,56 @@ export default function MarkdownRenderer({ content, loading = false }) {
         },
         a(props) {
           return <a {...props} target="_blank" rel="noopener noreferrer" />;
+        },
+        em(props) {
+          const { children } = props;
+
+          if (children.startsWith('!cite')) {
+            const refIds = children.replace('!cite', '');
+            return refIds.split(',').map(id => {
+              const refId = id.trim();
+              const citation = citations.find(c => c.refer === refId);
+              return (
+                <Popup
+                  key={refId}
+                  overlayClassName="!max-w-xs"
+                  content={
+                    citation ? (
+                      <div className="max-w-md ">
+                        <div className="flex gap-1 items-center">
+                          {!!citation.icon && (
+                            <img
+                              src={citation.icon}
+                              alt={citation.title}
+                              className="w-[12px] h-[12px] mr-1 rounded-sm"
+                            />
+                          )}
+                          <span className="line-clamp-1 text-ellipsis">
+                            {citation.title}
+                          </span>
+                        </div>
+                        <div className="text-xs opacity-60 mt-2 line-clamp-4">
+                          {citation.content}
+                        </div>
+                      </div>
+                    ) : (
+                      `引用来源 ${refId}`
+                    )
+                  }
+                >
+                  <span
+                    onClick={() => {
+                      citation.link && window.open(citation.link, '_blank');
+                    }}
+                    className={`cursor-pointer relative -top-[2px] rounded-[10px] inline-flex items-center justify-center  px-1 text-[10px] leading-[14px] font-medium text-blue-600/90 bg-blue-50/50 border border-blue-100 transition-colors hover:bg-blue-100/50 dark:text-blue-300 dark:bg-blue-500/5 dark:border-blue-400/20 dark:hover:bg-blue-400/10`}
+                  >
+                    {refId.replace('ref_', '')}
+                  </span>
+                </Popup>
+              );
+            });
+          }
+          return <em {...props} />;
         },
       }}
     />

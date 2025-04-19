@@ -9,12 +9,14 @@ import {
 } from '@src/store/storage';
 import { LOCAL_STORAGE_KEY } from '@src/utils/types';
 import { useActiveModels } from '@src/store/app';
-import { isVisionModel } from '@src/utils/models';
+import { getAllTextModels, isVisionModel } from '@src/utils/models';
 
 const SYSTEM_PROMPT_CONTEXT_KEY = '${silo_page_context}';
 
+const allTextModels = getAllTextModels();
+
 export default function ({ context, word }) {
-  const [activeModels, setWordExplainerActiveModels] = useLocalStorageJSONAtom(
+  const [activeModels] = useLocalStorageJSONAtom(
     LOCAL_STORAGE_KEY.WORD_EXPLAINER_ACTIVE_MODELS
   );
   const {
@@ -23,11 +25,11 @@ export default function ({ context, word }) {
     setActiveModels: setAppActiveModels,
   } = useActiveModels();
   const [isModelInit, setIsModelInit] = useState(false);
-  const [prompt, setPrompt] = useLocalStorageAtom(
-    LOCAL_STORAGE_KEY.WORD_EXPLAINER_PROMPT
-  );
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [prompt] = useLocalStorageAtom(LOCAL_STORAGE_KEY.WORD_EXPLAINER_PROMPT);
 
   useEffect(() => {
+    setActiveIndex(0);
     disablePersistAppActiveModels(true);
     setAppActiveModels(activeModels);
     setTimeout(() => {
@@ -58,12 +60,11 @@ export default function ({ context, word }) {
   }, [context, word, isModelInit]);
 
   const modelResponses = useLastGptResponse();
-  const [activeIndex, setActiveIndex] = useState(0);
   const filteredResponses =
     activeModels.length > 0
       ? modelResponses.filter(response => activeModels.includes(response.model))
       : modelResponses;
-  const optionLength = filteredResponses.length;
+  const optionLength = activeModels.length;
 
   const onCursor = offset => {
     setActiveIndex(prev => {
@@ -74,12 +75,12 @@ export default function ({ context, word }) {
     });
   };
 
-  if (!isModelInit || !filteredResponses.length) return null;
+  if (!isModelInit || !activeModels.length) return null;
   return (
     <div className="flex-1 flex flex-col h-full w-full pb-[8px]">
       <div className="flex-1 h-0 overflow-auto pb-4 relative text-sm leading-6 pl-[4px]">
-        {filteredResponses[activeIndex] && (
-          <SingleChatPanel model={filteredResponses[activeIndex].model} plain />
+        {activeModels[activeIndex] && (
+          <SingleChatPanel model={activeModels[activeIndex]} plain />
         )}
       </div>
 
@@ -91,26 +92,34 @@ export default function ({ context, word }) {
             }}
             className="absolute left-0 top-0 h-[32px] w-[32px] transform transition-transform duration-300 opacity-75 outline-primary outline outline-[2px] rounded-[4px]"
           ></div>
-          {filteredResponses.map((response, index) => (
-            <div
-              key={index}
-              className={`cursor-pointer mr-[8px] last:mr-0 p-[4px] transition-transform duration-300 select-none ${
-                activeIndex === index
-                  ? ' overflow-hidden shadow-lg scale-105'
-                  : 'scale-100'
-              }`}
-              onClick={() => setActiveIndex(index)}
-            >
-              <img
-                src={response.icon}
-                alt={response.model}
-                className={
-                  'w-[24px] h-[24px] rounded-[4px] ' +
-                  (response.loading ? 'animate-pulse' : '')
-                }
-              />
-            </div>
-          ))}
+          {activeModels.map((model, index) => {
+            const response = filteredResponses.find(
+              item => item.model === model
+            );
+            const modelDetail =
+              allTextModels.find(item => item.id === model) || {};
+
+            return (
+              <div
+                key={index}
+                className={`cursor-pointer mr-[8px] last:mr-0 p-[4px] transition-transform duration-300 select-none ${
+                  activeIndex === index
+                    ? ' overflow-hidden shadow-lg scale-105'
+                    : 'scale-100'
+                }`}
+                onClick={() => setActiveIndex(index)}
+              >
+                <img
+                  src={modelDetail.icon}
+                  alt={model}
+                  className={
+                    'w-[24px] h-[24px] rounded-[4px] ' +
+                    (response?.loading ? 'animate-pulse' : '')
+                  }
+                />
+              </div>
+            );
+          })}
         </div>
         <div className="flex-1 relative flex-shrink-0 ml-2">
           <InputControl

@@ -126,6 +126,10 @@ export function getModelIcon (model) {
  * 5. 新增模型请参考上述规则
  */
 const SILICON_MODELS = [
+  textModelOf("THUDM/GLM-Z1-32B-0414", 0.5, 32, false),
+  textModelOf("THUDM/GLM-4-32B-0414", 0.5, 32, false),
+  textModelOf("THUDM/GLM-Z1-9B-0414", 0, 32, false),
+  textModelOf("THUDM/GLM-4-9B-0414", 0, 32, false),
   textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32, false),
   textModelOf("deepseek-ai/DeepSeek-R1-Distill-Llama-8B", 0, 32, false, false),
   textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", 0, 32, false, false),
@@ -165,9 +169,9 @@ const SILICON_MODELS = [
   // textModelOf("Qwen/Qwen2.5-Math-72B-Instruct", 4.13, 4, false),
   textModelOf("Qwen/Qwen2.5-72B-Instruct-128K", 4.13, 128, false),
   textModelOf("Qwen/Qwen2.5-72B-Instruct", 4.13, 32, false),
-  textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32, false),
-  textModelOf("Vendor-A/Qwen/Qwen2.5-72B-Instruct", 1, 32, false),
-  textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 1, 32, false),
+  // textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32, false),
+  // textModelOf("Vendor-A/Qwen/Qwen2.5-72B-Instruct", 1, 32, false),
+  // textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 1, 32, false),
   // textModelOf("nvidia/Llama-3.1-Nemotron-70B-Instruct", 4.13, 32, true),
   textModelOf("meta-llama/Llama-3.3-70B-Instruct", 4.13, 32, true),
   textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 32, true),
@@ -191,8 +195,11 @@ const SILICON_MODELS = [
   // textModelOf("Pro/meta-llama/Meta-Llama-3-8B-Instruct", 0.42, 8, true),
 ];
 
+export const SILICON_MODELS_IDS = SILICON_MODELS.map(item => item.id)
 
-export const SILICON_MODELS_IDS = SILICON_MODELS.map(i => i.id);
+export const isSiliconModel = (modelId) => {
+  return SILICON_MODELS.some(item => modelId === item.id)
+}
 
 export function getAllTextModels () {
   return [

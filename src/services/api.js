@@ -107,17 +107,11 @@ export const checkWebSearch = async (userInput, onResultUpdate = () => { }) => {
 
 export const getWebSearchResults = async (userInput) => {
   const { zhipuai } = getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS);
-  const { apiKey } = zhipuai;
-  const url = "https://open.bigmodel.cn/api/paas/v4/tools";
+  const { apiKey, searchEngine = 'search_std' } = zhipuai;
+  const url = "https://open.bigmodel.cn/api/paas/v4/web_search";
   const data = {
-    "messages": [
-      {
-        "role": "user",
-        "content": userInput
-      }
-    ],
-    tool: "web-search-pro",
-    stream: false
+    search_query: userInput,
+    search_engine: searchEngine
   }
   const res = await fetch(url, {
     method: 'POST',
@@ -131,10 +125,10 @@ export const getWebSearchResults = async (userInput) => {
     throw new Error(res.error.message);
   }
 
-  return res.choices[0]?.message?.tool_calls[1]?.search_result || []
+  return res.search_result || []
 }
 
-export const getResponseEvaluationResults = (userInput, systemPrompt, responses, judges = ['Qwen/Qwen2.5-7B-Instruct', 'THUDM/glm-4-9b-chat', 'internlm/internlm2_5-7b-chat']) => {
+export const getResponseEvaluationResults = (userInput, systemPrompt, responses, judges = ['Qwen/Qwen2.5-7B-Instruct', 'THUDM/GLM-4-9B-0414', 'internlm/internlm2_5-7b-chat']) => {
   const prompt = `请对模型的回答进行细致的分析和评估，输出 0 到 100 分的分数，数字越大表示回答的质量越高，数字越小表示回答的质量越低。
   严格输出 JSON 格式的分数： { "<model_id1>":<score>, "<model_id2>": <score>, "best": "model_id of the best response" } 。
   详情如下：

@@ -177,7 +177,8 @@ export const useZenMode = () => {
 const defaultZhipuaiWebSearchSettings = {
   apiKey: '',
   active: false,
-  model: 'THUDM/glm-4-9b-chat',
+  searchEngine: 'search_std',
+  model: 'THUDM/GLM-4-9B-0414',
   skipIntent: false,
   prompt: `你是一个智能助手，你的任务是判断用户输入是否需要联网搜索才能获得最佳答案。
 
@@ -209,7 +210,8 @@ export const useWebSearchSettings = () => {
       active: zhipuai?.active || false,
       skipIntent: zhipuai?.skipIntent || false,
       apiKey: zhipuai?.apiKey || '',
+      searchEngine: zhipuai?.searchEngine || 'search_std',
     })
   }
-  return [zhipuai || defaultZhipuaiWebSearchSettings, setZhipuai, resetZhipuai]
+  return [Object.assign({}, defaultZhipuaiWebSearchSettings, zhipuai), setZhipuai, resetZhipuai]
 }

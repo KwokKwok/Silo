@@ -115,7 +115,7 @@ export default function AiMessage({
                   </span>
                 }
               >
-                {(web.results || []).map(item => (
+                {(web.results || []).map((item, index) => (
                   <div
                     key={item.refer}
                     className={`flex flex-col mb-3 last:mb-0 opacity-70 transition-opacity duration-150 ${
@@ -136,7 +136,7 @@ export default function AiMessage({
                         />
                       )}
                       <span className="text-ellipsis line-clamp-1">
-                        {item.title}
+                        {index + 1}. {item.title}
                         {item.media ? ` - ` + item.media : ''}
                       </span>
                     </span>
@@ -168,6 +168,7 @@ export default function AiMessage({
               >
                 <MarkdownRenderer
                   content={thought}
+                  citations={web.results || []}
                   loading={isLast && loading && !content}
                 />
               </Collapse.Panel>
@@ -175,6 +176,7 @@ export default function AiMessage({
           )}
           <MarkdownRenderer
             content={content}
+            citations={web.results || []}
             loading={isLast && loading && (!thought || content)}
           />
           {likes.length > 0 && (

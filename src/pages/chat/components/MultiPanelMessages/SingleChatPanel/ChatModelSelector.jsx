@@ -1,5 +1,5 @@
 import { Select } from 'tdesign-react';
-import { getAllTextModels, SILICON_MODELS_IDS } from '@src/utils/models';
+import { getAllTextModels, isSiliconModel } from '@src/utils/models';
 import { useActiveModels } from '@src/store/app';
 import ScLogo from '@src/assets/img/sc-logo.png';
 import { GUIDE_STEP } from '@src/utils/types';
@@ -15,7 +15,7 @@ export default function ({ model }) {
 
   const hasActiveCustomModel = activeModels.some(
     item =>
-      !SILICON_MODELS_IDS.includes(item) &&
+      !isSiliconModel(item) &&
       modelDetail.series?.startsWith(item.split('/')[0])
   );
 

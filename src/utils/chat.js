@@ -194,7 +194,39 @@ async function _streamChat (chat, newMessage, systemPrompt) {
     }
 
     const webSearchResultString = JSON.stringify(webSearchResult);
-    return `<system_info>This message is rewritten by the web search tool. I will give you the user's original question and a set of relevant web search results, please answer the user's question based on the provided web search results </system_info> <user_question>${userInput}</user_question> <web_search_results>${webSearchResultString}</web_search_results> `
+    return `# 以下是与您问题相关的搜索结果：
+${webSearchResultString}
+
+---
+
+搜索结果以 JSON 数组格式提供，每个结果包含以下字段：
+- content: 搜索结果的主要内容
+- title: 搜索结果的标题
+- refer: 引用标识符（如 ref_1, ref_2 等）
+
+请在回答时使用以下引用格式： *!cite ref_X*
+
+其中 ref_X 对应搜索结果中的 refer 字段。如果一个观点来自多个来源，请使用多个引用块，每个都使用独立的格式。请注意：
+
+- 今天是 ${new Date().toLocaleDateString()}
+- 不是所有搜索结果都与问题密切相关，请根据问题评估和筛选搜索结果
+- 对于列表类问题（如列出所有航班信息），请限制在10个关键点以内，并告知用户可以参考原始来源获取完整信息
+- 对于创意任务（如写文章），请：
+  - 在正文中适当位置插入引用块
+  - 解释和总结用户需求
+  - 选择合适的格式
+  - 充分利用搜索结果
+  - 提取关键信息
+  - 生成有见地、有创意和专业的答案
+- 如果回答较长，请适当分段并总结要点
+- 如果需要分点说明，请限制在5点以内并合并相关内容
+- 对于客观问答，如果答案很简短，可以添加1-2个相关句子来丰富内容
+- 根据用户需求和答案内容选择合适的格式，确保可读性
+- 答案应综合多个相关网页的信息，避免重复引用同一网页
+- 除非用户另有要求，请使用与用户问题相同的语言回答
+
+# 用户的问题是：
+${userInput}`
   }
 
   // 构建对话历史

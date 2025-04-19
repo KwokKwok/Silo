@@ -1,6 +1,6 @@
 import { useEffect, useState, forwardRef, useImperativeHandle } from 'react';
 import { Drawer, Button, Textarea, Space } from 'tdesign-react';
-import { getAllTextModels, SILICON_MODELS_IDS } from '@src/utils/models';
+import { getAllTextModels, isSiliconModel } from '@src/utils/models';
 
 import { useTranslation } from 'react-i18next';
 import ModelOption from '@src/components/ModelOption';
@@ -13,7 +13,7 @@ import { Input } from 'tdesign-react';
 import { Divider } from 'tdesign-react';
 const { FormItem } = Form;
 const allTextModels = getAllTextModels().filter(item =>
-  SILICON_MODELS_IDS.includes(item.id)
+  isSiliconModel(item.id)
 );
 
 const WebSearchSettings = forwardRef((props, ref) => {
@@ -115,6 +115,34 @@ const WebSearchSettings = forwardRef((props, ref) => {
           <Input />
         </FormItem>
         <Divider className="mt-16">高级设置</Divider>
+        <FormItem
+          label="搜索引擎"
+          name="searchEngine"
+          statusIcon={
+            <i
+              className="iconify mingcute--external-link-line cursor-pointer w-5 h-5 ml-1"
+              onClick={() =>
+                window.open(
+                  'https://bigmodel.cn/dev/api/search-tool/web-search',
+                  '_blank'
+                )
+              }
+            ></i>
+          }
+        >
+          <Select
+            className="!w-full"
+            filterable
+            options={[
+              { value: 'search_std', label: '智谱基础版搜索引擎' },
+              { value: 'search_pro', label: '智谱高阶版搜索引擎' },
+              { value: 'search_pro_sogou', label: '搜狗' },
+              { value: 'search_pro_quark', label: '夸克搜索' },
+              { value: 'search_pro_jina', label: 'jina.ai搜索' },
+            ]}
+            defaultValue="search_std"
+          />
+        </FormItem>
         <FormItem
           label="跳过搜索意图识别"
           name="skipIntent"
