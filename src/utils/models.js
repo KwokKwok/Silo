@@ -126,6 +126,10 @@ export function getModelIcon (model) {
  * 5. 新增模型请参考上述规则
  */
 const SILICON_MODELS = [
+  textModelOf("Qwen/Qwen3-235B-A22B", 10, 128, false),
+  textModelOf("Qwen/Qwen3-30B-A3B", 2.8, 128, false),
+  textModelOf("Qwen/Qwen3-32B", 4, 128, false),
+  textModelOf("Qwen/Qwen3-14B", 2, 128, false),
   textModelOf("THUDM/GLM-Z1-32B-0414", 0.5, 32, false),
   textModelOf("THUDM/GLM-4-32B-0414", 0.5, 32, false),
   textModelOf("THUDM/GLM-Z1-9B-0414", 0, 32, false),
@@ -134,7 +138,7 @@ const SILICON_MODELS = [
   textModelOf("deepseek-ai/DeepSeek-R1-Distill-Llama-8B", 0, 32, false, false),
   textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", 0, 32, false, false),
   textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B", 0, 32, false, false),
-  textModelOf("AIDC-AI/Marco-o1", 0, 32, false),
+  // textModelOf("AIDC-AI/Marco-o1", 0, 32, false),
   textModelOf("THUDM/glm-4-9b-chat", 0, 128, false),
   textModelOf("internlm/internlm2_5-7b-chat", 0, 32, false),
   textModelOf("Qwen/Qwen2.5-Coder-7B-Instruct", 0, 32, false),
@@ -194,6 +198,10 @@ const SILICON_MODELS = [
   textModelOf("Pro/meta-llama/Meta-Llama-3.1-8B-Instruct", 0.42, 32, true),
   // textModelOf("Pro/meta-llama/Meta-Llama-3-8B-Instruct", 0.42, 8, true),
 ];
+
+export function isMixedThinkingModel (modelId) {
+  return modelId.includes('Qwen/Qwen3')
+}
 
 export const SILICON_MODELS_IDS = SILICON_MODELS.map(item => item.id)
 
