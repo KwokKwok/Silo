@@ -8,6 +8,7 @@ import i18next from 'i18next';
 import { SILO_ENV } from '@src/utils/env';
 import { decrypt } from '@src/utils/encryption';
 import wordExplainPrompt from '@src/services/prompt/web-copilot.txt?raw';
+import { useRef } from 'react';
 
 export const EXPERIENCE_SK = SILO_ENV.EXPERIENCE_SK;
 
@@ -199,6 +200,7 @@ const defaultZhipuaiWebSearchSettings = {
  * @returns 
  */
 export const useWebSearchSettings = () => {
+  const plainRef = useRef({});
   const [{ zhipuai }, setValue] = useLocalStorageJSONAtom(LOCAL_STORAGE_KEY.WEB_SEARCH_SETTINGS)
   const setZhipuai = (zhipuai) => {
     setValue({ zhipuai })
@@ -213,5 +215,5 @@ export const useWebSearchSettings = () => {
       searchEngine: zhipuai?.searchEngine || 'search_std',
     })
   }
-  return [Object.assign({}, defaultZhipuaiWebSearchSettings, zhipuai), setZhipuai, resetZhipuai]
+  return [Object.assign(plainRef.current, defaultZhipuaiWebSearchSettings, zhipuai), setZhipuai, resetZhipuai]
 }

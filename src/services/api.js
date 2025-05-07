@@ -3,6 +3,8 @@ import { getSecretKey } from "../store/storage";
 import { getChatCompletion, getJsonDataFromLocalStorage } from "../utils/helpers";
 import imageGenPrompt from "./prompt/image-gen.txt?raw"
 import { message } from "tdesign-react";
+import { isMixedThinkingModel } from "@src/utils/models";
+import { sleep } from "@src/utils/utils";
 
 export const fetchUserInfo = async () => {
   const sk = getSecretKey();
@@ -162,4 +164,39 @@ export const getResponseEvaluationResults = (userInput, systemPrompt, responses,
     judge,
     winners
   })))
+}
+
+const thinkingCheckCacheMap = new Map();
+
+/**
+ * 检查是否需要启用思考，针对部分模型
+ */
+export const checkNeedEnableThinking = async (modelId, content) => {
+  const isMixedThinkModel = isMixedThinkingModel(modelId);
+  if (!isMixedThinkModel) {
+    return undefined;
+  }
+
+  if (thinkingCheckCacheMap.has(content)) {
+    while (thinkingCheckCacheMap.get(content) === null) {
+      await sleep(50)
+    }
+    return thinkingCheckCacheMap.get(content);
+  }
+
+  thinkingCheckCacheMap.set(content, null);
+
+  const start = Date.now();
+  const res = await getChatCompletion(`以下是一个用户输入，请你判断该输入是否需要模型进行“深度推理”。  
+— “深度推理”指需要模型多步思考、逻辑分析或跨信息综合推断的场景；  
+— 简单问候、固定事实查询、翻译、语法校正等场景“不需要”深度推理。  
+
+请严格按照下面的格式输出： true/false
+
+---
+
+<user_input>${content}</user_input>`, { json: true })
+  console.log(`[${content}] \n是否需要思考：${res} \n 耗时：${Date.now() - start}ms`, res);
+  thinkingCheckCacheMap.set(content, res);
+  return !!res;
 }

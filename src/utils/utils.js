@@ -3,6 +3,12 @@ import { getChatResolver, isLimitedModel } from './models';
 import { fmtBaseUrl } from "./format";
 import { isExperienceSK } from "@src/store/storage";
 import { LOCAL_STORAGE_KEY } from "./types";
+import { isBoolean } from "lodash-es";
+import { checkNeedEnableThinking } from "@src/services/api";
+
+export const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
+
+
 export function createOpenAICompatibleRequestOptions (sk, model, messages, options = {}) {
   return {
     method: 'POST',
@@ -97,6 +103,13 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
 
 export async function streamChat (model, messages, controller, onChunk, onEnd, onError, onThinking) {
   const modelChatOptions = getChatOptions(model, true)
+  const lastUserContent = messages[messages.length - 1].content;
+  const enableThinking = await checkNeedEnableThinking(model, lastUserContent);
+  // 动态调整
+  if (isBoolean(enableThinking)) {
+    modelChatOptions.enable_thinking = enableThinking;
+    modelChatOptions.thinking_budget = 4096;
+  }
   try {
     const resolver = getChatResolver(model);
     return resolver(model, messages, modelChatOptions, controller, onChunk, onEnd, onError, onThinking)

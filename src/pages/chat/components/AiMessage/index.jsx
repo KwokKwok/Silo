@@ -92,62 +92,70 @@ export default function AiMessage({
               {model}
             </span>
           )}
-          {web.active && (
-            <Collapse
-              borderless
-              defaultExpandAll={false}
-              expandIconPlacement="right"
-              className="overflow-hidden !bg-transparent"
-            >
-              <Collapse.Panel
-                className="thinking-section web-search"
-                disabled={!web.results?.length}
-                header={
-                  <span className="flex items-center">
-                    <i className="iconify mingcute--search-3-line mr-1"></i>
-                    {web.checking
-                      ? '意图识别中...'
-                      : web.searching
-                      ? '搜索中...'
-                      : web.needSearch
-                      ? `已搜索到 ${web.results.length} 条相关信息`
-                      : `无需联网搜索`}
-                  </span>
-                }
+          {web.active &&
+            (web.checking ||
+              web.searching ||
+              (web.needSearch && web.results.length > 0)) && (
+              <Collapse
+                borderless
+                defaultExpandAll={false}
+                expandIconPlacement="right"
+                className={`overflow-hidden !bg-transparent ${
+                  web.checking || web.searching ? 'animate-pulse' : ''
+                }`}
               >
-                {(web.results || []).map((item, index) => (
-                  <div
-                    key={item.refer}
-                    className={`flex flex-col mb-3 last:mb-0 opacity-70 transition-opacity duration-150 ${
-                      item.link ? 'cursor-pointer hover:opacity-100' : ''
-                    }`}
-                    onClick={() => {
-                      item.link && window.open(item.link, '_blank');
-                    }}
-                  >
-                    <span
-                      className={` text-xs mb-1 font-semibold inline-flex items-center `}
+                <Collapse.Panel
+                  className="thinking-section web-search"
+                  disabled={!web.results?.length}
+                  header={
+                    <span className="flex items-center">
+                      <i className="iconify mingcute--search-3-line mr-1"></i>
+                      {web.checking
+                        ? '意图识别中...'
+                        : web.searching
+                        ? '搜索中...'
+                        : web.needSearch
+                        ? `已搜索到 ${web.results.length} 条相关信息`
+                        : `无需联网搜索`}
+                    </span>
+                  }
+                >
+                  {(web.results || []).map((item, index) => (
+                    <div
+                      key={item.refer}
+                      className={`flex flex-col mb-3 last:mb-0 opacity-70 transition-opacity duration-150 ${
+                        item.link ? 'cursor-pointer hover:opacity-100' : ''
+                      }`}
+                      onClick={() => {
+                        item.link && window.open(item.link, '_blank');
+                      }}
                     >
-                      {item.icon && (
-                        <img
-                          src={item.icon}
-                          alt={item.title}
-                          className="w-[12px] h-[12px] mr-1 rounded-sm"
-                        />
-                      )}
-                      <span className="text-ellipsis line-clamp-1">
-                        {index + 1}. {item.title}
-                        {item.media ? ` - ` + item.media : ''}
+                      <span
+                        className={` text-xs mb-1 font-semibold inline-flex items-center `}
+                      >
+                        {item.icon && (
+                          <img
+                            src={item.icon}
+                            alt={item.title}
+                            className="w-[12px] h-[12px] mr-1 rounded-sm"
+                          />
+                        )}
+                        <span className="text-ellipsis line-clamp-1">
+                          {index + 1}. {item.title}
+                          {item.media ? ` - ` + item.media : ''}
+                        </span>
                       </span>
-                    </span>
-                    <span className="text-xs line-clamp-2" title={item.content}>
-                      {item.content}
-                    </span>
-                  </div>
-                ))}
-              </Collapse.Panel>
-            </Collapse>
-          )}
+                      <span
+                        className="text-xs line-clamp-2"
+                        title={item.content}
+                      >
+                        {item.content}
+                      </span>
+                    </div>
+                  ))}
+                </Collapse.Panel>
+              </Collapse>
+            )}
           {!!thought && (
             <Collapse
               borderless
