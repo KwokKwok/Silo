@@ -61,10 +61,10 @@ export default function ({ model, plain = false, className = '' }) {
   const { scrollRef, scrollToBottom } = useAutoScrollToBottomRef();
 
   const lastAiMessage = messages[messages.length - 1];
+
   useEffect(() => {
     if (mouseOverRef.current) return;
-    if (messages.length > 0);
-    {
+    if (messages.length > 0) {
       requestAnimationFrame(scrollToBottom);
     }
   }, [JSON.stringify(lastAiMessage)]);

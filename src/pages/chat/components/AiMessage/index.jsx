@@ -34,7 +34,9 @@ export default function AiMessage({
     total_tokens: tokenUsage,
     completion_tokens: completionTokens,
     prompt_tokens: promptTokens,
+    completion_tokens_details,
   } = info.usage || {};
+  const reasoningTokens = completion_tokens_details?.reasoning_tokens || 0;
   const formattedInfo = useMemo(
     () => (
       <>
@@ -43,8 +45,16 @@ export default function AiMessage({
             {tokenUsage} tokens used (
             <i className="iconify mingcute--arrow-up-line" />
             {promptTokens},
+            {reasoningTokens ? (
+              <>
+                <i className="ml-2 mr-0.5 iconify mingcute--thought-line" />
+                {reasoningTokens},
+              </>
+            ) : (
+              ''
+            )}
             <i className="iconify mingcute--arrow-down-line ml-2" />
-            {completionTokens}) ,
+            {completionTokens - reasoningTokens}) ,
           </span>
         )}
         {info?.costTime && <span>{info.costTime / 1000} s</span>}

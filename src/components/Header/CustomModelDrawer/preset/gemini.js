@@ -61,7 +61,12 @@ export default async function geminiChat (modelConfig, modelId, messages, option
     signal: controller.current.signal
   }).then(async response => {
     if (!response.ok) {
-      console.log(`[fetch error] `, response);
+      const data = await response.json()
+      console.log(`[fetch error] `, response,);
+      const errorMessage = data?.[0]?.error?.message;
+      if (errorMessage) {
+        throw new Error(errorMessage);
+      }
       throw new Error(`Request failed with status code: ${response.status}`);
     }
     if (!response.body) {
@@ -95,7 +100,7 @@ export default async function geminiChat (modelConfig, modelId, messages, option
           const chunks = JSON.parse(`[\n${jsonChunksStr}\n]`).filter(Boolean);
 
           // 如果存在无法输出的块，则抛出错误。可能原因：过载、安全设置等
-          const error = chunks.find(item => !item?.candidates?.[0]?.content?.['parts']?.[0]);
+          const error = chunks.find(item => !item?.candidates?.[0]?.content);
           if (error) {
             onError(new Error(`${JSON.stringify(error)}`));
             return;
@@ -104,7 +109,7 @@ export default async function geminiChat (modelConfig, modelId, messages, option
           let thingContent = '';
           let content = ''
           for (const chunk of chunks) {
-            const parts = chunk.candidates[0].content['parts'];
+            const parts = chunk.candidates[0].content['parts'] || [];
             for (const part of parts) {
               if (part.thought) {
                 thingContent += part.text;
@@ -116,7 +121,8 @@ export default async function geminiChat (modelConfig, modelId, messages, option
           if (chunks.length > 0) {
             const usage = chunks[chunks.length - 1].usageMetadata;
             info.usage.total_tokens = usage?.totalTokenCount || 0;
-            info.usage.completion_tokens = usage?.candidatesTokenCount || 0;
+            info.usage.completion_tokens_details = { reasoning_tokens: usage?.thoughtsTokenCount || 0 };
+            info.usage.completion_tokens = (usage?.candidatesTokenCount || 0) + (usage?.thoughtsTokenCount || 0);
             info.usage.prompt_tokens = usage?.promptTokenCount || 0;
           }
           if (content) {

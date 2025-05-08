@@ -23,8 +23,8 @@ function getDefaultChatOptions () {
       'max_tokens',
       'chat.options.max_tokens_desc',
       50,
-      4096,
-      2048
+      8192,
+      4086
     ),
     optionOf(
       'Temperature',

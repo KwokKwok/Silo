@@ -396,7 +396,9 @@ export function useSiloChat (systemPrompt) {
   useEffect(() => {
     if (!loading) {
       refreshController.refresh();
-      refreshController.stop();
+      setTimeout(() => {
+        refreshController.stop();
+      }, 100);
       _evaluateResponse(activeChats, refreshController, systemPrompt);
     }
   }, [loading])
