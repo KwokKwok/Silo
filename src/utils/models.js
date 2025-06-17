@@ -126,6 +126,8 @@ export function getModelIcon (model) {
  * 5. 新增模型请参考上述规则
  */
 const SILICON_MODELS = [
+  textModelOf("MiniMaxAI/MiniMax-M1-80k", 16, 128, false),
+  textModelOf("Tongyi-Zhiwen/QwenLong-L1-32B", 4, 128, false),
   textModelOf("Qwen/Qwen3-235B-A22B", 10, 128, false),
   textModelOf("Qwen/Qwen3-30B-A3B", 2.8, 128, false),
   textModelOf("Qwen/Qwen3-32B", 4, 128, false),

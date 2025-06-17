@@ -36,7 +36,7 @@ const CUSTOM_MODEL_PRESET = [
     name: 'Google Gemini',
     id: 'preset-gemini',
     icon: '',
-    ids: 'google/gemini-2.0-flash,google/gemini-2.0-pro-exp,google/gemini-2.5-pro-exp-03-25',
+    ids: 'google/gemini-2.0-flash,google/gemini-2.5-flash-preview-05-20,google/gemini-2.5-pro-exp-03-25',
     length: '',
     price: void 0,
     vision: true,
