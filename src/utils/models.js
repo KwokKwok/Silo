@@ -39,6 +39,9 @@ const keywordsMap = {
   'deepseek-ai': '私募巨头幻方量化深度求索',
   '01-ai': '01万物零一万物李开复',
   'AIDC-AI': 'AIDC-AI,阿里云,CoT',
+  'baidu': '百度,文心一言',
+  'tencent': '腾讯,Hunyuan',
+  'moonshotai': '月之暗面,Kimi',
 };
 
 // 修改后的 textModelOf 函数，统一处理 "Pro/" 前缀
@@ -126,6 +129,9 @@ export function getModelIcon (model) {
  * 5. 新增模型请参考上述规则
  */
 const SILICON_MODELS = [
+  textModelOf("baidu/ERNIE-4.5-300B-A47B", 8, 128, false),
+  textModelOf("tencent/Hunyuan-A13B-Instruct", 4, 128, false),
+  textModelOf("moonshotai/Kimi-Dev-72B", 8, 128, false),
   textModelOf("MiniMaxAI/MiniMax-M1-80k", 16, 128, false),
   textModelOf("Tongyi-Zhiwen/QwenLong-L1-32B", 4, 128, false),
   textModelOf("Qwen/Qwen3-235B-A22B", 10, 128, false),
@@ -252,10 +258,10 @@ const imageModelOf = (id, price) => {
 
 const IMAGE_MODELS = [
   imageModelOf("black-forest-labs/FLUX.1-dev", 1),
-  imageModelOf("black-forest-labs/FLUX.1-schnell", -1),
+  imageModelOf("black-forest-labs/FLUX.1-schnell", 1),
   imageModelOf("stabilityai/stable-diffusion-3-5-large", -1),
   imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", -1),
-  imageModelOf("stabilityai/stable-diffusion-2-1", -1),
+  // imageModelOf("stabilityai/stable-diffusion-2-1", -1),
   // 已弃模型
   // imageModelOf("stabilityai/stable-diffusion-3-medium", -1),
   // imageModelOf("stabilityai/sd-turbo", -1),

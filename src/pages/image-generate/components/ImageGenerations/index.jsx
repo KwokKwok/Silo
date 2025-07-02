@@ -138,7 +138,6 @@ function ImageGenerations({ generations }) {
                         />
                       </div>
                       <span className="text-xs">
-                        {models[generation.model].isPro ? 'Pro/' : ''}
                         {models[generation.model].name}
                       </span>
                     </div>
