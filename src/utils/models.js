@@ -141,6 +141,7 @@ const SILICON_MODELS = [
   textModelOf("THUDM/GLM-Z1-32B-0414", 0.5, 32, false),
   textModelOf("THUDM/GLM-4-32B-0414", 0.5, 32, false),
   textModelOf("THUDM/GLM-Z1-9B-0414", 0, 32, false),
+  textModelOf("THUDM/GLM-4.1V-9B-Thinking", 0, 64, false),
   textModelOf("THUDM/GLM-4-9B-0414", 0, 32, false),
   textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32, false),
   textModelOf("deepseek-ai/DeepSeek-R1-Distill-Llama-8B", 0, 32, false, false),
@@ -203,6 +204,7 @@ const SILICON_MODELS = [
   textModelOf("Pro/Qwen/Qwen2-7B-Instruct", 0.35, 32, false),
   // textModelOf("Pro/THUDM/chatglm3-6b", 0.35, 32, false),
   textModelOf("Pro/THUDM/glm-4-9b-chat", 0.6, 128, false),
+  textModelOf("Pro/THUDM/GLM-4.1V-9B-Thinking", 1, 64, false),
   textModelOf("Pro/meta-llama/Meta-Llama-3.1-8B-Instruct", 0.42, 32, true),
   // textModelOf("Pro/meta-llama/Meta-Llama-3-8B-Instruct", 0.42, 8, true),
 ];
