@@ -3,10 +3,33 @@ import { getSecretKey } from '@src/store/storage';
 import { getJsonDataFromLocalStorage, setJsonDataToLocalStorage } from '@src/utils/helpers';
 import { LOCAL_STORAGE_KEY } from '@src/utils/types';
 import { checkModelLimit, openAiCompatibleChat } from "./utils";
-
-const modules = import.meta.glob('../assets/img/models/*.*', { eager: true });
+import chatModelData from '../data/chat-models.json';
 
 const _iconCache = {};
+const modules = import.meta.glob('../assets/img/models/*.*', { eager: true });
+
+/**
+ * @type {Array<{
+ *   id: string,
+ *   series: string,
+ *   icon: string,
+ *   size: string,
+ *   length: number,
+ *   name: string,
+ *   priceIn: number,
+ *   priceOut: number,
+ *   price: number,
+ *   vision: boolean,
+ *   noGift: boolean
+ * }>}
+ */
+const SILICON_MODELS = chatModelData.map(({ icon, ...item }) => ({
+  ...item,
+  icon: getModelIcon(item.id, false) || (icon.startsWith('http') ? icon : `https://sf-maas-uat-prod.oss-cn-shanghai.aliyuncs.com/Model_LOGO/${icon}`)
+}));
+
+console.log(SILICON_MODELS);
+
 
 let customModels = null;
 let normalizedCustomModel = null;
@@ -42,21 +65,6 @@ const keywordsMap = {
   'baidu': '百度,文心一言',
   'tencent': '腾讯,Hunyuan',
   'moonshotai': '月之暗面,Kimi',
-};
-
-// 修改后的 textModelOf 函数，统一处理 "Pro/" 前缀
-const textModelOf = (id, price, length, needVerify, vision) => {
-  const { series, name, isPro, isVendorA } = parseModelId(id);
-  const icon = getModelIcon(id); // 使用原始id获取图标
-  let keywords = keywordsMap[series];
-  if (vision) {
-    keywords += ',多模态,视觉,图像,VL,vision,image'
-  }
-  if (isVendorA) {
-    keywords += ',Vendor-A,国产算力芯片'
-  }
-  const displayName = isPro ? `Pro/${name}` : isVendorA ? `Vendor-A/${name}` : name; // 根据 isPro 添加前缀
-  return { id, name: displayName, series, price, length, icon, keywords, needVerify, isPro, isVendorA, vision };
 };
 
 /**
@@ -109,105 +117,17 @@ export function setCustomModels (models) {
 }
 
 // 修改 getModelIcon 函数，确保使用正确的 fullName 获取图标
-export function getModelIcon (model) {
+export function getModelIcon (model, autoFallback = true) {
   if (!_iconCache[model]) {
     const { series } = parseModelId(model);
     _iconCache[model] = modules[Object.keys(modules).find(i => i.includes(series))]?.default;
-    if (!_iconCache[model]) {
+    if (!_iconCache[model] && autoFallback) {
       _iconCache[model] = '/logo.svg';
     }
   }
   return _iconCache[model];
 }
 
-/**
- * 关于模型顺序：
- * 1. 免费模型在前
- * 2. 免费模型中，尽量根据模型能力排序，最新最强的在前
- * 3. 中文模型应排在英文模型前面
- * 4. Pro 开头的模型为免费模型的付费版本，优先级最低
- * 5. 新增模型请参考上述规则
- */
-const SILICON_MODELS = [
-  textModelOf("baidu/ERNIE-4.5-300B-A47B", 8, 128, false),
-  textModelOf("tencent/Hunyuan-A13B-Instruct", 4, 128, false),
-  textModelOf("moonshotai/Kimi-Dev-72B", 8, 128, false),
-  textModelOf("MiniMaxAI/MiniMax-M1-80k", 16, 128, false),
-  textModelOf("Tongyi-Zhiwen/QwenLong-L1-32B", 4, 128, false),
-  textModelOf("Qwen/Qwen3-235B-A22B", 10, 128, false),
-  textModelOf("Qwen/Qwen3-30B-A3B", 2.8, 128, false),
-  textModelOf("Qwen/Qwen3-32B", 4, 128, false),
-  textModelOf("Qwen/Qwen3-14B", 2, 128, false),
-  textModelOf("THUDM/GLM-Z1-32B-0414", 0.5, 32, false),
-  textModelOf("THUDM/GLM-4-32B-0414", 0.5, 32, false),
-  textModelOf("THUDM/GLM-Z1-9B-0414", 0, 32, false),
-  textModelOf("THUDM/GLM-4.1V-9B-Thinking", 0, 64, false),
-  textModelOf("THUDM/GLM-4-9B-0414", 0, 32, false),
-  textModelOf("Qwen/Qwen2.5-7B-Instruct", 0, 32, false),
-  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Llama-8B", 0, 32, false, false),
-  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", 0, 32, false, false),
-  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B", 0, 32, false, false),
-  // textModelOf("AIDC-AI/Marco-o1", 0, 32, false),
-  textModelOf("THUDM/glm-4-9b-chat", 0, 128, false),
-  textModelOf("internlm/internlm2_5-7b-chat", 0, 32, false),
-  textModelOf("Qwen/Qwen2.5-Coder-7B-Instruct", 0, 32, false),
-  textModelOf("Qwen/Qwen2-7B-Instruct", 0, 32, false),
-  textModelOf("THUDM/chatglm3-6b", 0, 32, false),
-  textModelOf("Qwen/Qwen2-1.5B-Instruct", 0, 32, false),
-  textModelOf("meta-llama/Meta-Llama-3.1-8B-Instruct", 0, 32, true),
-  // textModelOf("meta-llama/Meta-Llama-3-8B-Instruct", 0, 8, true),
-  textModelOf("deepseek-ai/DeepSeek-R1", 16, 64, false, false),
-  textModelOf("deepseek-ai/DeepSeek-V3", 8, 64, false, false),
-  textModelOf("Pro/deepseek-ai/DeepSeek-R1", 16, 64, false, false),
-  textModelOf("Pro/deepseek-ai/DeepSeek-V3", 8, 64, false, false),
-  textModelOf("Pro/deepseek-ai/DeepSeek-R1-Distill-Llama-8B", 0.42, 32, false, false),
-  textModelOf("Pro/deepseek-ai/DeepSeek-R1-Distill-Qwen-7B", 0.35, 32, false, false),
-  textModelOf("Pro/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B", 0.14, 32, false, false),
-  textModelOf("Qwen/QwQ-32B", 1.26, 32, false, false),
-  textModelOf("Qwen/QVQ-72B-Preview", 9.9, 32, false, true),
-  // textModelOf("Tencent/Hunyuan-A52B-Instruct", 21, 32, false),
-  textModelOf("Qwen/Qwen2.5-14B-Instruct", 0.7, 32, false),
-  textModelOf("internlm/internlm2_5-20b-chat", 1, 32, false),
-  textModelOf("Qwen/Qwen2.5-Coder-32B-Instruct", 1.26, 32, false),
-  textModelOf("Qwen/Qwen2.5-32B-Instruct", 1.26, 32, false),
-  // textModelOf("Qwen/Qwen2-57B-A14B-Instruct", 1.26, 32, false),
-  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Llama-70B", 4.13, 32, false, false),
-  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-32B", 1.26, 32, false, false),
-  textModelOf("deepseek-ai/DeepSeek-R1-Distill-Qwen-14B", 0.7, 32, false, false),
-
-  textModelOf("deepseek-ai/DeepSeek-V2.5", 1.33, 32, false),
-  textModelOf("deepseek-ai/deepseek-vl2", 0.99, 4, false, true),
-  // textModelOf("deepseek-ai/DeepSeek-Coder-V2-Instruct", 1.33, 32, false),
-  textModelOf("deepseek-ai/DeepSeek-V2-Chat", 1.33, 32, false),
-  // textModelOf("Qwen/Qwen2.5-Math-72B-Instruct", 4.13, 4, false),
-  textModelOf("Qwen/Qwen2.5-72B-Instruct-128K", 4.13, 128, false),
-  textModelOf("Qwen/Qwen2.5-72B-Instruct", 4.13, 32, false),
-  // textModelOf("Qwen/Qwen2-72B-Instruct", 4.13, 32, false),
-  // textModelOf("Vendor-A/Qwen/Qwen2.5-72B-Instruct", 1, 32, false),
-  // textModelOf("Vendor-A/Qwen/Qwen2-72B-Instruct", 1, 32, false),
-  // textModelOf("nvidia/Llama-3.1-Nemotron-70B-Instruct", 4.13, 32, true),
-  textModelOf("meta-llama/Llama-3.3-70B-Instruct", 4.13, 32, true),
-  textModelOf("meta-llama/Meta-Llama-3.1-70B-Instruct", 4.13, 32, true),
-  // textModelOf("meta-llama/Meta-Llama-3-70B-Instruct", 4.13, 8, true),
-  textModelOf("meta-llama/Meta-Llama-3.1-405B-Instruct", 21, 32, true),
-  textModelOf("Qwen/Qwen2.5-VL-72B-Instruct", 4.13, 32, false, true),
-  // textModelOf("Qwen/Qwen2.5-VL-32B-Instruct", 1.26, 32, false, true),
-  textModelOf("Pro/Qwen/Qwen2.5-VL-7B-Instruct", 0.35, 32, false, true),
-  textModelOf("Qwen/Qwen2-VL-72B-Instruct", 4.13, 32, false, true),
-  textModelOf("OpenGVLab/InternVL2-26B", 1, 32, false, true),
-  textModelOf("Pro/OpenGVLab/InternVL2-8B", 0.35, 32, false, true),
-  textModelOf("Pro/Qwen/Qwen2-VL-7B-Instruct", 0.35, 32, false, true),
-  textModelOf("OpenGVLab/InternVL2-Llama3-76B", 4.13, 8, false, true),
-  textModelOf("Pro/Qwen/Qwen2-1.5B-Instruct", 0.14, 32, false),
-  textModelOf("Pro/Qwen/Qwen2.5-7B-Instruct", 0.35, 32, false),
-  // textModelOf("Pro/internlm/internlm2_5-7b-chat", 0.35, 32, false),
-  textModelOf("Pro/Qwen/Qwen2-7B-Instruct", 0.35, 32, false),
-  // textModelOf("Pro/THUDM/chatglm3-6b", 0.35, 32, false),
-  textModelOf("Pro/THUDM/glm-4-9b-chat", 0.6, 128, false),
-  textModelOf("Pro/THUDM/GLM-4.1V-9B-Thinking", 1, 64, false),
-  textModelOf("Pro/meta-llama/Meta-Llama-3.1-8B-Instruct", 0.42, 32, true),
-  // textModelOf("Pro/meta-llama/Meta-Llama-3-8B-Instruct", 0.42, 8, true),
-];
 
 export function isMixedThinkingModel (modelId) {
   return modelId.includes('Qwen/Qwen3')
@@ -261,15 +181,15 @@ const imageModelOf = (id, price) => {
 const IMAGE_MODELS = [
   imageModelOf("black-forest-labs/FLUX.1-dev", 1),
   imageModelOf("black-forest-labs/FLUX.1-schnell", 1),
-  imageModelOf("stabilityai/stable-diffusion-3-5-large", -1),
-  imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", -1),
-  // imageModelOf("stabilityai/stable-diffusion-2-1", -1),
+  imageModelOf('Pro/black-forest-labs/FLUX.1-schnell', 1),
   // 已弃模型
+  // imageModelOf("stabilityai/stable-diffusion-2-1", -1),
+  // imageModelOf("stabilityai/stable-diffusion-3-5-large", -1),
+  // imageModelOf("stabilityai/stable-diffusion-xl-base-1.0", -1),
   // imageModelOf("stabilityai/stable-diffusion-3-medium", -1),
   // imageModelOf("stabilityai/sd-turbo", -1),
   // imageModelOf("stabilityai/sdxl-turbo", -1),
   // imageModelOf("ByteDance/SDXL-Lightning", -1),
-  imageModelOf('Pro/black-forest-labs/FLUX.1-schnell', 1)
 ];
 
 /**

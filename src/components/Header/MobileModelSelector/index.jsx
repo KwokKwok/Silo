@@ -52,16 +52,6 @@ const MobileModelSelector = forwardRef((props, ref) => {
       label: 'Free',
       filter: model => model.price <= 0,
     },
-    {
-      value: 'domestic',
-      label: t('common.china_vendor'),
-      filter: model => model.isVendorA,
-    },
-    {
-      value: 'auth',
-      label: t('common.auth_required'),
-      filter: model => model.needVerify,
-    },
   ];
 
   const filteredModels = allTextModels.filter(

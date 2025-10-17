@@ -104,12 +104,12 @@ export function openAiCompatibleChat (baseUrl, sk, modelIdResolver, model, messa
 export async function streamChat (model, messages, controller, onChunk, onEnd, onError, onThinking) {
   const modelChatOptions = getChatOptions(model, true)
   const lastUserContent = messages[messages.length - 1].content;
-  const enableThinking = await checkNeedEnableThinking(model, lastUserContent);
-  // 动态调整
-  if (isBoolean(enableThinking)) {
-    modelChatOptions.enable_thinking = enableThinking;
-    modelChatOptions.thinking_budget = 4096;
-  }
+  // const enableThinking = await checkNeedEnableThinking(model, lastUserContent);
+  // // 动态调整
+  // if (isBoolean(enableThinking)) {
+  //   modelChatOptions.enable_thinking = enableThinking;
+  //   modelChatOptions.thinking_budget = 4096;
+  // }
   try {
     const resolver = getChatResolver(model);
     return resolver(model, messages, modelChatOptions, controller, onChunk, onEnd, onError, onThinking)

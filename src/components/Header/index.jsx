@@ -1,6 +1,6 @@
 import { useRequest } from 'ahooks';
 import { useEffect, useRef, useState } from 'react';
-import { useActiveModels, useIsRowMode } from '@src/store/app';
+import { useActiveModels, useIsRowMode, useUserInfo } from '@src/store/app';
 import {
   useActiveSystemPromptId,
   useLocalStorageAtom,
@@ -49,6 +49,8 @@ export default function () {
     }
   );
 
+  const [_, setUserInfo] = useUserInfo();
+
   const userData = userInfoRes?.data;
 
   const [noGuide, setNoGuide] = useLocalStorageAtom(
@@ -57,6 +59,7 @@ export default function () {
   const isMobile = useIsMobile();
 
   useEffect(() => {
+    setUserInfo(userData);
     // 不显示引导：移动端、生图模式、密钥不可用、已关闭引导
     if (isMobile || noGuide || isImageMode || !userData) {
       setShowGuide(false);

@@ -4,6 +4,11 @@ import { getJsonDataFromLocalStorage, getLocalStorage, setJsonDataToLocalStorage
 import { LOCAL_STORAGE_KEY } from '../utils/types';
 import { SILO_ENV } from '@src/utils/env';
 
+const userInfoAtom = atom({});
+export const useUserInfo = () => {
+  return useAtom(userInfoAtom);
+}
+
 const activeModels = atom(
   getJsonDataFromLocalStorage(LOCAL_STORAGE_KEY.ACTIVE_MODELS, SILO_ENV.DEFAULT_ACTIVE_CHAT_MODELS)
 )
