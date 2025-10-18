@@ -1,5 +1,104 @@
 [
   {
+    "id": "deepseek-ai/DeepSeek-V2.5",
+    "series": "deepseek-ai",
+    "icon": "DeepSeek.svg",
+    "size": 236,
+    "levels": [
+      {
+        "TPM": 10000
+      },
+      {
+        "TPM": 15000
+      },
+      {
+        "TPM": 20000
+      },
+      {
+        "TPM": 40000
+      },
+      {
+        "TPM": 125000
+      },
+      {
+        "TPM": 500000
+      }
+    ],
+    "length": 32,
+    "name": "DeepSeek-V2.5",
+    "priceIn": 1.33,
+    "priceOut": 1.33,
+    "price": 1.33,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "Qwen/Qwen3-VL-8B-Thinking",
+    "series": "Qwen",
+    "icon": "Tongyi.svg",
+    "size": 8,
+    "levels": [
+      {
+        "TPM": 80000
+      },
+      {
+        "TPM": 120000
+      },
+      {
+        "TPM": 160000
+      },
+      {
+        "TPM": 320000
+      },
+      {
+        "TPM": 1000000
+      },
+      {
+        "TPM": 5000000
+      }
+    ],
+    "length": 256,
+    "name": "Qwen3-VL-8B-Thinking",
+    "priceIn": 0.5,
+    "priceOut": 5,
+    "price": 5,
+    "vision": 1,
+    "noGift": 0
+  },
+  {
+    "id": "Qwen/Qwen3-VL-8B-Instruct",
+    "series": "Qwen",
+    "icon": "Tongyi.svg",
+    "size": 8,
+    "levels": [
+      {
+        "TPM": 80000
+      },
+      {
+        "TPM": 120000
+      },
+      {
+        "TPM": 160000
+      },
+      {
+        "TPM": 320000
+      },
+      {
+        "TPM": 1000000
+      },
+      {
+        "TPM": 5000000
+      }
+    ],
+    "length": 256,
+    "name": "Qwen3-VL-8B-Instruct",
+    "priceIn": 0.5,
+    "priceOut": 2,
+    "price": 2,
+    "vision": 1,
+    "noGift": 0
+  },
+  {
     "id": "Qwen/Qwen3-VL-30B-A3B-Instruct",
     "series": "Qwen",
     "icon": "Tongyi.svg",
@@ -1680,39 +1779,6 @@
     "priceOut": 0.99,
     "price": 0.99,
     "vision": 1,
-    "noGift": 0
-  },
-  {
-    "id": "deepseek-ai/DeepSeek-V2.5",
-    "series": "deepseek-ai",
-    "icon": "DeepSeek.svg",
-    "size": 236,
-    "levels": [
-      {
-        "TPM": 10000
-      },
-      {
-        "TPM": 15000
-      },
-      {
-        "TPM": 20000
-      },
-      {
-        "TPM": 40000
-      },
-      {
-        "TPM": 125000
-      },
-      {
-        "TPM": 500000
-      }
-    ],
-    "length": 32,
-    "name": "DeepSeek-V2.5",
-    "priceIn": 1.33,
-    "priceOut": 1.33,
-    "price": 1.33,
-    "vision": 0,
     "noGift": 0
   },
   {
