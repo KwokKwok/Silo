@@ -7,6 +7,10 @@
   margin: 0;
 }
 
+html {
+  z-index: 999999;
+}
+
 body {
   padding: 16px;
 }
