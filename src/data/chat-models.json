@@ -1,34 +1,67 @@
 [
   {
-    "id": "Pro/deepseek-ai/DeepSeek-V3.2-Exp",
+    "id": "Pro/deepseek-ai/DeepSeek-V3.2",
     "series": "deepseek-ai",
     "icon": "DeepSeek.svg",
     "size": 671,
     "levels": [
       {
-        "TPM": 5000000
+        "TPM": 2000000
       },
       {
-        "TPM": 5000000
+        "TPM": 2000000
       },
       {
-        "TPM": 5000000
+        "TPM": 2000000
       },
       {
-        "TPM": 5000000
+        "TPM": 2000000
       },
       {
-        "TPM": 5000000
+        "TPM": 2000000
       },
       {
-        "TPM": 5000000
+        "TPM": 2000000
       }
     ],
     "length": 160,
-    "name": "DeepSeek-V3.2-Exp (Pro)",
+    "name": "DeepSeek-V3.2 (Pro)",
     "priceIn": 2,
     "priceOut": 3,
     "price": 3,
+    "vision": 0,
+    "noGift": 1
+  },
+  {
+    "id": "Pro/moonshotai/Kimi-K2-Thinking",
+    "series": "moonshotai",
+    "icon": "moonshotai_new.png",
+    "size": 1000,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 256,
+    "name": "Kimi-K2-Thinking (Pro)",
+    "priceIn": 4,
+    "priceOut": 16,
+    "price": 16,
     "vision": 0,
     "noGift": 1
   },
@@ -196,39 +229,6 @@
     "price": 16,
     "vision": 0,
     "noGift": 0
-  },
-  {
-    "id": "moonshotai/Kimi-K2-Thinking-Turbo",
-    "series": "moonshotai",
-    "icon": "moonshotai_new.png",
-    "size": 1000,
-    "levels": [
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      }
-    ],
-    "length": 256,
-    "name": "Kimi-K2-Thinking (Turbo)",
-    "priceIn": 8,
-    "priceOut": 32,
-    "price": 32,
-    "vision": 0,
-    "noGift": 1
   },
   {
     "id": "moonshotai/Kimi-K2-Thinking",
