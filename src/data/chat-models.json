@@ -1,36 +1,102 @@
 [
   {
-    "id": "Pro/deepseek-ai/DeepSeek-V3.2",
-    "series": "deepseek-ai",
-    "icon": "DeepSeek.svg",
-    "size": 671,
+    "id": "zai-org/GLM-4.6V",
+    "series": "zai",
+    "icon": "zhipu.svg",
+    "size": 106,
     "levels": [
       {
-        "TPM": 2000000
+        "TPM": 20000
       },
       {
-        "TPM": 2000000
+        "TPM": 30000
       },
       {
-        "TPM": 2000000
+        "TPM": 40000
       },
       {
-        "TPM": 2000000
+        "TPM": 80000
       },
       {
-        "TPM": 2000000
+        "TPM": 250000
       },
       {
-        "TPM": 2000000
+        "TPM": 1000000
       }
     ],
-    "length": 160,
-    "name": "DeepSeek-V3.2 (Pro)",
-    "priceIn": 2,
+    "length": 128,
+    "name": "GLM-4.6V",
+    "priceIn": 1,
     "priceOut": 3,
     "price": 3,
-    "vision": 0,
-    "noGift": 1
+    "vision": 1,
+    "noGift": 0
+  },
+  {
+    "id": "Qwen/Qwen3-VL-32B-Thinking",
+    "series": "Qwen",
+    "icon": "Tongyi.svg",
+    "size": 32,
+    "levels": [
+      {
+        "TPM": 80000
+      },
+      {
+        "TPM": 120000
+      },
+      {
+        "TPM": 160000
+      },
+      {
+        "TPM": 320000
+      },
+      {
+        "TPM": 1000000
+      },
+      {
+        "TPM": 5000000
+      }
+    ],
+    "length": 256,
+    "name": "Qwen3-VL-32B-Thinking",
+    "priceIn": 1,
+    "priceOut": 10,
+    "price": 10,
+    "vision": 1,
+    "noGift": 0
+  },
+  {
+    "id": "Qwen/Qwen3-VL-32B-Instruct",
+    "series": "Qwen",
+    "icon": "Tongyi.svg",
+    "size": 32,
+    "levels": [
+      {
+        "TPM": 80000
+      },
+      {
+        "TPM": 120000
+      },
+      {
+        "TPM": 160000
+      },
+      {
+        "TPM": 320000
+      },
+      {
+        "TPM": 1000000
+      },
+      {
+        "TPM": 5000000
+      }
+    ],
+    "length": 256,
+    "name": "Qwen3-VL-32B-Instruct",
+    "priceIn": 1,
+    "priceOut": 4,
+    "price": 4,
+    "vision": 1,
+    "noGift": 0
   },
   {
     "id": "Pro/moonshotai/Kimi-K2-Thinking",
@@ -66,7 +132,7 @@
     "noGift": 1
   },
   {
-    "id": "deepseek-ai/DeepSeek-V3.2-Exp",
+    "id": "deepseek-ai/DeepSeek-V3.2",
     "series": "deepseek-ai",
     "icon": "DeepSeek.svg",
     "size": 671,
@@ -91,12 +157,45 @@
       }
     ],
     "length": 160,
-    "name": "DeepSeek-V3.2-Exp",
+    "name": "DeepSeek-V3.2",
     "priceIn": 2,
     "priceOut": 3,
     "price": 3,
     "vision": 0,
     "noGift": 0
+  },
+  {
+    "id": "Pro/deepseek-ai/DeepSeek-V3.2",
+    "series": "deepseek-ai",
+    "icon": "DeepSeek.svg",
+    "size": 671,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 160,
+    "name": "DeepSeek-V3.2 (Pro)",
+    "priceIn": 2,
+    "priceOut": 3,
+    "price": 3,
+    "vision": 0,
+    "noGift": 1
   },
   {
     "id": "Pro/deepseek-ai/DeepSeek-V3.1-Terminus",
@@ -524,72 +623,6 @@
     "priceIn": 0,
     "priceOut": 0,
     "price": 0,
-    "vision": 1,
-    "noGift": 0
-  },
-  {
-    "id": "Qwen/Qwen3-VL-32B-Instruct",
-    "series": "Qwen",
-    "icon": "Tongyi.svg",
-    "size": 32,
-    "levels": [
-      {
-        "TPM": 80000
-      },
-      {
-        "TPM": 120000
-      },
-      {
-        "TPM": 160000
-      },
-      {
-        "TPM": 320000
-      },
-      {
-        "TPM": 1000000
-      },
-      {
-        "TPM": 5000000
-      }
-    ],
-    "length": 256,
-    "name": "Qwen3-VL-32B-Instruct",
-    "priceIn": 1,
-    "priceOut": 4,
-    "price": 4,
-    "vision": 1,
-    "noGift": 0
-  },
-  {
-    "id": "Qwen/Qwen3-VL-32B-Thinking",
-    "series": "Qwen",
-    "icon": "Tongyi.svg",
-    "size": 32,
-    "levels": [
-      {
-        "TPM": 80000
-      },
-      {
-        "TPM": 120000
-      },
-      {
-        "TPM": 160000
-      },
-      {
-        "TPM": 320000
-      },
-      {
-        "TPM": 1000000
-      },
-      {
-        "TPM": 5000000
-      }
-    ],
-    "length": 256,
-    "name": "Qwen3-VL-32B-Thinking",
-    "priceIn": 1,
-    "priceOut": 10,
-    "price": 10,
     "vision": 1,
     "noGift": 0
   },
