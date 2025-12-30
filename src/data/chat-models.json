@@ -33,6 +33,105 @@
     "noGift": 0
   },
   {
+    "id": "Pro/zai-org/GLM-4.7",
+    "series": "zai",
+    "icon": "zhipu.svg",
+    "size": 355,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 198,
+    "name": "GLM-4.7 (Pro)",
+    "priceIn": 4,
+    "priceOut": 16,
+    "price": 16,
+    "vision": 0,
+    "noGift": 1
+  },
+  {
+    "id": "moonshotai/Kimi-K2-Thinking",
+    "series": "moonshotai",
+    "icon": "moonshotai_new.png",
+    "size": 1000,
+    "levels": [
+      {
+        "TPM": 400000
+      },
+      {
+        "TPM": 400000
+      },
+      {
+        "TPM": 400000
+      },
+      {
+        "TPM": 400000
+      },
+      {
+        "TPM": 400000
+      },
+      {
+        "TPM": 400000
+      }
+    ],
+    "length": 256,
+    "name": "Kimi-K2-Thinking",
+    "priceIn": 4,
+    "priceOut": 16,
+    "price": 16,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "MiniMaxAI/MiniMax-M2",
+    "series": "MiniMaxAI",
+    "icon": "minimax-color.svg",
+    "size": 230,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 192,
+    "name": "MiniMax-M2",
+    "priceIn": 2.1,
+    "priceOut": 8.4,
+    "price": 8.4,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
     "id": "Qwen/Qwen3-VL-32B-Thinking",
     "series": "Qwen",
     "icon": "Tongyi.svg",
@@ -330,39 +429,6 @@
     "noGift": 0
   },
   {
-    "id": "moonshotai/Kimi-K2-Thinking",
-    "series": "moonshotai",
-    "icon": "moonshotai_new.png",
-    "size": 1000,
-    "levels": [
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      }
-    ],
-    "length": 256,
-    "name": "Kimi-K2-Thinking",
-    "priceIn": 4,
-    "priceOut": 16,
-    "price": 16,
-    "vision": 0,
-    "noGift": 0
-  },
-  {
     "id": "Kwaipilot/KAT-Dev",
     "series": "Kwaipilot",
     "icon": "kwaipilot-color.svg",
@@ -492,39 +558,6 @@
     "priceOut": 5,
     "price": 5,
     "vision": 1,
-    "noGift": 0
-  },
-  {
-    "id": "MiniMaxAI/MiniMax-M2",
-    "series": "MiniMaxAI",
-    "icon": "minimax-color.svg",
-    "size": 230,
-    "levels": [
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      }
-    ],
-    "length": 192,
-    "name": "MiniMax-M2",
-    "priceIn": 2.1,
-    "priceOut": 8.4,
-    "price": 8.4,
-    "vision": 0,
     "noGift": 0
   },
   {
@@ -1485,39 +1518,6 @@
     "noGift": 0
   },
   {
-    "id": "zai-org/GLM-4.5",
-    "series": "zai",
-    "icon": "zhipu.svg",
-    "size": 335,
-    "levels": [
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      },
-      {
-        "TPM": 400000
-      }
-    ],
-    "length": 128,
-    "name": "GLM-4.5",
-    "priceIn": 3.5,
-    "priceOut": 14,
-    "price": 14,
-    "vision": 0,
-    "noGift": 0
-  },
-  {
     "id": "Pro/THUDM/GLM-4.1V-9B-Thinking",
     "series": "zai",
     "icon": "zhipu.svg",
@@ -1910,39 +1910,6 @@
     "priceIn": 1,
     "priceOut": 4,
     "price": 4,
-    "vision": 0,
-    "noGift": 0
-  },
-  {
-    "id": "Qwen/Qwen3-235B-A22B",
-    "series": "Qwen",
-    "icon": "Tongyi.svg",
-    "size": 235,
-    "levels": [
-      {
-        "TPM": 10000
-      },
-      {
-        "TPM": 15000
-      },
-      {
-        "TPM": 20000
-      },
-      {
-        "TPM": 40000
-      },
-      {
-        "TPM": 125000
-      },
-      {
-        "TPM": 500000
-      }
-    ],
-    "length": 128,
-    "name": "Qwen3-235B-A22B",
-    "priceIn": 2.5,
-    "priceOut": 10,
-    "price": 10,
     "vision": 0,
     "noGift": 0
   },
