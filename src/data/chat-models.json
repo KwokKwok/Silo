@@ -1,35 +1,233 @@
 [
   {
-    "id": "zai-org/GLM-4.6V",
-    "series": "zai",
-    "icon": "zhipu.svg",
-    "size": 106,
+    "id": "Pro/MiniMaxAI/MiniMax-M2.1",
+    "series": "MiniMaxAI",
+    "icon": "minimax-color.svg",
+    "size": 230,
     "levels": [
       {
-        "TPM": 20000
+        "TPM": 2000000
       },
       {
-        "TPM": 30000
+        "TPM": 2000000
       },
       {
-        "TPM": 40000
+        "TPM": 2000000
       },
       {
-        "TPM": 80000
+        "TPM": 2000000
       },
       {
-        "TPM": 250000
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 192,
+    "name": "MiniMax-M2.1 (Pro)",
+    "priceIn": 2.1,
+    "priceOut": 8.4,
+    "price": 8.4,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "Pro/moonshotai/Kimi-K2-Instruct-0905",
+    "series": "moonshotai",
+    "icon": "moonshotai_new.png",
+    "size": 1000,
+    "levels": [
+      {
+        "TPM": 1000000
+      },
+      {
+        "TPM": 1000000
+      },
+      {
+        "TPM": 1000000
+      },
+      {
+        "TPM": 1000000
+      },
+      {
+        "TPM": 1000000
       },
       {
         "TPM": 1000000
       }
     ],
-    "length": 128,
-    "name": "GLM-4.6V",
-    "priceIn": 1,
+    "length": 256,
+    "name": "Kimi-K2-Instruct-0905 (Pro)",
+    "priceIn": 4,
+    "priceOut": 16,
+    "price": 16,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "Pro/moonshotai/Kimi-K2-Thinking",
+    "series": "moonshotai",
+    "icon": "moonshotai_new.png",
+    "size": 1000,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 256,
+    "name": "Kimi-K2-Thinking (Pro)",
+    "priceIn": 4,
+    "priceOut": 16,
+    "price": 16,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "Pro/deepseek-ai/DeepSeek-V3",
+    "series": "deepseek-ai",
+    "icon": "DeepSeek.svg",
+    "size": 671,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 160,
+    "name": "DeepSeek-V3 (Pro)",
+    "priceIn": 2,
+    "priceOut": 8,
+    "price": 8,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "Pro/deepseek-ai/DeepSeek-R1",
+    "series": "deepseek-ai",
+    "icon": "DeepSeek.svg",
+    "size": 671,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 160,
+    "name": "DeepSeek-R1 (Pro)",
+    "priceIn": 4,
+    "priceOut": 16,
+    "price": 16,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "Pro/deepseek-ai/DeepSeek-V3.1-Terminus",
+    "series": "deepseek-ai",
+    "icon": "DeepSeek.svg",
+    "size": 671,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 160,
+    "name": "DeepSeek-V3.1-Terminus (Pro)",
+    "priceIn": 4,
+    "priceOut": 12,
+    "price": 12,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "Pro/deepseek-ai/DeepSeek-V3.2",
+    "series": "deepseek-ai",
+    "icon": "DeepSeek.svg",
+    "size": 671,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 160,
+    "name": "DeepSeek-V3.2 (Pro)",
+    "priceIn": 2,
     "priceOut": 3,
     "price": 3,
-    "vision": 1,
+    "vision": 0,
     "noGift": 0
   },
   {
@@ -63,7 +261,7 @@
     "priceOut": 16,
     "price": 16,
     "vision": 0,
-    "noGift": 1
+    "noGift": 0
   },
   {
     "id": "moonshotai/Kimi-K2-Thinking",
@@ -96,6 +294,105 @@
     "priceOut": 16,
     "price": 16,
     "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "zai-org/GLM-4.6",
+    "series": "zai",
+    "icon": "zhipu.svg",
+    "size": 335,
+    "levels": [
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      },
+      {
+        "TPM": 2000000
+      }
+    ],
+    "length": 198,
+    "name": "GLM-4.6",
+    "priceIn": 3.5,
+    "priceOut": 14,
+    "price": 14,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "Qwen/Qwen3-8B",
+    "series": "Qwen",
+    "icon": "Tongyi.svg",
+    "size": 8,
+    "levels": [
+      {
+        "TPM": 50000
+      },
+      {
+        "TPM": 50000
+      },
+      {
+        "TPM": 50000
+      },
+      {
+        "TPM": 50000
+      },
+      {
+        "TPM": 50000
+      },
+      {
+        "TPM": 50000
+      }
+    ],
+    "length": 128,
+    "name": "Qwen3-8B",
+    "priceIn": 0,
+    "priceOut": 0,
+    "price": 0,
+    "vision": 0,
+    "noGift": 0
+  },
+  {
+    "id": "zai-org/GLM-4.6V",
+    "series": "zai",
+    "icon": "zhipu.svg",
+    "size": 106,
+    "levels": [
+      {
+        "TPM": 20000
+      },
+      {
+        "TPM": 30000
+      },
+      {
+        "TPM": 40000
+      },
+      {
+        "TPM": 80000
+      },
+      {
+        "TPM": 250000
+      },
+      {
+        "TPM": 1000000
+      }
+    ],
+    "length": 128,
+    "name": "GLM-4.6V",
+    "priceIn": 1,
+    "priceOut": 3,
+    "price": 3,
+    "vision": 1,
     "noGift": 0
   },
   {
@@ -198,39 +495,6 @@
     "noGift": 0
   },
   {
-    "id": "Pro/moonshotai/Kimi-K2-Thinking",
-    "series": "moonshotai",
-    "icon": "moonshotai_new.png",
-    "size": 1000,
-    "levels": [
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      }
-    ],
-    "length": 256,
-    "name": "Kimi-K2-Thinking (Pro)",
-    "priceIn": 4,
-    "priceOut": 16,
-    "price": 16,
-    "vision": 0,
-    "noGift": 1
-  },
-  {
     "id": "deepseek-ai/DeepSeek-V3.2",
     "series": "deepseek-ai",
     "icon": "DeepSeek.svg",
@@ -264,72 +528,6 @@
     "noGift": 0
   },
   {
-    "id": "Pro/deepseek-ai/DeepSeek-V3.2",
-    "series": "deepseek-ai",
-    "icon": "DeepSeek.svg",
-    "size": 671,
-    "levels": [
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      }
-    ],
-    "length": 160,
-    "name": "DeepSeek-V3.2 (Pro)",
-    "priceIn": 2,
-    "priceOut": 3,
-    "price": 3,
-    "vision": 0,
-    "noGift": 1
-  },
-  {
-    "id": "Pro/deepseek-ai/DeepSeek-V3.1-Terminus",
-    "series": "deepseek-ai",
-    "icon": "DeepSeek.svg",
-    "size": 671,
-    "levels": [
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      }
-    ],
-    "length": 160,
-    "name": "DeepSeek-V3.1-Terminus (Pro)",
-    "priceIn": 4,
-    "priceOut": 12,
-    "price": 12,
-    "vision": 0,
-    "noGift": 1
-  },
-  {
     "id": "deepseek-ai/DeepSeek-V3.1-Terminus",
     "series": "deepseek-ai",
     "icon": "DeepSeek.svg",
@@ -361,39 +559,6 @@
     "price": 12,
     "vision": 0,
     "noGift": 0
-  },
-  {
-    "id": "Pro/moonshotai/Kimi-K2-Instruct-0905",
-    "series": "moonshotai",
-    "icon": "moonshotai_new.png",
-    "size": 1000,
-    "levels": [
-      {
-        "TPM": 1000000
-      },
-      {
-        "TPM": 1000000
-      },
-      {
-        "TPM": 1000000
-      },
-      {
-        "TPM": 1000000
-      },
-      {
-        "TPM": 1000000
-      },
-      {
-        "TPM": 1000000
-      }
-    ],
-    "length": 256,
-    "name": "Kimi-K2-Instruct-0905 (Pro)",
-    "priceIn": 4,
-    "priceOut": 16,
-    "price": 16,
-    "vision": 0,
-    "noGift": 1
   },
   {
     "id": "moonshotai/Kimi-K2-Instruct-0905",
@@ -458,39 +623,6 @@
     "priceIn": 1,
     "priceOut": 4,
     "price": 4,
-    "vision": 0,
-    "noGift": 0
-  },
-  {
-    "id": "zai-org/GLM-4.6",
-    "series": "zai",
-    "icon": "zhipu.svg",
-    "size": 335,
-    "levels": [
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      }
-    ],
-    "length": 198,
-    "name": "GLM-4.6",
-    "priceIn": 3.5,
-    "priceOut": 14,
-    "price": 14,
     "vision": 0,
     "noGift": 0
   },
@@ -657,39 +789,6 @@
     "priceOut": 0,
     "price": 0,
     "vision": 1,
-    "noGift": 0
-  },
-  {
-    "id": "Qwen/Qwen3-8B",
-    "series": "Qwen",
-    "icon": "Tongyi.svg",
-    "size": 8,
-    "levels": [
-      {
-        "TPM": 50000
-      },
-      {
-        "TPM": 50000
-      },
-      {
-        "TPM": 50000
-      },
-      {
-        "TPM": 50000
-      },
-      {
-        "TPM": 50000
-      },
-      {
-        "TPM": 50000
-      }
-    ],
-    "length": 128,
-    "name": "Qwen3-8B",
-    "priceIn": 0,
-    "priceOut": 0,
-    "price": 0,
-    "vision": 0,
     "noGift": 0
   },
   {
@@ -891,39 +990,6 @@
     "noGift": 0
   },
   {
-    "id": "Pro/deepseek-ai/DeepSeek-V3",
-    "series": "deepseek-ai",
-    "icon": "DeepSeek.svg",
-    "size": 671,
-    "levels": [
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      }
-    ],
-    "length": 160,
-    "name": "DeepSeek-V3 (Pro)",
-    "priceIn": 2,
-    "priceOut": 8,
-    "price": 8,
-    "vision": 0,
-    "noGift": 1
-  },
-  {
     "id": "deepseek-ai/DeepSeek-V3",
     "series": "deepseek-ai",
     "icon": "DeepSeek.svg",
@@ -955,39 +1021,6 @@
     "price": 8,
     "vision": 0,
     "noGift": 0
-  },
-  {
-    "id": "Pro/deepseek-ai/DeepSeek-R1",
-    "series": "deepseek-ai",
-    "icon": "DeepSeek.svg",
-    "size": 671,
-    "levels": [
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      },
-      {
-        "TPM": 2000000
-      }
-    ],
-    "length": 160,
-    "name": "DeepSeek-R1 (Pro)",
-    "priceIn": 4,
-    "priceOut": 16,
-    "price": 16,
-    "vision": 0,
-    "noGift": 1
   },
   {
     "id": "deepseek-ai/DeepSeek-R1",
